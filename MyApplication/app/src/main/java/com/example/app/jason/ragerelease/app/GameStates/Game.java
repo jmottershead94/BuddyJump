@@ -57,22 +57,17 @@ public class Game extends Activity
         final Button playGameButton = (Button) findViewById(R.id.playGameButton);
         final NavigationButton button = new NavigationButton();
         background = (RelativeLayout) findViewById(R.id.gameBackground);
-        textView = (TextView) findViewById(R.id.gameTextView);
 
-        // Accessing saved options.
-        SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        optionOneChecked = gameSettings.getBoolean("moptionOneCheckedStatus", false);
-        optionTwoChecked = gameSettings.getBoolean("moptionTwoCheckedStatus", false);
-        optionThreeChecked = gameSettings.getBoolean("moptionThreeCheckedStatus", false);
+//        // Accessing saved options.
+//        SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+//        optionOneChecked = gameSettings.getBoolean("moptionOneCheckedStatus", false);
+//        optionTwoChecked = gameSettings.getBoolean("moptionTwoCheckedStatus", false);
+//        optionThreeChecked = gameSettings.getBoolean("moptionThreeCheckedStatus", false);
 
         // Setting up the screen dimensions.
         DisplayMetrics displayMetrics = new DisplayMetrics();
         WindowManager windowManager = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
         windowManager.getDefaultDisplay().getMetrics(displayMetrics);
-
-        // Setting the text view for the activity.
-        textView.setTextSize(20.0f);
-        textView.setText("Select an image:");
 
         // If the main menu button has been pressed.
         // Navigate the user back to the main menu.
@@ -82,47 +77,47 @@ public class Game extends Activity
         //button.isPressed(playGameButton, this, Level.class);
     }
 
-    //////////////////////////////////////////////////////////
-    //======================================================//
-    //				    applyOptions   						//
-    //======================================================//
-    // This function will check to see the current state of //
-    // the options, and provide an appropriate response.    //
-    //////////////////////////////////////////////////////////
-    public void applyOptions()
-    {
-        // Create different option responses here.
-        // If the first option is ON.
-        if(optionOneChecked)
-        {
-            // Let the player take a picture with the camera (user permissions required).
-            // DEBUG - Set the background colour to blue.
-            background.setBackgroundColor(Color.BLUE);
-        }
-        // If the first option is OFF.
-        else
-        {
-            // Let the player select a sprite for the player character.
-            //imageSelectionView = (GridView) findViewById(R.id.imageSelectionView);
-            //imageSelectionView.setAdapter(new ImageAdapter(this));
-        }
-
-        // If the second option is ON.
-        if(optionTwoChecked)
-        {
-            // Create some text.
-            TextView optionTwoText = new TextView(this);
-            optionTwoText.setText("Option Two Enabled BIATCH.");
-
-            // Add the text to the screen.
-            background.addView(optionTwoText);
-        }
-
-        // If the third option is ON.
-        if(optionThreeChecked)
-        {
-            // Rotate the background.
-            background.setRotation(90.0f);
-        }
-    }
+//    //////////////////////////////////////////////////////////
+//    //======================================================//
+//    //				    applyOptions   						//
+//    //======================================================//
+//    // This function will check to see the current state of //
+//    // the options, and provide an appropriate response.    //
+//    //////////////////////////////////////////////////////////
+//    public void applyOptions()
+//    {
+//        // Create different option responses here.
+//        // If the first option is ON.
+//        if(optionOneChecked)
+//        {
+//            // Let the player take a picture with the camera (user permissions required).
+//            // DEBUG - Set the background colour to blue.
+//            background.setBackgroundColor(Color.BLUE);
+//        }
+//        // If the first option is OFF.
+//        else
+//        {
+//            // Let the player select a sprite for the player character.
+//            //imageSelectionView = (GridView) findViewById(R.id.imageSelectionView);
+//            //imageSelectionView.setAdapter(new ImageAdapter(this));
+//        }
+//
+//        // If the second option is ON.
+//        if(optionTwoChecked)
+//        {
+//            // Create some text.
+//            TextView optionTwoText = new TextView(this);
+//            optionTwoText.setText("Option Two Enabled BIATCH.");
+//
+//            // Add the text to the screen.
+//            background.addView(optionTwoText);
+//        }
+//
+//        // If the third option is ON.
+//        if(optionThreeChecked)
+//        {
+//            // Rotate the background.
+//            background.setRotation(90.0f);
+//        }
+//    }
 }

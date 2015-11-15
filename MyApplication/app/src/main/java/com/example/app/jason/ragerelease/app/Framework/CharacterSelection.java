@@ -26,7 +26,7 @@ import org.w3c.dom.Text;
  * Created by Jason Mottershead on 17/10/2015.
  */
 
-// Game IS AN Activity, therefore inherits from it.
+// Character Selection IS AN Activity, therefore inherits from it.
 public class CharacterSelection extends Activity
 {
     // Attributes.
@@ -36,27 +36,17 @@ public class CharacterSelection extends Activity
     private RelativeLayout background = null;
     private GridView imageSelectionView = null;
     private TextView textView = null;
+    private ImageAdapter imageSelection = null;
 
     // Methods.
-    @Override
-    protected void onCreate(Bundle savedInstanceState)
-    {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_character_selection);
-
-        // Initialise the game.
-        init();
-        applyOptions();
-    }
-
     // An initialisation function for setting up the game.
-    private void init()
+    protected void init(String selectionMessage)
     {
         // Initialising variables.
         final Button saveButton = (Button) findViewById(R.id.saveButton);
         final NavigationButton button = new NavigationButton();
         background = (RelativeLayout) findViewById(R.id.characterSelectionBackground);
-        textView = (TextView) findViewById(R.id.playerSelectionTextView);
+        textView = (TextView) findViewById(R.id.characterSelectionTextView);
 
         // Accessing saved options.
         SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -64,14 +54,9 @@ public class CharacterSelection extends Activity
         optionTwoChecked = gameSettings.getBoolean("moptionTwoCheckedStatus", false);
         optionThreeChecked = gameSettings.getBoolean("moptionThreeCheckedStatus", false);
 
-        // Setting up the screen dimensions.
-        DisplayMetrics displayMetrics = new DisplayMetrics();
-        WindowManager windowManager = (WindowManager) getApplicationContext().getSystemService(Context.WINDOW_SERVICE);
-        windowManager.getDefaultDisplay().getMetrics(displayMetrics);
-
         // Setting the text view for the activity.
         textView.setTextSize(20.0f);
-        textView.setText("Select an image for the player:");
+        textView.setText("Select an image for the " + selectionMessage + ":");
 
         // If the main menu button has been pressed.
         // Navigate the user back to the main menu.
@@ -85,7 +70,7 @@ public class CharacterSelection extends Activity
     // This function will check to see the current state of //
     // the options, and provide an appropriate response.    //
     //////////////////////////////////////////////////////////
-    public void applyOptions()
+    protected void applyOptions(final Context context, Integer[] images, boolean playerSelection)
     {
         // Create different option responses here.
         // If the first option is ON.
@@ -98,10 +83,14 @@ public class CharacterSelection extends Activity
         // If the first option is OFF.
         else
         {
-            // Let the player select a sprite for the player character.
-            imageSelectionView = (GridView) findViewById(R.id.characterImageSelectionView);
-            imageSelectionView.setAdapter(new ImageAdapter(this));
-
+            if(playerSelection)
+            {
+                // Let the player select a sprite for the player character.
+                imageSelectionView = (GridView) findViewById(R.id.characterImageSelectionView);
+                imageSelection = new ImageAdapter(context);
+                imageSelection.setImages(images);
+                imageSelectionView.setAdapter(imageSelection);
+            }
         }
 
         // If the second option is ON.
@@ -113,6 +102,17 @@ public class CharacterSelection extends Activity
 
             // Add the text to the screen.
             background.addView(optionTwoText);
+        }
+        else
+        {
+            if(!playerSelection)
+            {
+                // Let the player select a sprite for the player character.
+                imageSelectionView = (GridView) findViewById(R.id.characterImageSelectionView);
+                imageSelection = new ImageAdapter(context);
+                imageSelection.setImages(images);
+                imageSelectionView.setAdapter(imageSelection);
+            }
         }
 
         // If the third option is ON.

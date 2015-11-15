@@ -9,8 +9,6 @@ import android.widget.BaseAdapter;
 import android.widget.GridView;
 import android.widget.ImageView;
 
-import com.example.app.jason.ragerelease.R;
-
 /**
  * Created by Jason Mottershead on 17/10/2015.
  */
@@ -20,7 +18,7 @@ public class ImageAdapter extends BaseAdapter
 {
     // Attributes.
     private Context context;                        // Getting access to the context for the game.
-    private Integer[] images;                     // Getting access to the images from the drawable folder.
+    private Integer[] images;                       // Images that will be displayed with this adapter.
 
     // Methods.
     public ImageAdapter(Context gameContext)
