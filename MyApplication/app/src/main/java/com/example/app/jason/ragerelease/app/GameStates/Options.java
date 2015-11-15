@@ -198,8 +198,9 @@ public class Options extends Activity
     {
         super.onPause();
 
-        SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, 0);
+        SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         SharedPreferences.Editor editor = gameSettings.edit();
+
         editor.putBoolean("moptionOneCheckedStatus", optionOne.isChecked());
         editor.putBoolean("moptionTwoCheckedStatus", optionTwo.isChecked());
         editor.putBoolean("moptionThreeCheckedStatus", optionThree.isChecked());

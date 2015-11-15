@@ -2,7 +2,9 @@
 package com.example.app.jason.ragerelease.app.GameStates;
 
 // All of the extra includes here.
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import com.example.app.jason.ragerelease.R;
 import com.example.app.jason.ragerelease.app.Framework.CharacterSelection;
@@ -15,6 +17,7 @@ import com.example.app.jason.ragerelease.app.Framework.CharacterSelection;
 public class PlayerSelection extends CharacterSelection
 {
     // Attributes.
+    private int currentPlayerImage = 0;
     private Integer[] playerImages =                      // Getting access to the images from the drawable folder.
     {
             R.drawable.sample_0, R.drawable.sample_1,
@@ -35,7 +38,12 @@ public class PlayerSelection extends CharacterSelection
         setContentView(R.layout.activity_character_selection);
 
         // Initialise the game.
-        init("player");
+        init("player", "mplayerImageIndex");
         applyOptions(this, playerImages, true);
+
+        SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        currentPlayerImage = gameSettings.getInt("mplayerImageIndex", 0);
+
+        Toast.makeText(this, "Player currently using " + currentPlayerImage, Toast.LENGTH_SHORT).show();
     }
 }

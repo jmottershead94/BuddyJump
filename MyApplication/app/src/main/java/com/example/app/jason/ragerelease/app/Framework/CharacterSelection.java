@@ -33,17 +33,19 @@ import org.w3c.dom.Text;
 public class CharacterSelection extends Activity implements AdapterView.OnItemClickListener
 {
     // Attributes.
-    private static final String PREFS_NAME = "MyPrefsFile";                     // Where the options will be saved to, whether they are true or false.
+    protected static final String PREFS_NAME = "MyPrefsFile";                     // Where the options will be saved to, whether they are true or false.
     private static final String TAG = "TKT";                                    // Used for debugging.
     private boolean optionOneChecked, optionTwoChecked, optionThreeChecked;     // Used for gaining access to the options from the options activity.
     private RelativeLayout background = null;
     private GridView imageSelectionView = null;
     private TextView textView = null;
     private ImageAdapter imageSelection = null;
+    private int currentImageIndex = 0;
+    private String gameSettingsName = null;
 
     // Methods.
     // An initialisation function for setting up the game.
-    protected void init(String selectionMessage)
+    protected void init(String selectionMessage, String settingsName)
     {
         // Initialising variables.
         final Button saveButton = (Button) findViewById(R.id.saveButton);
@@ -52,12 +54,14 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
         textView = (TextView) findViewById(R.id.characterSelectionTextView);
         imageSelectionView = (GridView) findViewById(R.id.characterImageSelectionView);
         imageSelection = new ImageAdapter(this);
+        gameSettingsName = settingsName;
 
         // Accessing saved options.
         SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         optionOneChecked = gameSettings.getBoolean("moptionOneCheckedStatus", false);
         optionTwoChecked = gameSettings.getBoolean("moptionTwoCheckedStatus", false);
         optionThreeChecked = gameSettings.getBoolean("moptionThreeCheckedStatus", false);
+        currentImageIndex = gameSettings.getInt(gameSettingsName, 0);
 
         // Setting the text view for the activity.
         textView.setTextSize(20.0f);
@@ -129,6 +133,52 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
 
     public void onItemClick(AdapterView<?> parent, View gridElement, int position, long id)
     {
+        currentImageIndex = position;
         Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
+    }
+
+    // This function will return the image index of that the player has selected.
+    public int getImageIndex() { return currentImageIndex; }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState)
+    {
+        final CharSequence saveMessage = "Image selection saved.";
+
+        // Save UI changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is killed or restarted.
+        savedInstanceState.putInt(gameSettingsName, currentImageIndex);
+
+        // Save the current state.
+        super.onSaveInstanceState(savedInstanceState);
+
+        // Display a saved message.
+        Toast.makeText(this, saveMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState)
+    {
+        // Just in case the application is killed off.
+        super.onRestoreInstanceState(savedInstanceState);
+
+        // Once the activity has been restored, place the previous image index into the current one.
+        // So that we have not lost the number for it.
+        currentImageIndex = savedInstanceState.getInt(gameSettingsName);
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+
+        SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = gameSettings.edit();
+
+        // Placing the int into saved files to be used later.
+        editor.putInt(gameSettingsName, currentImageIndex);
+
+        // Applying the changes.
+        editor.apply();
     }
 }
