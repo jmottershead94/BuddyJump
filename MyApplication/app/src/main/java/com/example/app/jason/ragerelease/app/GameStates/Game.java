@@ -44,27 +44,26 @@ public class Game extends Activity
 
         // Initialise the game.
         init();
-        applyOptions();
+        //applyOptions();
     }
 
     // An initialisation function for setting up the game.
     private void init()
     {
-        // Setting all of the constant variables.
-        // Setting up the button to go back to the main menu.
+        // Initialising variables.
+        final Button playerSelectionButton = (Button) findViewById(R.id.playerSelectionButton);
+        final Button enemySelectionButton = (Button) findViewById(R.id.enemySelectionButton);
         final Button mainMenuButton = (Button) findViewById(R.id.mainMenuButton);
+        final Button playGameButton = (Button) findViewById(R.id.playGameButton);
         final NavigationButton button = new NavigationButton();
         background = (RelativeLayout) findViewById(R.id.gameBackground);
+        textView = (TextView) findViewById(R.id.gameTextView);
 
         // Accessing saved options.
         SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         optionOneChecked = gameSettings.getBoolean("moptionOneCheckedStatus", false);
         optionTwoChecked = gameSettings.getBoolean("moptionTwoCheckedStatus", false);
         optionThreeChecked = gameSettings.getBoolean("moptionThreeCheckedStatus", false);
-
-        // Setting all of the member variables.
-        textView = (TextView) findViewById(R.id.gameTextView);
-
 
         // Setting up the screen dimensions.
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -77,7 +76,10 @@ public class Game extends Activity
 
         // If the main menu button has been pressed.
         // Navigate the user back to the main menu.
+        button.isPressed(playerSelectionButton, this, PlayerSelection.class);
+        button.isPressed(enemySelectionButton, this, EnemySelection.class);
         button.isPressed(mainMenuButton, this, MainMenu.class);
+        //button.isPressed(playGameButton, this, Level.class);
     }
 
     //////////////////////////////////////////////////////////
@@ -101,8 +103,8 @@ public class Game extends Activity
         else
         {
             // Let the player select a sprite for the player character.
-            imageSelectionView = (GridView) findViewById(R.id.imageSelectionView);
-            imageSelectionView.setAdapter(new ImageAdapter(this));
+            //imageSelectionView = (GridView) findViewById(R.id.imageSelectionView);
+            //imageSelectionView.setAdapter(new ImageAdapter(this));
         }
 
         // If the second option is ON.

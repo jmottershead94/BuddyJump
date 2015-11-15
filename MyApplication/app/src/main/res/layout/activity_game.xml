@@ -17,18 +17,36 @@
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Player Selection"
+        android:id="@+id/playerSelectionButton"
+        android:layout_below="@+id/gameTextView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="68dp" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Enemy Selection"
+        android:id="@+id/enemySelectionButton"
+        android:layout_below="@+id/playerSelectionButton"
+        android:layout_alignStart="@+id/playerSelectionButton"
+        android:layout_marginTop="46dp"
+        android:layout_alignEnd="@+id/playerSelectionButton" />
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:text="Main Menu"
         android:id="@+id/mainMenuButton"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
 
-    <GridView
+    <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:numColumns="2"
-        android:id="@+id/imageSelectionView"
-        android:layout_alignParentStart="true"
-        android:layout_below="@+id/gameTextView"
-        android:layout_above="@+id/mainMenuButton" />
+        android:text="Play Game!"
+        android:id="@+id/playGameButton"
+        android:layout_alignBottom="@+id/mainMenuButton"
+        android:layout_alignParentEnd="true" />
 
 </RelativeLayout>
