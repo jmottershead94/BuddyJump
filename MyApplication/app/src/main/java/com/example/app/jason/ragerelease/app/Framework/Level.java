@@ -16,11 +16,11 @@ import java.util.Vector;
 public class Level
 {
     // Attributes.
-    public Player player = null;
     private static final String TAG = "TKT";
     private int levelNumber = 1;
     public Game game = null;
     public LevelGenerator levelGenerator = null;
+    public Player player = null;
     private Resources resources = null;
 
     public void init(final Resources gameResources, final Game gameView)
@@ -29,7 +29,7 @@ public class Level
         resources = gameResources;
         game = gameView;
         player = new Player(resources, this);
-        levelGenerator = new LevelGenerator(resources, 2, 4, 1);
+        levelGenerator = new LevelGenerator(resources, 2, 4, 1, this);
         levelGenerator.buildLevel();    // Builds the first level.
         levelGenerator.addToView();
     }
@@ -82,73 +82,6 @@ public class Level
         // Switch between the ID of the objects.
         switch(object.getID())
         {
-//            case ObjectID.SPAWNGATE:
-//            {
-//                StaticBody spawnGate = (StaticBody) object.body.getUserData();
-//                //object.removeTexture();
-//                spawnGate.setColour(255, 0, 0, 255);
-////                spawnGate.setDimensions(0.0f, 0.0f);
-////                spawnGate.resetBoxDimensions(world);
-//
-//                //object.translateFramework(new Vector2((float)screenWidth, (float)screenHeight));
-//                //object.body.destroyShape(object.body.getShapeList());
-//                //getLevelObjects().remove(object);
-//
-//                break;
-//            }
-            // If the player square needs to be removed.
-            case ObjectID.PLAYERSQUARE:
-            {
-                // Makes the texture blank to remove the previous texture from the screen.
-                object.removeTexture();
-
-                // Removes the actual body of the object from the world.
-                //object.body.destroyShape(object.body.getShapeList());
-                //world.destroyBody(object.body);
-                object.body.destroyFixture(object.body.getFixtureList());
-                object.body.getWorld().destroyBody(object.body);
-
-                // Reset the boolean flag.
-                object.remove = false;
-
-                // Removes the object from the level objects vector.
-                getLevelObjects().remove(object);
-
-                levelGenerator.reduceNumberOfPlayerSquares();
-
-                break;
-            }
-            // If a target square needs to be removed.
-            case ObjectID.TARGETSQUARE:
-            {
-                object.removeTexture();
-                //object.body.destroyShape(object.body.getShapeList());
-                //world.destroyBody(object.body);
-                object.body.destroyFixture(object.body.getFixtureList());
-                object.body.getWorld().destroyBody(object.body);
-                object.remove = false;
-                getLevelObjects().remove(object);
-                Log.d(TAG, "Removed the target square.");
-
-                if(levelGenerator.getNumberOfPlayerSquares() == 0)
-                {
-                    newLevel();
-                }
-
-                break;
-            }
-            case ObjectID.BREAKABLEPLATFORM:
-            {
-                object.removeTexture();
-                object.setColour(0, 0, 0, 0);
-                //object.body.destroyShape(object.body.getShapeList());
-                object.body.destroyFixture(object.body.getFixtureList());
-                object.body.getWorld().destroyBody(object.body);
-                object.remove = false;
-                getLevelObjects().remove(object);
-
-                break;
-            }
             // The default case for any removal situations if none of the above cases are met.
             default:
             {
@@ -157,7 +90,7 @@ public class Level
         }
     }
 
-    private void handleLevelObjects()
+    private void handleLevelObjects(float dt)
     {
         for (AnimatedSprite object : getLevelObjects())
         {
@@ -170,28 +103,28 @@ public class Level
                 }
 
                 // Animates all of the player squares.
-                if (object.getID() == ObjectID.PLAYERSQUARE)
+                if (object.getID() == ObjectID.PLAYER)
                 {
-                    DynamicBody playerSquare = (DynamicBody) object.body.getUserData();
-                    playerSquare.updateBody();
-                    playerSquare.animateSprite(0.002f);
+                    DynamicBody playerSprite = (DynamicBody) object.body.getUserData();
+                    playerSprite.updateBody();
+                    playerSprite.animateSprite(0.002f);
 
                     // If a player square needs to respawn.
-                    if(playerSquare.respawn)
+                    if(playerSprite.respawn)
                     {
                         // Set the player square at the spawn location.
-                        playerSquare.translateFramework(object.getSpawnLocation());
-                        playerSquare.respawn = false;
+                        playerSprite.translateFramework(object.getSpawnLocation());
+                        playerSprite.respawn = false;
                     }
 
                     if(player.beingTouched)
                     {
-                        playerSquare.translateFramework(player.touchPosition);
+                        playerSprite.translateFramework(player.touchPosition);
                     }
                 }
 
                 // Animates all of the target squares.
-                if (object.getID() == ObjectID.TARGETSQUARE)
+                if (object.getID() == ObjectID.ENEMY)
                 {
                     object.animateSprite(0.003f);
                 }
@@ -220,52 +153,14 @@ public class Level
             Body bodyB = contact.getFixtureB().getBody();
 
             // Converting the two colliding bodies into objects that we can work with.
-            AnimatedSprite gameObject = (AnimatedSprite) bodyA.getUserData();
+            AnimatedSprite gameObjectA = (AnimatedSprite) bodyA.getUserData();
             AnimatedSprite gameObjectB = (AnimatedSprite) bodyB.getUserData();
 
-            // Collision response here.
-            // If the collisions are not columns, platforms, or breakable platforms.
-            if((gameObject.getID() != ObjectID.COLUMN && gameObjectB.getID() != ObjectID.COLUMN)
-                && (gameObject.getID() != ObjectID.PLATFORM && gameObjectB.getID() != ObjectID.PLATFORM)
-                && (gameObject.getID() != ObjectID.BREAKABLEPLATFORM && gameObjectB.getID() != ObjectID.BREAKABLEPLATFORM))
-            {
-                // Then check the rest of the important collisions.
-                // If the player collides with a bullet.
-
-                //////////////////////////////////////////////////////////////////////////////////////////////////////////
-                // FOR SOME REASON ObjectID.PLAYERSQUARE and ObjectID.IDNAME do not work, actual numbers do though... //
-                //////////////////////////////////////////////////////////////////////////////////////////////////////////
-
-                if ((gameObject.getID() == 7) && (gameObjectB.getID() == 12))
-                {
-                    Log.d(TAG, "Player square has matched up with the target square.");
-
-                    // Make the player respawn.
-                    gameObject.respawn = true;
-                }
-                // Otherwise, if the player collides with a target square.
-                else if ((gameObject.getID() == 7) && (gameObjectB.getID() == 8))
-                {
-                    Log.d(TAG, "Player square has matched up with the target square.");
-
-                    // If the player square and the target square have matching texture coordinates.
-                    if ((gameObject.getTextureCoordinates().getX() == gameObjectB.getTextureCoordinates().getX())
-                            && (gameObject.getTextureCoordinates().getY() == gameObjectB.getTextureCoordinates().getY()))
-                    {
-                        Log.d(TAG, "Player square has matched up with the target square.");
-
-                        // Remove them from the level.
-                        gameObject.remove = true;
-                        gameObjectB.remove = true;
-                    }
-                    // Otherwise, the player square and the target square do not have matching texture coordinates.
-                    else
-                    {
-                        // Make the player square respawn.
-                        gameObject.respawn = true;
-                    }
-                }
-            }
+            // Collision test.
+            //if(gameObjectA.getID() == ObjectID.PLAYER && gameObjectB.getID == ObjectID.ENEMY)
+            //{
+            //  // Do collision response here...
+            //}
 
             // Get the next contact point.
             contact = contact.getNext();
@@ -274,16 +169,14 @@ public class Level
 
     public void update(float dt)
     {
-        // Updating local variables.
-        player.update();
-
         // Local function calls.
-        handleLevelObjects();
+        handleLevelObjects(dt);
 
         // Check any collisions in the level.
         checkCollisions();
     }
 
+    // Getters.
     public Vector<AnimatedSprite> getLevelObjects() { return levelGenerator.getObjects(); }
 
 //    // Otherwise, if the bottom of the sprite is inside of an existing object.

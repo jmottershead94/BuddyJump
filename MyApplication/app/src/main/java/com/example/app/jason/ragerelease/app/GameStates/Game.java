@@ -19,6 +19,7 @@ import com.example.app.jason.ragerelease.R;
 import com.example.app.jason.ragerelease.app.Framework.ImageAdapter;
 import com.example.app.jason.ragerelease.app.Framework.Level;
 import com.example.app.jason.ragerelease.app.Framework.NavigationButton;
+import com.example.app.jason.ragerelease.app.Framework.Player;
 import com.example.app.jason.ragerelease.app.Framework.Resources;
 
 import org.jbox2d.common.Vec2;
@@ -51,6 +52,7 @@ public class Game extends Activity
     // My framework attributes.
     private MainThread gameThread = null;                                       // The main game thread that the game will be running mostly on.
     private Level level = null;                                                 // Provides levels for the player to play in.
+
     private Resources resources = null;                                         // Gives access to certain repeated resources (context, the game background, screen width , screen height, and the world), and narrows down parameters passed down.
 
     // Methods.
@@ -102,6 +104,7 @@ public class Game extends Activity
         // Initialising variables.
         background = (RelativeLayout) findViewById(R.id.gameBackground);
         pauseButton = (Button) findViewById(R.id.pauseButton);
+
         level = new Level();
         gameThread = new MainThread(this, desiredFPS);
         resources = new Resources(getApplicationContext(), background, displayMetrics.widthPixels, displayMetrics.heightPixels, world);
