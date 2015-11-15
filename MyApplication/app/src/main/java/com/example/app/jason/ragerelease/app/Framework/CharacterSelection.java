@@ -8,11 +8,14 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.View;
 import android.view.WindowManager;
+import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.GridView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.example.app.jason.ragerelease.R;
 import com.example.app.jason.ragerelease.app.Framework.ImageAdapter;
@@ -27,7 +30,7 @@ import org.w3c.dom.Text;
  */
 
 // Character Selection IS AN Activity, therefore inherits from it.
-public class CharacterSelection extends Activity
+public class CharacterSelection extends Activity implements AdapterView.OnItemClickListener
 {
     // Attributes.
     private static final String PREFS_NAME = "MyPrefsFile";                     // Where the options will be saved to, whether they are true or false.
@@ -47,6 +50,8 @@ public class CharacterSelection extends Activity
         final NavigationButton button = new NavigationButton();
         background = (RelativeLayout) findViewById(R.id.characterSelectionBackground);
         textView = (TextView) findViewById(R.id.characterSelectionTextView);
+        imageSelectionView = (GridView) findViewById(R.id.characterImageSelectionView);
+        imageSelection = new ImageAdapter(this);
 
         // Accessing saved options.
         SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -57,6 +62,9 @@ public class CharacterSelection extends Activity
         // Setting the text view for the activity.
         textView.setTextSize(20.0f);
         textView.setText("Select an image for the " + selectionMessage + ":");
+
+        // Telling the grid view to keep listening for any items that have been clicked on.
+        imageSelectionView.setOnItemClickListener(this);
 
         // If the main menu button has been pressed.
         // Navigate the user back to the main menu.
@@ -86,8 +94,6 @@ public class CharacterSelection extends Activity
             if(playerSelection)
             {
                 // Let the player select a sprite for the player character.
-                imageSelectionView = (GridView) findViewById(R.id.characterImageSelectionView);
-                imageSelection = new ImageAdapter(context);
                 imageSelection.setImages(images);
                 imageSelectionView.setAdapter(imageSelection);
             }
@@ -107,9 +113,7 @@ public class CharacterSelection extends Activity
         {
             if(!playerSelection)
             {
-                // Let the player select a sprite for the player character.
-                imageSelectionView = (GridView) findViewById(R.id.characterImageSelectionView);
-                imageSelection = new ImageAdapter(context);
+                // Let the player select a sprite for the enemy character.
                 imageSelection.setImages(images);
                 imageSelectionView.setAdapter(imageSelection);
             }
@@ -121,5 +125,10 @@ public class CharacterSelection extends Activity
             // Rotate the background.
             background.setRotation(90.0f);
         }
+    }
+
+    public void onItemClick(AdapterView<?> parent, View gridElement, int position, long id)
+    {
+        Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
     }
 }
