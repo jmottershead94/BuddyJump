@@ -3,6 +3,8 @@ package com.example.app.jason.ragerelease.app.Framework;
 import android.content.Context;
 import android.widget.RelativeLayout;
 
+import org.jbox2d.dynamics.World;
+
 /**
  * Created by Win8 on 17/10/2015.
  */
@@ -13,16 +15,21 @@ public class Resources
     private RelativeLayout background = null;
     private int screenWidth = 0;
     private int screenHeight = 0;
+    private World world;
 
     // Methods.
-    public Resources(final Context gameContext, final RelativeLayout gameBackground, final int gameScreenWidth, final int gameScreenHeight)
+    public Resources(final Context gameContext, final RelativeLayout gameBackground, final int gameScreenWidth, final int gameScreenHeight, final World gameWorld)
     {
         // Setting up the local variables.
         context = gameContext;
         background = gameBackground;
         screenWidth = gameScreenWidth;
         screenHeight = gameScreenHeight;
+        world = gameWorld;
     }
+
+    // Setters.
+    public void setBackground(final RelativeLayout gameBackground) { background = gameBackground; }
 
     // Getters.
     // This function will return the game context.
@@ -36,4 +43,7 @@ public class Resources
 
     // This function will return the device screen height.
     public int getScreenHeight()            { return screenHeight; }
+
+    // This function will return the current Box2D world we are using.
+    public World getWorld() { return world; }
 }
