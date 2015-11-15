@@ -33,9 +33,21 @@
             android:label="Rage Release">
         </activity>
 
-        <!-- Setting the Game Selection activity. -->
+        <!-- Setting the Game activity. -->
         <activity
             android:name=".app.GameStates.Game"
+            android:label="Rage Release">
+        </activity>
+
+        <!-- Setting the Player Selection activity. -->
+        <activity
+            android:name=".app.GameStates.PlayerSelection"
+            android:label="Rage Release">
+        </activity>
+
+        <!-- Setting the Enemy Selection activity. -->
+        <activity
+            android:name=".app.GameStates.EnemySelection"
             android:label="Rage Release">
         </activity>
 

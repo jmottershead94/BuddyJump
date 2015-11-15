@@ -20,17 +20,7 @@ public class ImageAdapter extends BaseAdapter
 {
     // Attributes.
     private Context context;                        // Getting access to the context for the game.
-    private Integer[] images =                      // Getting access to the images from the drawable folder.
-    {
-        R.drawable.sample_0, R.drawable.sample_1,
-        R.drawable.sample_2, R.drawable.sample_3,
-        R.drawable.sample_4, R.drawable.sample_5,
-        R.drawable.sample_6, R.drawable.sample_7,
-        R.drawable.sample_0, R.drawable.sample_1,
-        R.drawable.sample_2, R.drawable.sample_3,
-        R.drawable.sample_4, R.drawable.sample_5,
-        R.drawable.sample_6, R.drawable.sample_7
-    };
+    private Integer[] images;                     // Getting access to the images from the drawable folder.
 
     // Methods.
     public ImageAdapter(Context gameContext)
@@ -42,6 +32,19 @@ public class ImageAdapter extends BaseAdapter
     public int getCount()
     {
         return images.length;
+    }
+
+    public void setImages(Integer imageSelection[])
+    {
+        images = new Integer[imageSelection.length];
+
+        if(imageSelection.length > 0)
+        {
+            for (int imageSelectionIndex = 0; imageSelectionIndex < imageSelection.length; imageSelectionIndex++)
+            {
+                images[imageSelectionIndex] = imageSelection[imageSelectionIndex];
+            }
+        }
     }
 
     // Returns the drawable at the position.
