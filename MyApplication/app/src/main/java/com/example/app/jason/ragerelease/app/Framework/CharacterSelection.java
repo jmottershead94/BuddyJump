@@ -22,6 +22,7 @@ import com.example.app.jason.ragerelease.app.Framework.ImageAdapter;
 import com.example.app.jason.ragerelease.app.Framework.NavigationButton;
 import com.example.app.jason.ragerelease.app.GameStates.Game;
 import com.example.app.jason.ragerelease.app.GameStates.MainMenu;
+import com.example.app.jason.ragerelease.app.GameStates.SelectionScreen;
 
 import org.w3c.dom.Text;
 
@@ -72,7 +73,7 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
 
         // If the main menu button has been pressed.
         // Navigate the user back to the main menu.
-        button.isPressed(saveButton, this, Game.class);
+        button.isPressed(saveButton, this, SelectionScreen.class);
     }
 
     //////////////////////////////////////////////////////////
