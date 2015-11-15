@@ -8,6 +8,7 @@ import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -166,6 +167,19 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
         // Once the activity has been restored, place the previous image index into the current one.
         // So that we have not lost the number for it.
         currentImageIndex = savedInstanceState.getInt(gameSettingsName);
+    }
+
+    @Override
+    public boolean onKeyDown(int keyCode, KeyEvent event)
+    {
+        final CharSequence saveMessage = "Image selection saved.";
+
+        if(keyCode == KeyEvent.KEYCODE_BACK)
+        {
+            Toast.makeText(this, saveMessage, Toast.LENGTH_SHORT).show();
+        }
+
+        return super.onKeyDown(keyCode, event);
     }
 
     @Override

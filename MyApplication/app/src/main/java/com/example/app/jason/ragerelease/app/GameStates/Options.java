@@ -155,7 +155,6 @@ public class Options extends Activity
     protected void onSaveInstanceState(Bundle savedInstanceState)
     {
         final CharSequence saveMessage = "Jasons_App options saved.";
-        final Context contextCreate = getApplicationContext();
 
         // Save UI changes to the savedInstanceState.
         // This bundle will be passed to onCreate if the process is killed or restarted.
@@ -165,7 +164,7 @@ public class Options extends Activity
 
         super.onSaveInstanceState(savedInstanceState);
 
-        Toast.makeText(contextCreate, saveMessage, duration).show();
+        Toast.makeText(this, saveMessage, duration).show();
     }
 
     @Override
@@ -183,11 +182,10 @@ public class Options extends Activity
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
         final CharSequence saveMessage = "Jasons_App options saved.";
-        final Context contextCreate = getApplicationContext();
 
         if(keyCode == KeyEvent.KEYCODE_BACK)
         {
-            Toast.makeText(contextCreate, saveMessage, duration).show();
+            Toast.makeText(this, saveMessage, duration).show();
         }
 
         return super.onKeyDown(keyCode, event);

@@ -114,7 +114,7 @@ public class Player implements View.OnTouchListener
                             {
                                 // Increase the number of punches.
                                 numberOfPunches++;
-                                Toast.makeText(resources.getContext(), numberOfPunches + "punches", Toast.LENGTH_SHORT).show();
+                                //Toast.makeText(resources.getContext(), numberOfPunches + "punches", Toast.LENGTH_SHORT).show();
                             }
                         }
                     }
