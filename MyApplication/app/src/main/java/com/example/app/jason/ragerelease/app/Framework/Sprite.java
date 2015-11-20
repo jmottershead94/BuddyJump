@@ -90,7 +90,7 @@ public class Sprite extends View
 //        invalidate();
     }
 
-    public void setTexture(int resourceDrawableID, Vector2 textureCoords, Vector2 textureDimen)
+    public void setTexture(final int resourceDrawableID, Vector2 textureCoords, Vector2 textureDimen)
     {
         image = BitmapFactory.decodeResource(getResources(), resourceDrawableID);
         sprite = Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight());

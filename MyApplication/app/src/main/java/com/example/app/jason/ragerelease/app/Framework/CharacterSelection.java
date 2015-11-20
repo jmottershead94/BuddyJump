@@ -35,7 +35,10 @@ import org.w3c.dom.Text;
 public class CharacterSelection extends Activity implements AdapterView.OnItemClickListener
 {
     // Attributes.
-    protected static final String PREFS_NAME = "MyPrefsFile";                     // Where the options will be saved to, whether they are true or false.
+    protected static final String PREFS_NAME = "MyPrefsFile";                   // Where the options will be saved to, whether they are true or false.
+    protected Button saveButton;
+    protected NavigationButton button;
+
     private static final String TAG = "TKT";                                    // Used for debugging.
     private boolean optionOneChecked, optionTwoChecked, optionThreeChecked;     // Used for gaining access to the options from the options activity.
     private RelativeLayout background = null;
@@ -43,6 +46,7 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
     private TextView textView = null;
     private ImageAdapter imageSelection = null;
     private int currentImageIndex = 0;
+    private int[] sprites = null;
     private String gameSettingsName = null;
 
     // Methods.
@@ -50,8 +54,8 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
     protected void init(String selectionMessage, String settingsName)
     {
         // Initialising variables.
-        final Button saveButton = (Button) findViewById(R.id.saveButton);
-        final NavigationButton button = new NavigationButton();
+        saveButton = (Button) findViewById(R.id.saveButton);
+        button = new NavigationButton();
         background = (RelativeLayout) findViewById(R.id.characterSelectionBackground);
         textView = (TextView) findViewById(R.id.characterSelectionTextView);
         imageSelectionView = (GridView) findViewById(R.id.characterImageSelectionView);
@@ -74,7 +78,7 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
 
         // If the main menu button has been pressed.
         // Navigate the user back to the main menu.
-        button.isPressed(saveButton, this, SelectionScreen.class);
+        //button.isPressed(saveButton, this, SelectionScreen.class);
         //button.isPressedAndSendData(saveButton, this, SelectionScreen.class, imageAttributeName, );
     }
 
@@ -85,7 +89,7 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
     // This function will check to see the current state of //
     // the options, and provide an appropriate response.    //
     //////////////////////////////////////////////////////////
-    protected void applyOptions(final Context context, Integer[] images, boolean playerSelection)
+    protected void applyOptions(final Context context, int[] images, boolean playerSelection)
     {
         // Create different option responses here.
         // If the first option is ON.
@@ -98,6 +102,8 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
         // If the first option is OFF.
         else
         {
+           // sprites = images;
+
             if(playerSelection)
             {
                 // Let the player select a sprite for the player character.
@@ -118,6 +124,8 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
         }
         else
         {
+            //sprites = images;
+
             if(!playerSelection)
             {
                 // Let the player select a sprite for the enemy character.
@@ -151,6 +159,7 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
         // Save UI changes to the savedInstanceState.
         // This bundle will be passed to onCreate if the process is killed or restarted.
         savedInstanceState.putInt(gameSettingsName, currentImageIndex);
+        //savedInstanceState.putInt("current" + gameSettingsName , currentImageIndex);
 
         // Save the current state.
         super.onSaveInstanceState(savedInstanceState);

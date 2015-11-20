@@ -43,8 +43,8 @@ public class Game extends Activity
     private static final String PREFS_NAME = "MyPrefsFile";                     // Where the options will be saved to, whether they are true or false.
     private static int playerImageIndex = 0;                                    // What image the player currently wants to use for their character in the game.
     private static int enemyImageIndex = 0;                                     // What image the player current wants to use for their enemy in the game.
-    private Integer playerImages[] = null;
-    private Integer enemyImages[] = null;
+    private int playerImage = 0;
+    private int enemyImage = 0;
 
     // Android attributes.
     private RelativeLayout background = null;                                   // Gives access to the relative layout background for the game.
@@ -68,48 +68,22 @@ public class Game extends Activity
         setContentView(R.layout.activity_game);
 
         // Getting the stored image arrays from player and enemy sprite selection.
-        //Integer pImages[] = getIntent().getIntArrayExtra("playerImages");
-        //Integer eImages[] = getIntent().getIntArrayExtra("enemyImages");
-        //pImages = getIntent().getIntegerArrayListExtra("playerImages");
+        //final int[] images = getIntent().getIntArrayExtra("characterImages");
 
-        //ArrayList<Integer> pImages = getIntent().getIntegerArrayListExtra("playerImages");
-
-
-        // Load in player and enemy images.
-        //playerImages = pImages;
-        //enemyImages = eImages;
-
-        //LoadImages(pImages, playerImages);
-        //LoadImages(eImages, enemyImages);
-
-//        // Loop through all of the images.
-//        for (int indexPlayer = 0; indexPlayer < pImages.length; indexPlayer++)
+//        // If there are images in the array.
+//        if(images.length > 0)
 //        {
-//            // Populate the int array to pass down to level.
-//            playerImages[indexPlayer] = pImages[indexPlayer];
+//            // Make the player and enemy images to what the player has chosen.
+//            playerImage = images[1];
+//            enemyImage = images[2];
 //        }
 
         // Initialise the game.
         init();
 
-        // Passing the images along to the next class.
-//        Intent intent = new Intent(this, Level.class);
-//        intent.putExtra("playerImages", playerImages);
-//        intent.putExtra("enemyImages", enemyImages);
-
         // Setting the game thread to run.
         gameThread.setRunning(true);
         gameThread.start();
-    }
-
-    void LoadImages(int[] intentImages, int[] images)
-    {
-        // Loop through all of the images.
-        for (int image = 0; image < intentImages.length; image++)
-        {
-            // Populate the int array to pass down to level.
-            images[image] = intentImages[image];
-        }
     }
 
     //////////////////////////////////////////////////////////
@@ -134,6 +108,8 @@ public class Game extends Activity
         SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         playerImageIndex = gameSettings.getInt("mplayerImageIndex", 0);
         enemyImageIndex = gameSettings.getInt("menemyImageIndex", 0);
+        playerImage = gameSettings.getInt("mplayerImage", 0);
+        enemyImage = gameSettings.getInt("menemyImage", 0);
 
         // Setting up the screen dimensions.
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -146,14 +122,13 @@ public class Game extends Activity
         // Initialising variables.
         background = (RelativeLayout) findViewById(R.id.gameBackground);
         pauseButton = (Button) findViewById(R.id.pauseButton);
-
         level = new Level();
         gameThread = new MainThread(this, desiredFPS);
         resources = new Resources(getApplicationContext(), background, displayMetrics.widthPixels, displayMetrics.heightPixels, world);
 
         // Initialising the level.
         //level.init(resources, this, playerImages[playerImageIndex], enemyImages[enemyImageIndex]);
-        level.init(resources, this, 0, 0);
+        level.init(resources, this, playerImage, enemyImage);
     }
 
     //////////////////////////////////////////////////////////

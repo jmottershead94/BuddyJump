@@ -18,7 +18,7 @@ public class ImageAdapter extends BaseAdapter
 {
     // Attributes.
     private Context context;                        // Getting access to the context for the game.
-    private Integer[] images;                       // Images that will be displayed with this adapter.
+    private int[] images;                       // Images that will be displayed with this adapter.
 
     // Methods.
     public ImageAdapter(Context gameContext)
@@ -32,9 +32,9 @@ public class ImageAdapter extends BaseAdapter
         return images.length;
     }
 
-    public void setImages(Integer imageSelection[])
+    public void setImages(int imageSelection[])
     {
-        images = new Integer[imageSelection.length];
+        images = new int[imageSelection.length];
 
         if(imageSelection.length > 0)
         {

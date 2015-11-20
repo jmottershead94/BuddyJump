@@ -33,4 +33,45 @@ public class NavigationButton
             }
         });
     }
+
+    // This will provide a result for when a navigation button has been pressed.
+    public void isPressedAndSendData(final Button button, final Activity currentActivity, final Class<?> nextActivityClass, final String dataName, final int data)
+    {
+        // Set an onClickListener for the button.
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            // When the button has been clicked.
+            @Override
+            public void onClick(View view)
+            {
+                // Creating a new intent/activity.
+                Intent intent = new Intent(currentActivity, nextActivityClass);
+                intent.putExtra(dataName, data);
+
+                // Starting the new activity.
+                currentActivity.startActivity(intent);
+            }
+        });
+    }
+
+    // This will provide a result for when a navigation button has been pressed.
+    public void isPressedAndSendDataArray(final Button button, final Activity currentActivity, final Class<?> nextActivityClass, final String dataName, final int[] data)
+    {
+        // Set an onClickListener for the button.
+        button.setOnClickListener(new View.OnClickListener()
+        {
+            // When the button has been clicked.
+            @Override
+            public void onClick(View view)
+            {
+                // Creating a new intent/activity.
+                Intent intent = new Intent(currentActivity, nextActivityClass);
+                intent.putExtra(dataName, data);
+
+                // Starting the new activity.
+                currentActivity.startActivity(intent);
+            }
+        });
+    }
+
 }
