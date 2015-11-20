@@ -2,6 +2,7 @@
 package com.example.app.jason.ragerelease.app.GameStates;
 
 // All of the extra includes here.
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -37,9 +38,13 @@ public class EnemySelection extends CharacterSelection
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character_selection);
 
-        // Initialise the game.
+        // Initialise the selection screen.
         init("enemy", "menemyImageIndex");
         applyOptions(this, enemyImages, false);
+
+        // Placing in an intent to access the enemy images later on.
+        Intent intent = new Intent(this, SelectionScreen.class);
+        intent.putExtra("enemyImages", enemyImages);
 
         SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         currentEnemyImage = gameSettings.getInt("menemyImageIndex", 0);

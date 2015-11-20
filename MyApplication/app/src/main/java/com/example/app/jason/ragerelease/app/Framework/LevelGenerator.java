@@ -19,40 +19,24 @@ public class LevelGenerator
 {
     private static final String TAG = "TKT";
     private static float groundY = 0.0f;
-    private static int topLimit = 250;
-    private static int numberOfColumns = 0;
-    private int numberOfPlayerSquares = 0;
-    private int numberOfTargetSquares = 0;
-    private int numberOfPlatformsPerColumn = 0;
-    private int numberOfEnemies = 0;
+    private int playerImage = 0;
+    private int enemyImage = 0;
     private RelativeLayout background = null;
     private StaticBody groundFloor = null;
     private Vector<AnimatedSprite> objects = null;
     private Resources resources = null;
     private Level level = null;
 
-    public LevelGenerator(final Resources gameResources, int columns, int numberOfPlatforms, int enemies, Level gameLevel)
+    public LevelGenerator(final Resources gameResources, Level gameLevel, final int gamePlayerImage, final int gameEnemyImage)
     {
         // Setting the local level parameters.
         resources = gameResources;
-        numberOfColumns = columns;
-        numberOfPlayerSquares = numberOfColumns - 1;
-        numberOfTargetSquares = numberOfPlayerSquares;
-        numberOfPlatformsPerColumn = numberOfPlatforms;
-        numberOfEnemies = enemies;
+        playerImage = gamePlayerImage;
+        enemyImage = gameEnemyImage;
         level = gameLevel;
         objects = new Vector<AnimatedSprite>();             // Initialising the vector of level objects.
 
         createGround();
-    }
-
-    public void generateNewLevel(int columns, int platforms, int enemies)
-    {
-        numberOfColumns = columns;
-        numberOfPlayerSquares = numberOfColumns - 1;
-        numberOfTargetSquares = numberOfPlayerSquares;
-        numberOfPlatformsPerColumn = platforms;
-        numberOfEnemies = enemies;
     }
 
     public void buildLevel()

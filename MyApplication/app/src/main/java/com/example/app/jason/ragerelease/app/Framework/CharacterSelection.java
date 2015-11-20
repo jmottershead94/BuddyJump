@@ -75,6 +75,7 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
         // If the main menu button has been pressed.
         // Navigate the user back to the main menu.
         button.isPressed(saveButton, this, SelectionScreen.class);
+        //button.isPressedAndSendData(saveButton, this, SelectionScreen.class, imageAttributeName, );
     }
 
     //////////////////////////////////////////////////////////

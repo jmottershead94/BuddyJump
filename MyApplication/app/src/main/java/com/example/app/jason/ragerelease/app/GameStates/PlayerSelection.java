@@ -2,6 +2,7 @@
 package com.example.app.jason.ragerelease.app.GameStates;
 
 // All of the extra includes here.
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.widget.Toast;
@@ -37,13 +38,23 @@ public class PlayerSelection extends CharacterSelection
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_character_selection);
 
-        // Initialise the game.
+        // Initialise the character selection screen.
+        // What the message should say, and what the preference file attribute should be called.
         init("player", "mplayerImageIndex");
         applyOptions(this, playerImages, true);
+
+        // Placing in an intent to access the player images later on.
+        Intent intent = new Intent(this, SelectionScreen.class);
+        intent.putExtra("playerImages", playerImages);
+        //intent.put
 
         SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         currentPlayerImage = gameSettings.getInt("mplayerImageIndex", 0);
 
         Toast.makeText(this, "Player currently using " + currentPlayerImage, Toast.LENGTH_SHORT).show();
+
+        //button.isPressedAndSendData(saveButton, this, SelectionScreen.class, "playerImages", playerImages);
     }
+
+    public Integer getPlayerImage() { return playerImages[currentPlayerImage]; }
 }

@@ -4,6 +4,7 @@ package com.example.app.jason.ragerelease.app.GameStates;
 // All of the extra includes here.
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -26,6 +27,8 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.World;
 import org.w3c.dom.Text;
 
+import java.util.ArrayList;
+
 /**
  * Created by Jason Mottershead on 17/10/2015.
  */
@@ -40,6 +43,8 @@ public class Game extends Activity
     private static final String PREFS_NAME = "MyPrefsFile";                     // Where the options will be saved to, whether they are true or false.
     private static int playerImageIndex = 0;                                    // What image the player currently wants to use for their character in the game.
     private static int enemyImageIndex = 0;                                     // What image the player current wants to use for their enemy in the game.
+    private Integer playerImages[] = null;
+    private Integer enemyImages[] = null;
 
     // Android attributes.
     private RelativeLayout background = null;                                   // Gives access to the relative layout background for the game.
@@ -62,12 +67,49 @@ public class Game extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
+        // Getting the stored image arrays from player and enemy sprite selection.
+        //Integer pImages[] = getIntent().getIntArrayExtra("playerImages");
+        //Integer eImages[] = getIntent().getIntArrayExtra("enemyImages");
+        //pImages = getIntent().getIntegerArrayListExtra("playerImages");
+
+        //ArrayList<Integer> pImages = getIntent().getIntegerArrayListExtra("playerImages");
+
+
+        // Load in player and enemy images.
+        //playerImages = pImages;
+        //enemyImages = eImages;
+
+        //LoadImages(pImages, playerImages);
+        //LoadImages(eImages, enemyImages);
+
+//        // Loop through all of the images.
+//        for (int indexPlayer = 0; indexPlayer < pImages.length; indexPlayer++)
+//        {
+//            // Populate the int array to pass down to level.
+//            playerImages[indexPlayer] = pImages[indexPlayer];
+//        }
+
         // Initialise the game.
         init();
+
+        // Passing the images along to the next class.
+//        Intent intent = new Intent(this, Level.class);
+//        intent.putExtra("playerImages", playerImages);
+//        intent.putExtra("enemyImages", enemyImages);
 
         // Setting the game thread to run.
         gameThread.setRunning(true);
         gameThread.start();
+    }
+
+    void LoadImages(int[] intentImages, int[] images)
+    {
+        // Loop through all of the images.
+        for (int image = 0; image < intentImages.length; image++)
+        {
+            // Populate the int array to pass down to level.
+            images[image] = intentImages[image];
+        }
     }
 
     //////////////////////////////////////////////////////////
@@ -110,7 +152,8 @@ public class Game extends Activity
         resources = new Resources(getApplicationContext(), background, displayMetrics.widthPixels, displayMetrics.heightPixels, world);
 
         // Initialising the level.
-        level.init(resources, this);
+        //level.init(resources, this, playerImages[playerImageIndex], enemyImages[enemyImageIndex]);
+        level.init(resources, this, 0, 0);
     }
 
     //////////////////////////////////////////////////////////

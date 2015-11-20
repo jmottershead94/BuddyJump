@@ -23,52 +23,22 @@ public class Level
     public Player player = null;
     private Resources resources = null;
 
-    public void init(final Resources gameResources, final Game gameView)
+    public void init(final Resources gameResources, final Game gameView, final int gamePlayerImage, final int gameEnemyImage)
     {
         // Initialising local variables.
         resources = gameResources;
         game = gameView;
         player = new Player(resources, this);
-        levelGenerator = new LevelGenerator(resources, 2, 4, 1, this);
+        levelGenerator = new LevelGenerator(resources, this, gamePlayerImage, gameEnemyImage);
         levelGenerator.buildLevel();    // Builds the first level.
         levelGenerator.addToView();
     }
-
-    //////////////////////////////////////////////////////////////
-    //      Third level seems to not work correctly?            //
-    //      The first player square of the second level does    //
-    //      not collide properly with target square.            //
-    //      CHECK THIS OUT.                                     //
-    //////////////////////////////////////////////////////////////
 
     public void newLevel()
     {
         // Clear the current level.
         levelGenerator.clearLevel();
-        levelNumber++;
-
-        // Decide what levels I want here.
-        if(levelNumber == 2)
-        {
-            // Generate a new level.
-            levelGenerator.generateNewLevel(2, 3, 1);
-        }
-        else if(levelNumber == 3)
-        {
-            levelGenerator.generateNewLevel(2, 5, 1);
-        }
-        else if(levelNumber == 4)
-        {
-            levelGenerator.generateNewLevel(2, 5, 2);
-        }
-        else if(levelNumber == 5)
-        {
-            levelGenerator.generateNewLevel(3, 5, 2);
-        }
-        else
-        {
-            levelGenerator.generateNewLevel(3, 5, 0);
-        }
+        //levelNumber++;
 
         // Builds the new level.
         levelGenerator.buildLevel();
@@ -148,22 +118,25 @@ public class Level
         // Cycle through the contacts.
         for(int contactNumber = 0; contactNumber < contactCount; contactNumber++)
         {
-            // Get the colliding bodies.
-            Body bodyA = contact.getFixtureA().getBody();
-            Body bodyB = contact.getFixtureB().getBody();
-
-            // Converting the two colliding bodies into objects that we can work with.
-            AnimatedSprite gameObjectA = (AnimatedSprite) bodyA.getUserData();
-            AnimatedSprite gameObjectB = (AnimatedSprite) bodyB.getUserData();
-
-            // Collision test.
-            //if(gameObjectA.getID() == ObjectID.PLAYER && gameObjectB.getID == ObjectID.ENEMY)
+            //if(contact.isTouching())
             //{
-            //  // Do collision response here...
-            //}
+                // Get the colliding bodies.
+                Body bodyA = contact.getFixtureA().getBody();
+                Body bodyB = contact.getFixtureB().getBody();
 
-            // Get the next contact point.
-            contact = contact.getNext();
+                // Converting the two colliding bodies into objects that we can work with.
+                AnimatedSprite gameObjectA = (AnimatedSprite) bodyA.getUserData();
+                AnimatedSprite gameObjectB = (AnimatedSprite) bodyB.getUserData();
+
+                // Collision test.
+                //if(gameObjectA.getID() == ObjectID.PLAYER && gameObjectB.getID == ObjectID.ENEMY)
+                //{
+                //  // Do collision response here...
+                //}
+
+                // Get the next contact point.
+                contact = contact.getNext();
+            //}
         }
     }
 

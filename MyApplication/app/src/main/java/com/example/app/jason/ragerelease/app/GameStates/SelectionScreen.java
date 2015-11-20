@@ -4,6 +4,7 @@ package com.example.app.jason.ragerelease.app.GameStates;
 // All of the extra includes here.
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
@@ -48,6 +49,15 @@ public class SelectionScreen extends Activity
         final Button mainMenuButton = (Button) findViewById(R.id.mainMenuButton);
         final Button playGameButton = (Button) findViewById(R.id.playGameButton);
         final NavigationButton button = new NavigationButton();
+
+        // Getting the stored image arrays from player and enemy sprite selection.
+        //int playerImages[] = getIntent().getIntArrayExtra("playerImages");
+        //int enemyImages[] = getIntent().getIntArrayExtra("enemyImages");
+
+        // Passing the images along to the next class.
+        //Intent intent = new Intent(this, Game.class);
+        //intent.putExtra("playerImages", playerImages);
+        //intent.putExtra("enemyImages", enemyImages);
 
         // If the main menu button has been pressed.
         // Navigate the user back to the main menu.
