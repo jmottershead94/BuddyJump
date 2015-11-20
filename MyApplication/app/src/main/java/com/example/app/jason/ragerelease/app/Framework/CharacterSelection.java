@@ -43,24 +43,25 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
     private boolean optionOneChecked, optionTwoChecked, optionThreeChecked;     // Used for gaining access to the options from the options activity.
     private RelativeLayout background = null;
     private GridView imageSelectionView = null;
-    private TextView textView = null;
     private ImageAdapter imageSelection = null;
     private int currentImageIndex = 0;
     private int[] sprites = null;
     private String gameSettingsName = null;
+    private String imageSettingsName = null;
 
     // Methods.
     // An initialisation function for setting up the game.
-    protected void init(String selectionMessage, String settingsName)
+    protected void init(String selectionMessage, String settingsName, String imageSettings)
     {
         // Initialising variables.
+        final TextView textView = (TextView) findViewById(R.id.characterSelectionTextView);
         saveButton = (Button) findViewById(R.id.saveButton);
         button = new NavigationButton();
         background = (RelativeLayout) findViewById(R.id.characterSelectionBackground);
-        textView = (TextView) findViewById(R.id.characterSelectionTextView);
         imageSelectionView = (GridView) findViewById(R.id.characterImageSelectionView);
         imageSelection = new ImageAdapter(this);
         gameSettingsName = settingsName;
+        imageSettingsName = imageSettings;
 
         // Accessing saved options.
         SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
@@ -78,8 +79,7 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
 
         // If the main menu button has been pressed.
         // Navigate the user back to the main menu.
-        //button.isPressed(saveButton, this, SelectionScreen.class);
-        //button.isPressedAndSendData(saveButton, this, SelectionScreen.class, imageAttributeName, );
+        button.isPressed(saveButton, this, SelectionScreen.class);
     }
 
     //////////////////////////////////////////////////////////
@@ -102,8 +102,10 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
         // If the first option is OFF.
         else
         {
-           // sprites = images;
+            // Fill the sprites array with the images provided.
+            sprites = images;
 
+            // If it is a player selection.
             if(playerSelection)
             {
                 // Let the player select a sprite for the player character.
@@ -124,8 +126,10 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
         }
         else
         {
-            //sprites = images;
+            // Fill the sprites array with the images provided.
+            sprites = images;
 
+            // If it is an enemy selection.
             if(!playerSelection)
             {
                 // Let the player select a sprite for the enemy character.
@@ -148,9 +152,6 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
         Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
     }
 
-    // This function will return the image index of that the player has selected.
-    public int getImageIndex() { return currentImageIndex; }
-
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState)
     {
@@ -159,7 +160,7 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
         // Save UI changes to the savedInstanceState.
         // This bundle will be passed to onCreate if the process is killed or restarted.
         savedInstanceState.putInt(gameSettingsName, currentImageIndex);
-        //savedInstanceState.putInt("current" + gameSettingsName , currentImageIndex);
+        savedInstanceState.putInt(imageSettingsName, sprites[currentImageIndex]);
 
         // Save the current state.
         super.onSaveInstanceState(savedInstanceState);
@@ -177,6 +178,7 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
         // Once the activity has been restored, place the previous image index into the current one.
         // So that we have not lost the number for it.
         currentImageIndex = savedInstanceState.getInt(gameSettingsName);
+        sprites[currentImageIndex] = savedInstanceState.getInt(imageSettingsName);
     }
 
     @Override
@@ -202,6 +204,7 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
 
         // Placing the int into saved files to be used later.
         editor.putInt(gameSettingsName, currentImageIndex);
+        editor.putInt(imageSettingsName, sprites[currentImageIndex]);
 
         // Applying the changes.
         editor.apply();

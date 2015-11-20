@@ -40,19 +40,21 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/Framework/NavigationButton.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="48" column="48" selection-start-line="48" selection-start-column="48" selection-end-line="48" selection-end-column="48" />
+              <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CharacterSelection.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="CharacterSelection.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/Framework/CharacterSelection.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.25">
-              <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+            <state vertical-scroll-proportion="0.0">
+              <caret line="147" column="0" selection-start-line="147" selection-start-column="0" selection-end-line="147" selection-end-column="0" />
               <folding>
+                <element signature="method#applyOptions#0;class#CharacterSelection#0" expanded="false" />
                 <element signature="method#onItemClick#0;class#CharacterSelection#0" expanded="false" />
+                <element signature="method#onSaveInstanceState#0;class#CharacterSelection#0" expanded="false" />
                 <element signature="method#onRestoreInstanceState#0;class#CharacterSelection#0" expanded="false" />
                 <element signature="method#onKeyDown#0;class#CharacterSelection#0" expanded="false" />
                 <element signature="method#onPause#0;class#CharacterSelection#0" expanded="false" />
@@ -61,11 +63,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="PlayerSelection.java" pinned="false" current-in-tab="false">
+      <file leaf-file-name="PlayerSelection.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/GameStates/PlayerSelection.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="45" column="44" selection-start-line="45" selection-start-column="44" selection-end-line="45" selection-end-column="44" />
+            <state vertical-scroll-proportion="0.11046512">
+              <caret line="21" column="18" selection-start-line="21" selection-start-column="18" selection-end-line="21" selection-end-column="18" />
               <folding />
             </state>
           </provider>
@@ -75,10 +77,8 @@
         <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/GameStates/EnemySelection.java">
           <provider selected="true" editor-type-id="text-editor">
             <state vertical-scroll-proportion="0.0">
-              <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
-              <folding>
-                <element signature="method#onKeyDown#0;class#EnemySelection#0" expanded="false" />
-              </folding>
+              <caret line="22" column="43" selection-start-line="22" selection-start-column="43" selection-end-line="22" selection-end-column="43" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -1402,13 +1402,13 @@
       <list>
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/Framework/ImageAdapter.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/Framework/Sprite.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/Framework/NavigationButton.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/GameStates/PlayerSelection.java" />
-        <option value="$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/GameStates/EnemySelection.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/GameStates/SelectionScreen.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/GameStates/Game.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/Framework/LevelGenerator.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/Framework/NavigationButton.java" />
         <option value="$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/Framework/CharacterSelection.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/GameStates/EnemySelection.java" />
+        <option value="$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/GameStates/PlayerSelection.java" />
       </list>
     </option>
   </component>
@@ -1798,7 +1798,7 @@
       <window_info id="Gradle" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Favorites" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="-1" side_tool="true" content_ui="tabs" />
-      <window_info id="Debug" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3991131" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
+      <window_info id="Debug" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" weight="0.3991131" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Cvs" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="4" side_tool="false" content_ui="tabs" />
       <window_info id="Hierarchy" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.25" sideWeight="0.5" order="2" side_tool="false" content_ui="combo" />
       <window_info id="Message" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" weight="0.33" sideWeight="0.5" order="0" side_tool="false" content_ui="tabs" />
@@ -1834,24 +1834,6 @@
             <element signature="method#setImages#0;class#ImageAdapter#0" expanded="false" />
             <element signature="method#getItem#0;class#ImageAdapter#0" expanded="false" />
             <element signature="method#getView#0;class#ImageAdapter#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/Framework/NavigationButton.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="48" column="48" selection-start-line="48" selection-start-column="48" selection-end-line="48" selection-end-column="48" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/GameStates/EnemySelection.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="81" column="0" selection-start-line="81" selection-start-column="0" selection-end-line="81" selection-end-column="0" />
-          <folding>
-            <element signature="method#onKeyDown#0;class#EnemySelection#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1892,24 +1874,42 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/GameStates/PlayerSelection.java">
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/Framework/NavigationButton.java">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="0.0">
-          <caret line="45" column="44" selection-start-line="45" selection-start-column="44" selection-end-line="45" selection-end-column="44" />
+          <caret line="12" column="0" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/Framework/CharacterSelection.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.25">
-          <caret line="50" column="0" selection-start-line="50" selection-start-column="0" selection-end-line="50" selection-end-column="0" />
+        <state vertical-scroll-proportion="0.0">
+          <caret line="147" column="0" selection-start-line="147" selection-start-column="0" selection-end-line="147" selection-end-column="0" />
           <folding>
+            <element signature="method#applyOptions#0;class#CharacterSelection#0" expanded="false" />
             <element signature="method#onItemClick#0;class#CharacterSelection#0" expanded="false" />
+            <element signature="method#onSaveInstanceState#0;class#CharacterSelection#0" expanded="false" />
             <element signature="method#onRestoreInstanceState#0;class#CharacterSelection#0" expanded="false" />
             <element signature="method#onKeyDown#0;class#CharacterSelection#0" expanded="false" />
             <element signature="method#onPause#0;class#CharacterSelection#0" expanded="false" />
           </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/GameStates/EnemySelection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.0">
+          <caret line="22" column="43" selection-start-line="22" selection-start-column="43" selection-end-line="22" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/app/src/main/java/com/example/app/jason/ragerelease/app/GameStates/PlayerSelection.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.11046512">
+          <caret line="21" column="18" selection-start-line="21" selection-start-column="18" selection-end-line="21" selection-end-column="18" />
+          <folding />
         </state>
       </provider>
     </entry>
