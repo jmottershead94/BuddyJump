@@ -65,7 +65,7 @@ public class LevelGenerator
     {
         DynamicBody playerSquare = new DynamicBody(resources, ObjectID.PLAYER);
         playerSquare.setAnimationFrames(8);
-        playerSquare.setTexture(playerImage, new Vector2(0.0f, 0.0f), new Vector2(0.125f, 1.0f));
+        playerSquare.setTexture(playerImage, new Vector2(0.0f, 0.0f), new Vector2(1.0f, 1.0f));
         playerSquare.bodyInit(new Vector2(resources.getScreenWidth() * 0.25f, resources.getScreenHeight() * 0.5f), new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
         objects.add(playerSquare);
     }

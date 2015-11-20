@@ -77,7 +77,7 @@ public class Level
                 {
                     DynamicBody playerSprite = (DynamicBody) object.body.getUserData();
                     playerSprite.updateBody();
-                    playerSprite.animateSprite(0.002f);
+                    //playerSprite.animateSprite(0.002f);
 
                     // If a player square needs to respawn.
                     if(playerSprite.respawn)
