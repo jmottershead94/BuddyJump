@@ -45,8 +45,8 @@ public class LevelGenerator
         createStaticBackground();
         createAnimatedBackground();
         createPlayer(new Vector2(resources.getScreenWidth() * 0.25f, resources.getScreenHeight() * 0.25f), pImage);
-        createPlayer(new Vector2(resources.getScreenWidth() * 0.5f, resources.getScreenHeight() * 0.25f), eImage);
-        //createObstacle(new Vector2(resources.getScreenWidth() * 0.75f, resources.getScreenHeight() * 0.5f));
+        //createPlayer(new Vector2(resources.getScreenWidth() * 0.5f, resources.getScreenHeight() * 0.25f), eImage);
+        createObstacle(new Vector2(resources.getScreenWidth() * 0.95f, resources.getScreenHeight() * 0.45f));
     }
 
     private void createGround()
@@ -125,7 +125,7 @@ public class LevelGenerator
 
     private void createObstacle(Vector2 position)
     {
-        StaticBody obstacle = new StaticBody(resources, ObjectID.ENEMY);
+        StaticBody obstacle = new StaticBody(resources, ObjectID.OBSTACLE);
         obstacle.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
         obstacle.setTexture(R.drawable.box_explosive, new Vector2(0.0f, 0.0f), new Vector2(1.0f, 1.0f));
         objects.add(obstacle);
@@ -170,9 +170,12 @@ public class LevelGenerator
                         object.removeTexture();
                     }
 
-                    // Should destroy the body after the level.
-                    object.body.destroyFixture(object.body.getFixtureList());
-                    resources.getWorld().destroyBody(object.body);
+                    if(object.body != null)
+                    {
+                        // Should destroy the body after the level.
+                        object.body.destroyFixture(object.body.getFixtureList());
+                        resources.getWorld().destroyBody(object.body);
+                    }
                 }
             }
 

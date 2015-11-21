@@ -134,8 +134,10 @@ public class Game extends Activity
         int velocityIterations = 6;
         int positionIterations = 4;
 
+        checkGameOver();
+
         // If the player has not paused the game.
-        if(!level.player.isPaused())
+        if(!level.player.isPaused() && !level.player.isGameOver())
         {
             // Update the physics engine.
             resources.getWorld().step(timeStep, velocityIterations, positionIterations);
@@ -148,6 +150,20 @@ public class Game extends Activity
         // If the game is paused, the player should be able to unpause the game.
         // They can still control the pause menu even if the game is paused.
         level.player.uiControls(pauseButton);
+    }
+
+    private void checkGameOver()
+    {
+        if(level.player.isGameOver())
+        {
+            // Clear the current level.
+            level.levelGenerator.clearLevel();
+            level.player.setGameOver(false);
+
+            // Return to the main menu.
+            Intent intent = new Intent(this, MainMenu.class);
+            startActivity(intent);
+        }
     }
 
     //////////////////////////////////////////////////////////

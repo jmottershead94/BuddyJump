@@ -32,6 +32,7 @@ public class Player
     // Private attributes.
     private static final String TAG = "TKT";
     private static boolean paused = false;
+    private static boolean gameOver = false;
 
     private int numberOfPunches = 0;
     private Level level = null;
@@ -103,14 +104,17 @@ public class Player
         });
     }
 
-    public void update(float dt)
-    {
-        // Normal player updates.
-        //distance++;
+    // Setters.
+    // This will set the current game over state.
+    public static void setGameOver(boolean dead)    { gameOver = dead; }
 
-        // Checking to see if the player squares are still within the level borders.
-        //checkInsideLevelBorder();
-    }
+    // This will set the current pause state.
+    public static void setPaused(boolean pause)     { paused = pause; }
 
-    public static boolean isPaused() { return paused; }
+    // Getters.
+    // Is the game paused or not.
+    public static boolean isPaused()                { return paused; }
+
+    // Is the game over.
+    public static boolean isGameOver()              { return gameOver; }
 }

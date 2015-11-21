@@ -5,6 +5,7 @@ import android.view.MotionEvent;
 import android.view.View;
 
 import com.example.app.jason.ragerelease.app.Framework.Maths.Vector2;
+import com.example.app.jason.ragerelease.app.Framework.Physics.StaticBody;
 import com.example.app.jason.ragerelease.app.GameStates.Game;
 import com.example.app.jason.ragerelease.app.Framework.Physics.DynamicBody;
 
@@ -193,11 +194,18 @@ public class Level implements View.OnTouchListener
                 }
 
                 // Animates all of the target squares.
-                if (object.getID() == ObjectID.ENEMY)
+                if (object.getID() == ObjectID.OBSTACLE)
                 {
-                    DynamicBody enemySprite = (DynamicBody) object.body.getUserData();
-                    enemySprite.updateBody();
-                    enemySprite.animateSprite(0.01f * dt);
+                    StaticBody enemySprite = (StaticBody) object.body.getUserData();
+
+                    if(enemySprite.getSpriteRight() < 10.0f)
+                    {
+                        enemySprite.translateFramework(enemySprite.getSpawnLocation());
+                    }
+                    else
+                    {
+                        enemySprite.updateBody(new Vector2(-0.05f, 0.0f));
+                    }
                 }
             }
         }
@@ -229,16 +237,16 @@ public class Level implements View.OnTouchListener
                 AnimatedSprite gameObjectA = (AnimatedSprite) bodyA.getUserData();
                 AnimatedSprite gameObjectB = (AnimatedSprite) bodyB.getUserData();
 
-//                // Collision test.
-//                // If the player is in contact with the ground.
-//                if((gameObjectA.getID() == ObjectID.PLAYER && gameObjectB.getID() == ObjectID.GROUND))
-//                {
-//                    // Do collision response here...
-//                    // Change back to the walking animation.
-//                    gameObjectA.changeTexture(new Vector2(0.0f, 0.0f));
-//                    gameObjectA.setAnimationFrames(6);
-//                }
-
+                // Collision test.
+                // If the player is in contact with the ground.
+                if((gameObjectA.getID() == ObjectID.PLAYER && gameObjectB.getID() == ObjectID.OBSTACLE))
+                {
+                    // Do collision response here...
+                    // Change back to the hurt animation.
+                    gameObjectA.changeTexture(new Vector2((6.0f / 7.0f), 0.0f));
+                    gameObjectA.setAnimationFrames(0);
+                    player.setGameOver(true);
+                }
 
                 // Get the next contact point.
                 contact = contact.getNext();
