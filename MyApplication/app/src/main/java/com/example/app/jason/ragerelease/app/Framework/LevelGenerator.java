@@ -1,5 +1,6 @@
 package com.example.app.jason.ragerelease.app.Framework;
 
+import android.os.Handler;
 import android.util.Log;
 import android.view.View;
 import android.widget.RelativeLayout;
@@ -11,7 +12,12 @@ import com.example.app.jason.ragerelease.app.Framework.Physics.DynamicBody;
 import com.example.app.jason.ragerelease.app.Framework.Physics.StaticBody;
 
 import java.util.Random;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.Vector;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Win8 on 02/08/2015.
@@ -22,8 +28,10 @@ public class LevelGenerator
     private static float groundY = 0.0f;
     private int playerImage = 0;
     private int enemyImage = 0;
-    private int pImage = 0;
-    private int eImage = 0;
+    //private ScheduledExecutorService service;
+    private Timer timer;
+    private int interval = 6;                    // 3 seconds.
+    private ScheduledExecutorService scheduler;
     private Vector<AnimatedSprite> objects = null;
     private Resources resources = null;
     private Level level = null;
@@ -32,10 +40,12 @@ public class LevelGenerator
     {
         // Setting the local level parameters.
         resources = gameResources;
-        pImage = gamePlayerImage;
-        eImage = gameEnemyImage;
+        playerImage = gamePlayerImage;
+        enemyImage = gameEnemyImage;
+        //service = Executors.newSingleThreadScheduledExecutor();
         level = gameLevel;
         objects = new Vector<AnimatedSprite>();             // Initialising the vector of level objects.
+        scheduler = Executors.newSingleThreadScheduledExecutor();
     }
 
     public void buildLevel()
@@ -44,9 +54,30 @@ public class LevelGenerator
         createGround();
         createStaticBackground();
         createAnimatedBackground();
-        createPlayer(new Vector2(resources.getScreenWidth() * 0.25f, resources.getScreenHeight() * 0.25f), pImage);
-        //createPlayer(new Vector2(resources.getScreenWidth() * 0.5f, resources.getScreenHeight() * 0.25f), eImage);
+        createPlayer(new Vector2(resources.getScreenWidth() * 0.25f, resources.getScreenHeight() * 0.25f), playerImage);
+        //createPlayer(new Vector2(resources.getScreenWidth() * 0.5f, resources.getScreenHeight() * 0.25f), enemyImage);
         createObstacle(new Vector2(resources.getScreenWidth() * 0.95f, resources.getScreenHeight() * 0.45f));
+
+        // This schedules respawning an obstacle once it has gone off screen.
+        // Running on a new thread.
+        scheduler.scheduleAtFixedRate(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                // Loop through all of the level objects.
+                for(AnimatedSprite object : objects)
+                {
+                    // If the object is an obstacle.
+                    if(object.getID() == ObjectID.OBSTACLE)
+                    {
+                        // Respawn the object at the start of the level.
+                        object.translateFramework(object.getSpawnLocation());
+                    }
+                }
+            }
+        // First taking place at 5 seconds, then executing at a regular interval of 6 seconds afterwards.
+        }, interval - 1, interval, TimeUnit.SECONDS);
     }
 
     private void createGround()
@@ -125,7 +156,7 @@ public class LevelGenerator
 
     private void createObstacle(Vector2 position)
     {
-        StaticBody obstacle = new StaticBody(resources, ObjectID.OBSTACLE);
+        final StaticBody obstacle = new StaticBody(resources, ObjectID.OBSTACLE);
         obstacle.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
         obstacle.setTexture(R.drawable.box_explosive, new Vector2(0.0f, 0.0f), new Vector2(1.0f, 1.0f));
         objects.add(obstacle);
@@ -182,6 +213,45 @@ public class LevelGenerator
             // Remove all of the objects from the list.
             objects.clear();
         }
+    }
+
+    public void update(float dt)
+    {
+
+        // Delay the task.
+        //timeHandler.postDelayed(timeRunnable, interval);
+
+        // If the
+//        if(timeHandler.postDelayed(timeRunnable, interval))
+//        {
+//            timeHandler.removeCallbacks(timeRunnable);
+//        }
+//        else
+//        {
+//            //timeHandler.postDelayed(timeRunnable, interval);
+//        }
+        //createObstacle(new Vector2(resources.getScreenWidth() * 0.95f, resources.getScreenHeight() * 0.45f));
+
+//        Timer timer = new Timer();
+//        timer.schedule(new TimerTask()
+//        {
+//            @Override
+//            public void run()
+//            {
+//                createObstacle(new Vector2(resources.getScreenWidth() * 0.95f, resources.getScreenHeight() * 0.45f));
+//            }
+//        }, 3000, 3000);
+
+//        final ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
+//        service.schedule(new Runnable()
+//        {
+//            @Override
+//            public void run()
+//            {
+//                service.shutdown();
+//            }
+//        }, 3, TimeUnit.SECONDS);
+
     }
 
     // Getters.

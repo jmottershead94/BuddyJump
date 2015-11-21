@@ -198,9 +198,12 @@ public class Level implements View.OnTouchListener
                 {
                     StaticBody enemySprite = (StaticBody) object.body.getUserData();
 
-                    if(enemySprite.getSpriteRight() < 10.0f)
+                    if(enemySprite.getSpriteRight() < 0.0f)
                     {
-                        enemySprite.translateFramework(enemySprite.getSpawnLocation());
+                        //enemySprite.translateFramework(enemySprite.getSpawnLocation());
+//                        enemySprite.body.destroyFixture(enemySprite.body.getFixtureList());
+//                        resources.getWorld().destroyBody(enemySprite.body);
+//                        getLevelObjects().remove(enemySprite);
                     }
                     else
                     {
@@ -256,10 +259,10 @@ public class Level implements View.OnTouchListener
 
     public void update(float dt)
     {
+        levelGenerator.update(dt);
+
         // Incrementing player distance.
-        player.distance++;
         updatePlayerScore();
-        //player.distanceText.setText("Distance: " + player.distance);
 
         // Local function calls.
         handleLevelObjects(dt);
@@ -285,6 +288,7 @@ public class Level implements View.OnTouchListener
                         @Override
                         public void run() {
                             // Update the player score.
+                            player.distance++;
                             player.distanceText.setText("Distance: " + player.distance);
                         }
                     });
