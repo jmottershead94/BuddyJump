@@ -152,7 +152,7 @@ public class LevelGenerator
     private void setImage(AnimatedSprite object)
     {
         // Getting access to the camera properties.
-        CameraHandler cameraHandler = new CameraHandler();
+        CameraHandler cameraHandler = new CameraHandler(resources);
 
         // Storing the last taken image in the gallery into a bitmap.
         cameraImage = cameraHandler.getLastPicture();

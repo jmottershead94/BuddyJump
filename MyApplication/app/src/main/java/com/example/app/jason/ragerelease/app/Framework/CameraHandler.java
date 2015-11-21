@@ -21,6 +21,7 @@ public class CameraHandler extends Activity
     // Attributes.
     private static final int CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE = 100;
     public boolean takenPicture = false;
+    private Resources resources = null;
 
     // Methods.
     public CameraHandler(final Activity selectionScreen)
@@ -37,9 +38,9 @@ public class CameraHandler extends Activity
         //selectionScreen.onActivityResult(CAPTURE_IMAGE_ACTIVITY_REQUEST_CODE, 0, intent);
     }
 
-    public CameraHandler()
+    public CameraHandler(final Resources gameResources)
     {
-
+        resources = gameResources;
     }
 
     public Bitmap getLastPicture()
@@ -54,18 +55,27 @@ public class CameraHandler extends Activity
                 MediaStore.Images.ImageColumns.MIME_TYPE
         };
 
-        final Cursor cursor = getContentResolver().query(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, projection, null, null, MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC");
+        final Cursor cursor = resources.getContext().getContentResolver().query(
+                MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                projection,
+                null,
+                null,
+                MediaStore.Images.ImageColumns.DATE_TAKEN + " DESC");
 
         // Put it in the image view
-        if (cursor.moveToFirst())
+        if(cursor != null)
         {
-            String imageLocation = cursor.getString(1);
-            File imageFile = new File(imageLocation);
-            if (imageFile.exists())
+            if (cursor.moveToFirst())
             {
-                // TODO: is there a better way to do this?
-                Bitmap bm = BitmapFactory.decodeFile(imageLocation);
-                return bm;
+                String imageLocation = cursor.getString(1);
+                File imageFile = new File(imageLocation);
+
+                if (imageFile.exists())
+                {
+                    // TODO: is there a better way to do this?
+                    Bitmap bm = BitmapFactory.decodeFile(imageLocation);
+                    return bm;
+                }
             }
         }
 
