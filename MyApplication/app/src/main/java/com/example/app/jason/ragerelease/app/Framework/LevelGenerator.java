@@ -36,19 +36,14 @@ public class LevelGenerator
         enemyImage = gameEnemyImage;
         level = gameLevel;
         objects = new Vector<AnimatedSprite>();             // Initialising the vector of level objects.
-
-        createGround();
     }
 
     public void buildLevel()
     {
-        Vector2 objectPosition = new Vector2(0.0f, 0.0f);   // Setting up a 2D vector for level object positions.
-
         // Creating all of the level objects.
         createGround();
         createPlayer();
-
-        Log.d(TAG, "Number of bodies in the world at START = " + resources.getWorld().getBodyCount());
+        createEnemy();
     }
 
     private void createGround()
@@ -58,27 +53,31 @@ public class LevelGenerator
         groundFloor.setAnimationFrames(8);
         groundFloor.setTexture(R.drawable.animated_spritesheet_test, new Vector2(0.0f, 0.0f), new Vector2(0.125f, 1.0f));
         groundFloor.bodyInit(new Vector2(0.0f, groundY), new Vector2(resources.getScreenWidth(), 40.0f), 0.0f);
-        groundFloor.setVisibility(View.INVISIBLE);
     }
 
     private void createPlayer()
     {
-        DynamicBody playerSquare = new DynamicBody(resources, ObjectID.PLAYER);
-        playerSquare.setAnimationFrames(8);
-        playerSquare.setTexture(playerImage, new Vector2(0.0f, 0.0f), new Vector2(1.0f, 1.0f));
-        playerSquare.bodyInit(new Vector2(resources.getScreenWidth() * 0.25f, resources.getScreenHeight() * 0.5f), new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
-        objects.add(playerSquare);
+        DynamicBody player = new DynamicBody(resources, ObjectID.PLAYER);
+        player.setAnimationFrames(8);
+        player.setTexture(playerImage, new Vector2(0.0f, 0.0f), new Vector2(1.0f, 1.0f));
+        player.bodyInit(new Vector2(resources.getScreenWidth() * 0.25f, resources.getScreenHeight() * 0.5f), new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
+        objects.add(player);
+    }
+
+    private void createEnemy()
+    {
+        AnimatedSprite enemy = new AnimatedSprite(resources, ObjectID.ENEMY);
+        enemy.init(new Vector2(resources.getScreenWidth() * 0.5f, resources.getScreenHeight() * 0.5f), new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
+        enemy.setTexture(enemyImage, new Vector2(0.0f, 0.0f), new Vector2(1.0f, 1.0f));
+        enemy.setAnimationFrames(8);
+        objects.add(enemy);
     }
 
     public void addToView()
     {
         if (resources.getBackground() != null)
         {
-            if (groundFloor.getVisibility() != View.VISIBLE)
-            {
-                resources.getBackground().addView(groundFloor);
-                groundFloor.setVisibility(View.VISIBLE);
-            }
+            resources.getBackground().addView(groundFloor);
 
             for (AnimatedSprite object : getObjects())
             {
