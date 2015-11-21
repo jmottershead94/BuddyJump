@@ -44,8 +44,9 @@ public class LevelGenerator
         createGround();
         createStaticBackground();
         createAnimatedBackground();
-        createPlayer();
-        createEnemy();
+        createPlayer(new Vector2(resources.getScreenWidth() * 0.25f, resources.getScreenHeight() * 0.25f), pImage);
+        createPlayer(new Vector2(resources.getScreenWidth() * 0.5f, resources.getScreenHeight() * 0.25f), eImage);
+        //createObstacle(new Vector2(resources.getScreenWidth() * 0.75f, resources.getScreenHeight() * 0.5f));
     }
 
     private void createGround()
@@ -113,22 +114,21 @@ public class LevelGenerator
         }
     }
 
-    private void createPlayer()
+    private void createPlayer(Vector2 position, int image)
     {
         DynamicBody player = new DynamicBody(resources, ObjectID.PLAYER);
-        player.bodyInit(new Vector2(resources.getScreenWidth() * 0.25f, resources.getScreenHeight() * 0.25f), new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
+        player.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
         player.setAnimationFrames(6);
-        setSprite(pImage, player);
+        setSprite(image, player);
         objects.add(player);
     }
 
-    private void createEnemy()
+    private void createObstacle(Vector2 position)
     {
-        DynamicBody enemy = new DynamicBody(resources, ObjectID.PLAYER);
-        enemy.bodyInit(new Vector2(resources.getScreenWidth() * 0.5f, resources.getScreenHeight() * 0.25f), new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
-        enemy.setAnimationFrames(6);
-        setSprite(eImage, enemy);
-        objects.add(enemy);
+        StaticBody obstacle = new StaticBody(resources, ObjectID.ENEMY);
+        obstacle.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
+        obstacle.setTexture(R.drawable.box_explosive, new Vector2(0.0f, 0.0f), new Vector2(1.0f, 1.0f));
+        objects.add(obstacle);
     }
 
     public void addToView()

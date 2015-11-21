@@ -1,10 +1,12 @@
 package com.example.app.jason.ragerelease.app.Framework;
 
 import android.app.Activity;
+import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.app.jason.ragerelease.app.Framework.Maths.Vector2;
@@ -23,11 +25,14 @@ public class Player
     // Public attributes.
     public boolean beingTouched = false;
     public boolean tap = false;
+    public int distance = 0;
+    public TextView distanceText = null;
     public Vector2 touchPosition = null;
 
     // Private attributes.
     private static final String TAG = "TKT";
     private static boolean paused = false;
+
     private int numberOfPunches = 0;
     private Level level = null;
     private Resources resources = null;
@@ -48,9 +53,19 @@ public class Player
         resources = gameResources;
         touchPosition = new Vector2(0.0f, 0.0f);
         level = gameLevel;
+
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(RelativeLayout.LayoutParams.WRAP_CONTENT, RelativeLayout.LayoutParams.WRAP_CONTENT);
+        layoutParams.setMargins((resources.getScreenWidth() - (resources.getScreenWidth() / 3)), (resources.getScreenHeight() / 16), 0, 0);
+
+        distanceText = new TextView(resources.getContext());
+        distanceText.setText("Distance: " + distance);
+        distanceText.setTextColor(Color.WHITE);
+        distanceText.setTextSize(20.0f);
+        distanceText.setLayoutParams(layoutParams);
+        resources.getBackground().addView(distanceText);
     }
 
-    public void uiControls(final Activity gameView, final Button buttonPause)
+    public void uiControls(final Button buttonPause)
     {
         // Checking any button click events.
         buttonPause.setOnClickListener(new View.OnClickListener() {
@@ -60,14 +75,14 @@ public class Player
                 // Display Pause Menu.
                 paused = true;
                 buttonPause.setVisibility(View.INVISIBLE);
-                pauseMenu(resources.getBackground(), gameView, buttonPause);
+                pauseMenu(buttonPause);
             }
         });
     }
 
-    private void pauseMenu(final RelativeLayout gameBackground, final Activity gameView, final Button buttonPause)
+    private void pauseMenu(final Button buttonPause)
     {
-        final Button buttonResume = new Button(gameView);
+        final Button buttonResume = new Button(resources.getContext());
 
         // Adding the resume button to the display.
         buttonResume.setText("Resume");
@@ -88,40 +103,10 @@ public class Player
         });
     }
 
-    // Checking to see if a touch is within certain bounds.
-    private boolean touchCollisionTest(AnimatedSprite object)
-    {
-        if(((touchPosition.getX() > object.getSpriteLeft()) && (touchPosition.getX() < object.getSpriteRight()))
-            && ((touchPosition.getY() > object.getSpriteTop()) && (touchPosition.getY() < object.getSpriteBottom())))
-        {
-            return true;
-        }
-
-        return false;
-    }
-
-//    public void checkInsideLevelBorder()
-//    {
-//        for(AnimatedSprite object : level.getLevelObjects())
-//        {
-//            if(object.getID() == ObjectID.PLAYER)
-//            {
-//                // If the player is to the left of the first column,
-//                // or to the right of the last column.
-//                if ((object.getSpriteLeft() < 0.0f)
-//                    || (object.getSpriteRight() > resources.getScreenWidth())
-//                    || (object.getSpriteTop() < 0.0f)
-//                    || (object.getSpriteBottom() > resources.getScreenHeight()))
-//                {
-//                    object.respawn = true;
-//                }
-//            }
-//        }
-//    }
-
     public void update(float dt)
     {
         // Normal player updates.
+        //distance++;
 
         // Checking to see if the player squares are still within the level borders.
         //checkInsideLevelBorder();

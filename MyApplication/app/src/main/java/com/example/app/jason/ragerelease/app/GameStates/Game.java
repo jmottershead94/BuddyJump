@@ -67,17 +67,6 @@ public class Game extends Activity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
 
-        // Getting the stored image arrays from player and enemy sprite selection.
-        //final int[] images = getIntent().getIntArrayExtra("characterImages");
-
-//        // If there are images in the array.
-//        if(images.length > 0)
-//        {
-//            // Make the player and enemy images to what the player has chosen.
-//            playerImage = images[1];
-//            enemyImage = images[2];
-//        }
-
         // Initialise the game.
         init();
 
@@ -124,7 +113,7 @@ public class Game extends Activity
         pauseButton = (Button) findViewById(R.id.pauseButton);
         level = new Level();
         gameThread = new MainThread(this, desiredFPS);
-        resources = new Resources(getApplicationContext(), background, displayMetrics.widthPixels, displayMetrics.heightPixels, world);
+        resources = new Resources(this, getApplicationContext(), background, displayMetrics.widthPixels, displayMetrics.heightPixels, world);
 
         // Initialising the level.
         //level.init(resources, this, playerImages[playerImageIndex], enemyImages[enemyImageIndex]);
@@ -158,7 +147,7 @@ public class Game extends Activity
 
         // If the game is paused, the player should be able to unpause the game.
         // They can still control the pause menu even if the game is paused.
-        level.player.uiControls(this, pauseButton);
+        level.player.uiControls(pauseButton);
     }
 
     //////////////////////////////////////////////////////////

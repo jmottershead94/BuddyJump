@@ -36,6 +36,7 @@ public class Level implements View.OnTouchListener
         levelGenerator = new LevelGenerator(resources, this, gamePlayerImage, gameEnemyImage);
         levelGenerator.buildLevel();    // Builds the first level.
         levelGenerator.addToView();
+        player.distanceText.bringToFront();
 
         // Listen out for touches in the level.
         resources.getBackground().setOnTouchListener(this);
@@ -77,20 +78,23 @@ public class Level implements View.OnTouchListener
             // If the player touches the screen.
             case MotionEvent.ACTION_DOWN:
             {
-                player.tap = true;
-
-                for(AnimatedSprite object : getLevelObjects())
+                if(!player.isPaused())
                 {
-                    if((object.getID() == ObjectID.PLAYER) || (object.getID() == ObjectID.ENEMY))
+                    for (AnimatedSprite object : getLevelObjects())
                     {
-                        if (touchCollisionTest(object))
+                        if ((object.getID() == ObjectID.PLAYER) || (object.getID() == ObjectID.ENEMY))
                         {
-                            // Change to a jumping animation.
-                            object.changeTexture(new Vector2((5.0f / 7.0f), (1.0f / 3.0f)));
-                            object.setAnimationFrames(2);
+                            if (touchCollisionTest(object))
+                            {
+                                player.tap = true;
 
-                            // Make the object jump.
-                            object.body.applyLinearImpulse(new Vec2(0.0f, 4.0f), object.body.getWorldCenter());
+                                // Change to a jumping animation.
+                                object.changeTexture(new Vector2((5.0f / 7.0f), (1.0f / 3.0f)));
+                                object.setAnimationFrames(2);
+
+                                // Make the object jump.
+                                object.body.applyLinearImpulse(new Vec2(0.0f, 4.0f), object.body.getWorldCenter());
+                            }
                         }
                     }
                 }
@@ -109,14 +113,21 @@ public class Level implements View.OnTouchListener
             case MotionEvent.ACTION_UP:
             {
                 player.beingTouched = false;
-                player.tap = false;
 
-                for(AnimatedSprite object : getLevelObjects())
+                if(!player.isPaused())
                 {
-                    if((object.getID() == ObjectID.PLAYER) || (object.getID() == ObjectID.ENEMY))
+                    if (player.tap)
                     {
-                        object.changeTexture(new Vector2(0.0f, 0.0f));
-                        object.setAnimationFrames(6);
+                        for (AnimatedSprite object : getLevelObjects())
+                        {
+                            if ((object.getID() == ObjectID.PLAYER) || (object.getID() == ObjectID.ENEMY))
+                            {
+                                object.changeTexture(new Vector2(0.0f, 0.0f));
+                                object.setAnimationFrames(6);
+                            }
+                        }
+
+                        player.tap = false;
                     }
                 }
 
@@ -237,11 +248,50 @@ public class Level implements View.OnTouchListener
 
     public void update(float dt)
     {
+        // Incrementing player distance.
+        player.distance++;
+        updatePlayerScore();
+        //player.distanceText.setText("Distance: " + player.distance);
+
         // Local function calls.
         handleLevelObjects(dt);
 
         // Check any collisions in the level.
         checkCollisions();
+    }
+
+    private void updatePlayerScore()
+    {
+        // Creating a new thread.
+        new Thread()
+        {
+            // When this new thread runs.
+            @Override
+            public void run()
+            {
+                // Try to...
+                try
+                {
+                    // Make sure that the new level objects are added to the background on the correct thread.
+                    resources.getActivity().runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            // Update the player score.
+                            player.distanceText.setText("Distance: " + player.distance);
+                        }
+                    });
+
+                    // Slight loading time, without this, below catch gives an error.
+                    Thread.sleep(500);
+                }
+                // Catch any expections with this thread.
+                catch (InterruptedException e)
+                {
+                    // Print a stack trace so we know where we went wrong.
+                    e.printStackTrace();
+                }
+            }
+        }.start();
     }
 
     // Getters.
