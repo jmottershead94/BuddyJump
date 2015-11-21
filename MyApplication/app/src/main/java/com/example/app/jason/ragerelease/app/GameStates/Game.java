@@ -156,6 +156,15 @@ public class Game extends Activity
     {
         if(level.player.isGameOver())
         {
+            SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+            SharedPreferences.Editor editor = gameSettings.edit();
+
+            // Placing the int into saved files to be used later.
+            editor.putInt("mplayerDistance", level.player.distance);
+
+            // Applying the changes.
+            editor.apply();
+
             // Clear the current level.
             level.levelGenerator.clearLevel();
             level.player.setGameOver(false);

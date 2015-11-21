@@ -25,6 +25,15 @@
         android:layout_marginStart="230dp"
         android:layout_marginTop="30dp" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceMedium"
+        android:text="Medium Text"
+        android:id="@+id/gameOverDistanceText"
+        android:layout_alignStart="@+id/gameOverText"
+        android:layout_marginTop="75dp"/>
+
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -32,6 +41,8 @@
         android:id="@+id/gameOverMainMenuButton"
         android:layout_centerVertical="true"
         android:layout_alignEnd="@+id/gameOverText" />
+
+
 
 
 </RelativeLayout>

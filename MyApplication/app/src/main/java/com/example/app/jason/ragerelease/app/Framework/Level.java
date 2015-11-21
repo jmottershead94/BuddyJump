@@ -147,37 +147,18 @@ public class Level implements View.OnTouchListener
         return true;
     }
 
-    public void objectRemoveResponses(AnimatedSprite object)
-    {
-        // Switch between the ID of the objects.
-        switch(object.getID())
-        {
-            // The default case for any removal situations if none of the above cases are met.
-            default:
-            {
-                break;
-            }
-        }
-    }
-
     private void handleLevelObjects(float dt)
     {
         for (AnimatedSprite object : getLevelObjects())
         {
             if (object != null)
             {
-                if (object.remove)
-                {
-                    objectRemoveResponses(object);
-                    break;
-                }
-
                 if(object.getID() == ObjectID.ANIMATEDSPRITE)
                 {
                     object.animateSprite(0.01f * dt);
                 }
 
-                // Animates all of the player squares.
+                // Animates and moves all of the player characters.
                 if (object.getID() == ObjectID.PLAYER)
                 {
                     DynamicBody playerSprite = (DynamicBody) object.body.getUserData();
@@ -193,19 +174,12 @@ public class Level implements View.OnTouchListener
                     }
                 }
 
-                // Animates all of the target squares.
+                // Moves all of the obstacles.
                 if (object.getID() == ObjectID.OBSTACLE)
                 {
                     StaticBody enemySprite = (StaticBody) object.body.getUserData();
 
-                    if(enemySprite.getSpriteRight() < 0.0f)
-                    {
-                        //enemySprite.translateFramework(enemySprite.getSpawnLocation());
-//                        enemySprite.body.destroyFixture(enemySprite.body.getFixtureList());
-//                        resources.getWorld().destroyBody(enemySprite.body);
-//                        getLevelObjects().remove(enemySprite);
-                    }
-                    else
+                    if(enemySprite.getSpriteRight() > 0.0f)
                     {
                         enemySprite.updateBody(new Vector2(-0.05f, 0.0f));
                     }
