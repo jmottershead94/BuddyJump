@@ -118,7 +118,11 @@ public class Sprite extends View
 
     public void changeTexture(Vector2 textureCoords)
     {
-        textureCoordinates.set(textureCoords.getX(), textureCoords.getY());
+        float imageUConversion = image.getWidth();
+        float imageVConversion = image.getHeight();
+
+        textureCoordinates.set(textureCoords.getX() * imageUConversion, textureCoords.getY() * imageVConversion);
+
         // Need to test this...
         postInvalidate();
 //        invalidate();

@@ -114,8 +114,18 @@ public class Player implements View.OnTouchListener
                             {
                                 // Increase the number of punches.
                                 numberOfPunches++;
-                                //Toast.makeText(resources.getContext(), numberOfPunches + "punches", Toast.LENGTH_SHORT).show();
+                                Toast.makeText(resources.getContext(), numberOfPunches + "punches", Toast.LENGTH_SHORT).show();
                             }
+                        }
+
+                        if(object.getID() == ObjectID.PLAYER)
+                        {
+                            DynamicBody playerSprite = (DynamicBody) object.body.getUserData();
+                            playerSprite.body.applyLinearImpulse(new Vec2(2.0f, 2.0f), playerSprite.body.getWorldCenter());
+
+                            //Toast.makeText(resources.getContext(), "Texture should change.", Toast.LENGTH_SHORT).show();
+                            //object.changeTexture(new Vector2((4.0f / 6.0f), (2.0f / 3.0f)));
+                            //object.setAnimationFrames(2);
                         }
                     }
                 }
@@ -126,7 +136,7 @@ public class Player implements View.OnTouchListener
             // If the player keeps holding the touch on the screen.
             case MotionEvent.ACTION_MOVE:
             {
-
+                //beingTouched = true;
                 break;
             }
 

@@ -52,8 +52,8 @@ public class LevelGenerator
     {
         StaticBody groundFloor = new StaticBody(resources, ObjectID.GROUND);
         groundY = resources.getScreenHeight() - 190.0f;
-        groundFloor.setTexture(R.drawable.sprite_sheet, new Vector2(0.0f, 0.0f), new Vector2(0.125f, 0.0625f));
         groundFloor.bodyInit(new Vector2(0.0f, groundY), new Vector2(resources.getScreenWidth(), 80.0f), 0.0f);
+        groundFloor.setTexture(R.drawable.sprite_sheet, new Vector2(0.0f, 0.0f), new Vector2(0.125f, 0.0625f));
         objects.add(groundFloor);
     }
 
@@ -76,61 +76,60 @@ public class LevelGenerator
 
     private void setSprite(int image, AnimatedSprite sprite)
     {
+        float textureWidth = 1.0f / 7.0f;
+        float textureHeight = 1.0f / 3.0f;
+
         if(image == R.drawable.p1_front)
         {
-            sprite.setTexture(R.drawable.p1_spritesheet, new Vector2(0.0f, 0.0f), new Vector2((1.0f / 7.0f), (1.0f / 3.0f)));
+            sprite.setTexture(R.drawable.p1_spritesheet, new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
         }
         else if(image == R.drawable.p2_front)
         {
-            sprite.setTexture(R.drawable.p2_spritesheet, new Vector2(0.0f, 0.0f), new Vector2((1.0f / 7.0f), (1.0f / 3.0f)));
+            sprite.setTexture(R.drawable.p2_spritesheet, new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
         }
         else if(image == R.drawable.p3_front)
         {
-            sprite.setTexture(R.drawable.p3_spritesheet, new Vector2(0.0f, 0.0f), new Vector2((1.0f / 7.0f), (1.0f / 3.0f)));
+            sprite.setTexture(R.drawable.p3_spritesheet, new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
         }
         else if(image == R.drawable.p4_front)
         {
-            sprite.setTexture(R.drawable.p4_spritesheet, new Vector2(0.0f, 0.0f), new Vector2((1.0f / 7.0f), (1.0f / 3.0f)));
+            sprite.setTexture(R.drawable.p4_spritesheet, new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
         }
         else if(image == R.drawable.p5_front)
         {
-            sprite.setTexture(R.drawable.p5_spritesheet, new Vector2(0.0f, 0.0f), new Vector2((1.0f / 7.0f), (1.0f / 3.0f)));
+            sprite.setTexture(R.drawable.p5_spritesheet, new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
         }
         else if(image == R.drawable.p6_front)
         {
-            sprite.setTexture(R.drawable.p6_spritesheet, new Vector2(0.0f, 0.0f), new Vector2((1.0f / 7.0f), (1.0f / 3.0f)));
+            sprite.setTexture(R.drawable.p6_spritesheet, new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
         }
         else if(image == R.drawable.p7_front)
         {
-            sprite.setTexture(R.drawable.p7_spritesheet, new Vector2(0.0f, 0.0f), new Vector2((1.0f / 7.0f), (1.0f / 3.0f)));
+            sprite.setTexture(R.drawable.p7_spritesheet, new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
         }
         else if(image == R.drawable.p8_front)
         {
-            sprite.setTexture(R.drawable.p8_spritesheet, new Vector2(0.0f, 0.0f), new Vector2((1.0f / 7.0f), (1.0f / 3.0f)));
+            sprite.setTexture(R.drawable.p8_spritesheet, new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
         }
     }
 
     private void createPlayer()
     {
         DynamicBody player = new DynamicBody(resources, ObjectID.PLAYER);
-        player.bodyInit(new Vector2(resources.getScreenWidth() * 0.25f, resources.getScreenHeight() * 0.5f), new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
+        player.bodyInit(new Vector2(resources.getScreenWidth() * 0.25f, resources.getScreenHeight() * 0.25f), new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
         player.setAnimationFrames(6);
         setSprite(pImage, player);
-        //player.setTexture(playerImage, new Vector2(0.0f, 0.0f), new Vector2(0.25f, 1.0f));
         objects.add(player);
     }
 
     private void createEnemy()
     {
-        AnimatedSprite enemy = new AnimatedSprite(resources, ObjectID.ENEMY);
-        enemy.init(new Vector2(resources.getScreenWidth() * 0.5f, resources.getScreenHeight() * 0.5f), new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
+        DynamicBody enemy = new DynamicBody(resources, ObjectID.ENEMY);
+        enemy.bodyInit(new Vector2(resources.getScreenWidth() * 0.5f, resources.getScreenHeight() * 0.25f), new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
         enemy.setAnimationFrames(6);
         setSprite(eImage, enemy);
-        //enemy.setTexture(enemyImage, new Vector2(0.0f, 0.0f), new Vector2(0.25f, 1.0f));
         objects.add(enemy);
     }
-
-
 
     public void addToView()
     {

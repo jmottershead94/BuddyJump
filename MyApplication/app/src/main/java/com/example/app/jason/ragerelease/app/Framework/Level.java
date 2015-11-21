@@ -74,7 +74,7 @@ public class Level
 
                 if(object.getID() == ObjectID.SPRITE)
                 {
-                    object.animateSprite(0.01f);
+                    object.animateSprite(0.01f * dt);
                 }
 
                 // Animates all of the player squares.
@@ -82,7 +82,7 @@ public class Level
                 {
                     DynamicBody playerSprite = (DynamicBody) object.body.getUserData();
                     playerSprite.updateBody();
-                    playerSprite.animateSprite(0.01f);
+                    playerSprite.animateSprite(0.01f * dt);
 
                     // If a player square needs to respawn.
                     if(playerSprite.respawn)
@@ -101,7 +101,9 @@ public class Level
                 // Animates all of the target squares.
                 if (object.getID() == ObjectID.ENEMY)
                 {
-                    object.animateSprite(0.01f);
+                    DynamicBody enemySprite = (DynamicBody) object.body.getUserData();
+                    enemySprite.updateBody();
+                    enemySprite.animateSprite(0.01f * dt);
                 }
             }
         }
