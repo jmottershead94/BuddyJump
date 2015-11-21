@@ -17,11 +17,12 @@ import org.jbox2d.common.Vec2;
  * Created by Win8 on 16/07/2015.
  */
 
-public class Player implements View.OnTouchListener
+public class Player
 {
     // Attributes.
     // Public attributes.
     public boolean beingTouched = false;
+    public boolean tap = false;
     public Vector2 touchPosition = null;
 
     // Private attributes.
@@ -47,8 +48,6 @@ public class Player implements View.OnTouchListener
         resources = gameResources;
         touchPosition = new Vector2(0.0f, 0.0f);
         level = gameLevel;
-
-        resources.getBackground().setOnTouchListener(this);
     }
 
     public void uiControls(final Activity gameView, final Button buttonPause)
@@ -87,75 +86,6 @@ public class Player implements View.OnTouchListener
                 paused = false;
             }
         });
-    }
-
-    public boolean onTouch(View v, MotionEvent event)
-    {
-        // Touch response here.
-        touchPosition.set(event.getX(), event.getY());
-        int eventAction = event.getAction();
-
-        switch (eventAction)
-        {
-            // If the player touches the screen.
-            case MotionEvent.ACTION_DOWN:
-            {
-                // If there are objects in the level.
-                if(level.getLevelObjects().isEmpty())
-                {
-                    // Loop through each of the objects in the level.
-                    for(AnimatedSprite object : level.getLevelObjects())
-                    {
-                        // If the object is an enemy.
-                        if(object.getID() == ObjectID.ENEMY)
-                        {
-                            // If the player is touching the enemy.
-                            if (touchCollisionTest(object))
-                            {
-                                // Increase the number of punches.
-                                numberOfPunches++;
-                                Toast.makeText(resources.getContext(), numberOfPunches + "punches", Toast.LENGTH_SHORT).show();
-                            }
-                        }
-
-                        if(object.getID() == ObjectID.PLAYER)
-                        {
-                            DynamicBody playerSprite = (DynamicBody) object.body.getUserData();
-                            playerSprite.body.applyLinearImpulse(new Vec2(2.0f, 2.0f), playerSprite.body.getWorldCenter());
-
-                            //Toast.makeText(resources.getContext(), "Texture should change.", Toast.LENGTH_SHORT).show();
-                            //object.changeTexture(new Vector2((4.0f / 6.0f), (2.0f / 3.0f)));
-                            //object.setAnimationFrames(2);
-                        }
-                    }
-                }
-
-                break;
-            }
-
-            // If the player keeps holding the touch on the screen.
-            case MotionEvent.ACTION_MOVE:
-            {
-                //beingTouched = true;
-                break;
-            }
-
-            // If the player releases their touch on the screen.
-            case MotionEvent.ACTION_UP:
-            {
-                beingTouched = false;
-                break;
-            }
-
-            // If none of the above cases are met, then just default to not being touched.
-            default:
-            {
-                beingTouched = false;
-                break;
-            }
-        }
-
-        return true;
     }
 
     // Checking to see if a touch is within certain bounds.

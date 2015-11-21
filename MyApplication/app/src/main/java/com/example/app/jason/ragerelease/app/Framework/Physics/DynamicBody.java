@@ -38,7 +38,7 @@ public class DynamicBody extends AnimatedSprite
         bodyDef.angle = (angle * ((float) Math.PI / 180.0f));
         body = new Body(bodyDef, resources.getWorld());
         body = resources.getWorld().createBody(bodyDef);
-        //body.setFixedRotation(true);
+        body.setFixedRotation(true);
         body.setTransform(new Vec2(getBox2DXPosition(getSpriteLeft()), getBox2DYPosition(getSpriteTop())), bodyDef.angle);
         //body.setXForm(new Vec2(getBox2DXPosition(getSpriteLeft()), getBox2DYPosition(getSpriteTop())), bodyDef.angle);
 

@@ -124,7 +124,7 @@ public class LevelGenerator
 
     private void createEnemy()
     {
-        DynamicBody enemy = new DynamicBody(resources, ObjectID.ENEMY);
+        DynamicBody enemy = new DynamicBody(resources, ObjectID.PLAYER);
         enemy.bodyInit(new Vector2(resources.getScreenWidth() * 0.5f, resources.getScreenHeight() * 0.25f), new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
         enemy.setAnimationFrames(6);
         setSprite(eImage, enemy);

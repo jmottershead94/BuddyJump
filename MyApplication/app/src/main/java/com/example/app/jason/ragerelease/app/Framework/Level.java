@@ -1,10 +1,14 @@
 package com.example.app.jason.ragerelease.app.Framework;
 
 import android.util.Log;
+import android.view.MotionEvent;
+import android.view.View;
 
+import com.example.app.jason.ragerelease.app.Framework.Maths.Vector2;
 import com.example.app.jason.ragerelease.app.GameStates.Game;
 import com.example.app.jason.ragerelease.app.Framework.Physics.DynamicBody;
 
+import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.contacts.Contact;
 
@@ -13,7 +17,7 @@ import java.util.Vector;
 /**
  * Created by Win8 on 17/07/2015.
  */
-public class Level
+public class Level implements View.OnTouchListener
 {
     // Attributes.
     private static final String TAG = "TKT";
@@ -32,6 +36,9 @@ public class Level
         levelGenerator = new LevelGenerator(resources, this, gamePlayerImage, gameEnemyImage);
         levelGenerator.buildLevel();    // Builds the first level.
         levelGenerator.addToView();
+
+        // Listen out for touches in the level.
+        resources.getBackground().setOnTouchListener(this);
     }
 
     public void newLevel()
@@ -45,6 +52,87 @@ public class Level
 
         // Updates the UI thread to add all of the new level objects to the screen.
         game.render();
+    }
+
+    // Checking to see if a touch is within certain bounds.
+    private boolean touchCollisionTest(AnimatedSprite object)
+    {
+        if(((player.touchPosition.getX() > object.getSpriteLeft()) && (player.touchPosition.getX() < object.getSpriteRight()))
+                && ((player.touchPosition.getY() > object.getSpriteTop()) && (player.touchPosition.getY() < object.getSpriteBottom())))
+        {
+            return true;
+        }
+
+        return false;
+    }
+
+    public boolean onTouch(View v, MotionEvent event)
+    {
+        // Touch response here.
+        player.touchPosition.set(event.getX(), event.getY());
+        int eventAction = event.getAction();
+
+        switch (eventAction)
+        {
+            // If the player touches the screen.
+            case MotionEvent.ACTION_DOWN:
+            {
+                player.tap = true;
+
+                for(AnimatedSprite object : getLevelObjects())
+                {
+                    if((object.getID() == ObjectID.PLAYER) || (object.getID() == ObjectID.ENEMY))
+                    {
+                        if (touchCollisionTest(object))
+                        {
+                            // Change to a jumping animation.
+                            object.changeTexture(new Vector2((5.0f / 7.0f), (1.0f / 3.0f)));
+                            object.setAnimationFrames(2);
+
+                            // Make the object jump.
+                            object.body.applyLinearImpulse(new Vec2(0.0f, 4.0f), object.body.getWorldCenter());
+                        }
+                    }
+                }
+
+                break;
+            }
+
+            // If the player keeps holding the touch on the screen.
+            case MotionEvent.ACTION_MOVE:
+            {
+                //beingTouched = true;
+                break;
+            }
+
+            // If the player releases their touch on the screen.
+            case MotionEvent.ACTION_UP:
+            {
+                player.beingTouched = false;
+                player.tap = false;
+
+                for(AnimatedSprite object : getLevelObjects())
+                {
+                    if((object.getID() == ObjectID.PLAYER) || (object.getID() == ObjectID.ENEMY))
+                    {
+                        object.changeTexture(new Vector2(0.0f, 0.0f));
+                        object.setAnimationFrames(6);
+                    }
+                }
+
+                break;
+            }
+
+            // If none of the above cases are met, then just default to not being touched.
+            default:
+            {
+                player.beingTouched = false;
+                player.tap = false;
+                break;
+            }
+        }
+
+        return true;
     }
 
     public void objectRemoveResponses(AnimatedSprite object)
@@ -72,7 +160,7 @@ public class Level
                     break;
                 }
 
-                if(object.getID() == ObjectID.SPRITE)
+                if(object.getID() == ObjectID.ANIMATEDSPRITE)
                 {
                     object.animateSprite(0.01f * dt);
                 }
@@ -90,11 +178,6 @@ public class Level
                         // Set the player square at the spawn location.
                         playerSprite.translateFramework(object.getSpawnLocation());
                         playerSprite.respawn = false;
-                    }
-
-                    if(player.beingTouched)
-                    {
-                        playerSprite.translateFramework(player.touchPosition);
                     }
                 }
 
@@ -125,8 +208,8 @@ public class Level
         // Cycle through the contacts.
         for(int contactNumber = 0; contactNumber < contactCount; contactNumber++)
         {
-            //if(contact.isTouching())
-            //{
+            if(contact.isTouching())
+            {
                 // Get the colliding bodies.
                 Body bodyA = contact.getFixtureA().getBody();
                 Body bodyB = contact.getFixtureB().getBody();
@@ -135,15 +218,20 @@ public class Level
                 AnimatedSprite gameObjectA = (AnimatedSprite) bodyA.getUserData();
                 AnimatedSprite gameObjectB = (AnimatedSprite) bodyB.getUserData();
 
-                // Collision test.
-                //if(gameObjectA.getID() == ObjectID.PLAYER && gameObjectB.getID == ObjectID.ENEMY)
-                //{
-                //  // Do collision response here...
-                //}
+//                // Collision test.
+//                // If the player is in contact with the ground.
+//                if((gameObjectA.getID() == ObjectID.PLAYER && gameObjectB.getID() == ObjectID.GROUND))
+//                {
+//                    // Do collision response here...
+//                    // Change back to the walking animation.
+//                    gameObjectA.changeTexture(new Vector2(0.0f, 0.0f));
+//                    gameObjectA.setAnimationFrames(6);
+//                }
+
 
                 // Get the next contact point.
                 contact = contact.getNext();
-            //}
+            }
         }
     }
 
@@ -158,38 +246,4 @@ public class Level
 
     // Getters.
     public Vector<AnimatedSprite> getLevelObjects() { return levelGenerator.getObjects(); }
-
-//    // Otherwise, if the bottom of the sprite is inside of an existing object.
-//    if (((newObject.getSpriteBottom() + (newObject.getSpriteHeight() * bottomSpriteMultiplier)) < (object.getSpriteBottom() + (object.getSpriteHeight() * bottomSpriteMultiplier)))
-//        && ((newObject.getSpriteBottom() + (newObject.getSpriteHeight() * bottomSpriteMultiplier)) > (object.getSpriteTop() - (newObject.getSpriteHeight() * bottomSpriteMultiplier))))
-//    {
-//        return true;
-//    }
-//    // If the top of the new object intersects with an existing object.
-//    else if (((newObject.getSpriteTop() - (newObject.getSpriteHeight() * bottomSpriteMultiplier)) < (object.getSpriteBottom() + (object.getSpriteHeight() * bottomSpriteMultiplier)))
-//        && ((newObject.getSpriteTop() - (newObject.getSpriteHeight() * bottomSpriteMultiplier)) > (object.getSpriteTop() - (object.getSpriteHeight() * bottomSpriteMultiplier))))
-//    {
-//        return true;
-//    }
-//    else
-//    {
-//        return false;
-//    }
-
-//    // If the bottom of the new object is inside of an existing object.
-//    if ((newObject.getSpriteBottom() < bottomLimit)
-//        && (newObject.getSpriteBottom() > topLimit))
-//    {
-//        return true;
-//    }
-//    // Otherwise, if the top of the new object intersects with an existing object.
-//    else if ((newObject.getSpriteTop() < bottomLimit)
-//        && (newObject.getSpriteTop() > topLimit))
-//    {
-//        return true;
-//    }
-//    else
-//    {
-//        return false;
-//    }
 }
