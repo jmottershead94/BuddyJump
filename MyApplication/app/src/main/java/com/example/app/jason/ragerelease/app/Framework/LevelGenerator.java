@@ -22,8 +22,6 @@ public class LevelGenerator
     private static float groundY = 0.0f;
     private int playerImage = 0;
     private int enemyImage = 0;
-    private RelativeLayout background = null;
-    private StaticBody groundFloor = null;
     private Vector<AnimatedSprite> objects = null;
     private Resources resources = null;
     private Level level = null;
@@ -42,17 +40,18 @@ public class LevelGenerator
     {
         // Creating all of the level objects.
         createGround();
+        createBackground();
         createPlayer();
         createEnemy();
     }
 
     private void createGround()
     {
-        groundFloor = new StaticBody(resources, ObjectID.ANIMATEDGROUND);
-        groundY = resources.getScreenHeight() - 150.0f;
-        groundFloor.setAnimationFrames(8);
-        groundFloor.setTexture(R.drawable.animated_spritesheet_test, new Vector2(0.0f, 0.0f), new Vector2(0.125f, 1.0f));
-        groundFloor.bodyInit(new Vector2(0.0f, groundY), new Vector2(resources.getScreenWidth(), 40.0f), 0.0f);
+        StaticBody groundFloor = new StaticBody(resources, ObjectID.GROUND);
+        groundY = resources.getScreenHeight() - 190.0f;
+        groundFloor.setTexture(R.drawable.sprite_sheet, new Vector2(0.0f, 0.0f), new Vector2(0.125f, 0.0625f));
+        groundFloor.bodyInit(new Vector2(0.0f, groundY), new Vector2(resources.getScreenWidth(), 80.0f), 0.0f);
+        objects.add(groundFloor);
     }
 
     private void createPlayer()
@@ -73,12 +72,19 @@ public class LevelGenerator
         objects.add(enemy);
     }
 
+    private void createBackground()
+    {
+        AnimatedSprite backGround = new AnimatedSprite(resources, ObjectID.SPRITE);
+        backGround.init(new Vector2(0.0f, resources.getScreenHeight() - 230.0f), new Vector2(resources.getScreenWidth(), 80.0f), 0.0f);
+        backGround.setTexture(R.drawable.sprite_sheet, new Vector2(0.0f, 0.0625f), new Vector2(0.125f, 0.0625f));
+        backGround.setAnimationFrames(8);
+        objects.add(backGround);
+    }
+
     public void addToView()
     {
         if (resources.getBackground() != null)
         {
-            resources.getBackground().addView(groundFloor);
-
             for (AnimatedSprite object : getObjects())
             {
                 if (object != null)

@@ -10,4 +10,5 @@ public class ObjectID
     public static final int GROUND = 2;             // The ID number for the static ground.
     public static final int WALL = 3;               // The ID number for the walls.
     public static final int ENEMY = 4;              // The ID number for the enemy.
+    public static final int SPRITE = 5;
 }

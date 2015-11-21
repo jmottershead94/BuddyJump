@@ -72,6 +72,11 @@ public class Level
                     break;
                 }
 
+                if(object.getID() == ObjectID.SPRITE)
+                {
+                    object.animateSprite(0.002f);
+                }
+
                 // Animates all of the player squares.
                 if (object.getID() == ObjectID.PLAYER)
                 {
