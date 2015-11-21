@@ -88,6 +88,26 @@ public class LevelGenerator
         {
             sprite.setTexture(R.drawable.p3_spritesheet, new Vector2(0.0f, 0.0f), new Vector2((1.0f / 7.0f), (1.0f / 3.0f)));
         }
+        else if(image == R.drawable.p4_front)
+        {
+            sprite.setTexture(R.drawable.p4_spritesheet, new Vector2(0.0f, 0.0f), new Vector2((1.0f / 7.0f), (1.0f / 3.0f)));
+        }
+        else if(image == R.drawable.p5_front)
+        {
+            sprite.setTexture(R.drawable.p5_spritesheet, new Vector2(0.0f, 0.0f), new Vector2((1.0f / 7.0f), (1.0f / 3.0f)));
+        }
+        else if(image == R.drawable.p6_front)
+        {
+            sprite.setTexture(R.drawable.p6_spritesheet, new Vector2(0.0f, 0.0f), new Vector2((1.0f / 7.0f), (1.0f / 3.0f)));
+        }
+        else if(image == R.drawable.p7_front)
+        {
+            sprite.setTexture(R.drawable.p7_spritesheet, new Vector2(0.0f, 0.0f), new Vector2((1.0f / 7.0f), (1.0f / 3.0f)));
+        }
+        else if(image == R.drawable.p8_front)
+        {
+            sprite.setTexture(R.drawable.p8_spritesheet, new Vector2(0.0f, 0.0f), new Vector2((1.0f / 7.0f), (1.0f / 3.0f)));
+        }
     }
 
     private void createPlayer()

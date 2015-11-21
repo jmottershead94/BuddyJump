@@ -24,7 +24,9 @@ public class PlayerSelection extends CharacterSelection
     private int[] playerImages =                      // Getting access to the images from the drawable folder.
     {
             R.drawable.p1_front, R.drawable.p2_front,
-            R.drawable.p3_front
+            R.drawable.p3_front, R.drawable.p4_front,
+            R.drawable.p5_front, R.drawable.p6_front,
+            R.drawable.p7_front, R.drawable.p8_front
     };
 
     // Methods.
