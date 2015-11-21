@@ -22,6 +22,8 @@ public class LevelGenerator
     private static float groundY = 0.0f;
     private int playerImage = 0;
     private int enemyImage = 0;
+    private int pImage = 0;
+    private int eImage = 0;
     private Vector<AnimatedSprite> objects = null;
     private Resources resources = null;
     private Level level = null;
@@ -30,8 +32,8 @@ public class LevelGenerator
     {
         // Setting the local level parameters.
         resources = gameResources;
-        playerImage = gamePlayerImage;
-        enemyImage = gameEnemyImage;
+        pImage = gamePlayerImage;
+        eImage = gameEnemyImage;
         level = gameLevel;
         objects = new Vector<AnimatedSprite>();             // Initialising the vector of level objects.
     }
@@ -40,7 +42,8 @@ public class LevelGenerator
     {
         // Creating all of the level objects.
         createGround();
-        createBackground();
+        createStaticBackground();
+        createAnimatedBackground();
         createPlayer();
         createEnemy();
     }
@@ -54,12 +57,46 @@ public class LevelGenerator
         objects.add(groundFloor);
     }
 
+    private void createStaticBackground()
+    {
+        AnimatedSprite background = new AnimatedSprite(resources, ObjectID.SPRITE);
+        background.init(new Vector2(0.0f, 0.0f), new Vector2(resources.getScreenWidth(), groundY), 0.0f);
+        background.setTexture(R.drawable.night_sky, new Vector2(0.0f, 0.0f), new Vector2(1.0f, 1.0f));
+        objects.add(background);
+    }
+
+    private void createAnimatedBackground()
+    {
+        AnimatedSprite animatedBackground = new AnimatedSprite(resources, ObjectID.ANIMATEDSPRITE);
+        animatedBackground.init(new Vector2(0.0f, resources.getScreenHeight() - 230.0f), new Vector2(resources.getScreenWidth(), 80.0f), 0.0f);
+        animatedBackground.setTexture(R.drawable.sprite_sheet, new Vector2(0.0f, 0.0625f), new Vector2(0.125f, 0.0625f));
+        animatedBackground.setAnimationFrames(8);
+        objects.add(animatedBackground);
+    }
+
+    private void setSprite(int image, AnimatedSprite sprite)
+    {
+        if(image == R.drawable.p1_front)
+        {
+            sprite.setTexture(R.drawable.p1_spritesheet, new Vector2(0.0f, 0.0f), new Vector2((1.0f / 7.0f), (1.0f / 3.0f)));
+        }
+        else if(image == R.drawable.p2_front)
+        {
+            sprite.setTexture(R.drawable.p2_spritesheet, new Vector2(0.0f, 0.0f), new Vector2((1.0f / 7.0f), (1.0f / 3.0f)));
+        }
+        else if(image == R.drawable.p3_front)
+        {
+            sprite.setTexture(R.drawable.p3_spritesheet, new Vector2(0.0f, 0.0f), new Vector2((1.0f / 7.0f), (1.0f / 3.0f)));
+        }
+    }
+
     private void createPlayer()
     {
         DynamicBody player = new DynamicBody(resources, ObjectID.PLAYER);
-        player.setAnimationFrames(8);
-        player.setTexture(playerImage, new Vector2(0.0f, 0.0f), new Vector2(1.0f, 1.0f));
         player.bodyInit(new Vector2(resources.getScreenWidth() * 0.25f, resources.getScreenHeight() * 0.5f), new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
+        player.setAnimationFrames(6);
+        setSprite(pImage, player);
+        //player.setTexture(playerImage, new Vector2(0.0f, 0.0f), new Vector2(0.25f, 1.0f));
         objects.add(player);
     }
 
@@ -67,19 +104,13 @@ public class LevelGenerator
     {
         AnimatedSprite enemy = new AnimatedSprite(resources, ObjectID.ENEMY);
         enemy.init(new Vector2(resources.getScreenWidth() * 0.5f, resources.getScreenHeight() * 0.5f), new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
-        enemy.setTexture(enemyImage, new Vector2(0.0f, 0.0f), new Vector2(1.0f, 1.0f));
-        enemy.setAnimationFrames(8);
+        enemy.setAnimationFrames(6);
+        setSprite(eImage, enemy);
+        //enemy.setTexture(enemyImage, new Vector2(0.0f, 0.0f), new Vector2(0.25f, 1.0f));
         objects.add(enemy);
     }
 
-    private void createBackground()
-    {
-        AnimatedSprite backGround = new AnimatedSprite(resources, ObjectID.SPRITE);
-        backGround.init(new Vector2(0.0f, resources.getScreenHeight() - 230.0f), new Vector2(resources.getScreenWidth(), 80.0f), 0.0f);
-        backGround.setTexture(R.drawable.sprite_sheet, new Vector2(0.0f, 0.0625f), new Vector2(0.125f, 0.0625f));
-        backGround.setAnimationFrames(8);
-        objects.add(backGround);
-    }
+
 
     public void addToView()
     {

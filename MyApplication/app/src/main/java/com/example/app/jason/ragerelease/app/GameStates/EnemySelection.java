@@ -23,14 +23,8 @@ public class EnemySelection extends CharacterSelection
     private int currentEnemyImageIndex = 0;
     private int[] enemyImages =                      // Getting access to the images from the drawable folder.
     {
-        R.drawable.splash_screen, R.drawable.splash_screen,
-        R.drawable.splash_screen, R.drawable.splash_screen,
-        R.drawable.splash_screen, R.drawable.splash_screen,
-        R.drawable.splash_screen, R.drawable.splash_screen,
-        R.drawable.splash_screen, R.drawable.splash_screen,
-        R.drawable.splash_screen, R.drawable.splash_screen,
-        R.drawable.splash_screen, R.drawable.splash_screen,
-        R.drawable.splash_screen, R.drawable.splash_screen
+            R.drawable.p1_front, R.drawable.p2_front,
+            R.drawable.p3_front
     };
 
     // Methods.
