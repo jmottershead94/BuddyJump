@@ -59,6 +59,14 @@
             android:configChanges="orientation|keyboardHidden">
         </activity>
 
+        <!-- Setting the Game activity. -->
+        <activity
+            android:name=".app.GameStates.GameOver"
+            android:label="Rage Release"
+            android:screenOrientation="landscape"
+            android:configChanges="orientation|keyboardHidden">
+        </activity>
+
         <!-- Setting the Options activity. -->
         <activity
             android:name=".app.GameStates.Options"

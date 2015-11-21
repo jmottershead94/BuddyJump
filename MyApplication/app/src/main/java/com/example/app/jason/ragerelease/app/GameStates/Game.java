@@ -161,7 +161,7 @@ public class Game extends Activity
             level.player.setGameOver(false);
 
             // Return to the main menu.
-            Intent intent = new Intent(this, MainMenu.class);
+            Intent intent = new Intent(this, GameOver.class);
             startActivity(intent);
         }
     }

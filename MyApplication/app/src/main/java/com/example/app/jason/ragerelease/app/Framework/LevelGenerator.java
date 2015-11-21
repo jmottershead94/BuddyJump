@@ -28,9 +28,8 @@ public class LevelGenerator
     private static float groundY = 0.0f;
     private int playerImage = 0;
     private int enemyImage = 0;
-    //private ScheduledExecutorService service;
+    private int interval = 6;                           // 3 seconds.
     private Timer timer;
-    private int interval = 6;                    // 3 seconds.
     private ScheduledExecutorService scheduler;
     private Vector<AnimatedSprite> objects = null;
     private Resources resources = null;
@@ -42,10 +41,9 @@ public class LevelGenerator
         resources = gameResources;
         playerImage = gamePlayerImage;
         enemyImage = gameEnemyImage;
-        //service = Executors.newSingleThreadScheduledExecutor();
+        scheduler = Executors.newSingleThreadScheduledExecutor();
         level = gameLevel;
         objects = new Vector<AnimatedSprite>();             // Initialising the vector of level objects.
-        scheduler = Executors.newSingleThreadScheduledExecutor();
     }
 
     public void buildLevel()
@@ -71,7 +69,6 @@ public class LevelGenerator
                     // If the object is an obstacle.
                     if(object.getID() == ObjectID.OBSTACLE)
                     {
-                        // Respawn the object at the start of the level.
                         object.translateFramework(object.getSpawnLocation());
                     }
                 }
@@ -213,45 +210,6 @@ public class LevelGenerator
             // Remove all of the objects from the list.
             objects.clear();
         }
-    }
-
-    public void update(float dt)
-    {
-
-        // Delay the task.
-        //timeHandler.postDelayed(timeRunnable, interval);
-
-        // If the
-//        if(timeHandler.postDelayed(timeRunnable, interval))
-//        {
-//            timeHandler.removeCallbacks(timeRunnable);
-//        }
-//        else
-//        {
-//            //timeHandler.postDelayed(timeRunnable, interval);
-//        }
-        //createObstacle(new Vector2(resources.getScreenWidth() * 0.95f, resources.getScreenHeight() * 0.45f));
-
-//        Timer timer = new Timer();
-//        timer.schedule(new TimerTask()
-//        {
-//            @Override
-//            public void run()
-//            {
-//                createObstacle(new Vector2(resources.getScreenWidth() * 0.95f, resources.getScreenHeight() * 0.45f));
-//            }
-//        }, 3000, 3000);
-
-//        final ScheduledExecutorService service = Executors.newSingleThreadScheduledExecutor();
-//        service.schedule(new Runnable()
-//        {
-//            @Override
-//            public void run()
-//            {
-//                service.shutdown();
-//            }
-//        }, 3, TimeUnit.SECONDS);
-
     }
 
     // Getters.

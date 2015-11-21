@@ -259,8 +259,6 @@ public class Level implements View.OnTouchListener
 
     public void update(float dt)
     {
-        levelGenerator.update(dt);
-
         // Incrementing player distance.
         updatePlayerScore();
 
