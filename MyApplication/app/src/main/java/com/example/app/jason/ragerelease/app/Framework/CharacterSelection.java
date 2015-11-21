@@ -4,9 +4,14 @@ package com.example.app.jason.ragerelease.app.Framework;
 // All of the extra includes here.
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.Camera;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.util.DisplayMetrics;
 import android.view.KeyEvent;
 import android.view.View;
@@ -48,6 +53,8 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
     private int[] sprites = null;
     private String gameSettingsName = null;
     private String imageSettingsName = null;
+    private CameraHandler cameraHandler = null;
+    private Bitmap playerPicture = null;
 
     // Methods.
     // An initialisation function for setting up the game.
@@ -95,9 +102,11 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
         // If the first option is ON.
         if(optionOneChecked)
         {
-            // Let the player take a picture with the camera (user permissions required).
-            // DEBUG - Set the background colour to blue.
-            background.setBackgroundColor(Color.BLUE);
+            if(playerSelection)
+            {
+                // Let the player take a picture with the camera (user permissions required).
+                cameraHandler = new CameraHandler(this);
+            }
         }
         // If the first option is OFF.
         else

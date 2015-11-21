@@ -3,6 +3,12 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.example.app.jason.ragerelease" >
 
+    <!-- Setting the user permission to use the phone's camera. -->
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-feature android:name="android.hardware.camera" android:required="false"/>
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
+
     <!-- Setting the Rage Release application up. -->
     <application
         android:allowBackup="true"

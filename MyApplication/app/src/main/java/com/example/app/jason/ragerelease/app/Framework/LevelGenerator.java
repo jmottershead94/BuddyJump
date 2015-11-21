@@ -1,5 +1,7 @@
 package com.example.app.jason.ragerelease.app.Framework;
 
+import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Handler;
 import android.util.Log;
 import android.view.View;
@@ -24,16 +26,19 @@ import java.util.concurrent.TimeUnit;
  */
 public class LevelGenerator
 {
+    private static final String PREFS_NAME = "MyPrefsFile";                     // Where the options will be saved to, whether they are true or false.
     private static final String TAG = "TKT";
     private static float groundY = 0.0f;
     private int playerImage = 0;
     private int enemyImage = 0;
     private int interval = 6;                           // 3 seconds.
-    private Timer timer;
-    private ScheduledExecutorService scheduler;
+    private Timer timer = null;
+    private ScheduledExecutorService scheduler = null;
+    private Bitmap cameraImage = null;
     private Vector<AnimatedSprite> objects = null;
     private Resources resources = null;
     private Level level = null;
+    private boolean optionOneChecked = false, optionTwoChecked = false;
 
     public LevelGenerator(final Resources gameResources, Level gameLevel, final int gamePlayerImage, final int gameEnemyImage)
     {
@@ -44,6 +49,12 @@ public class LevelGenerator
         scheduler = Executors.newSingleThreadScheduledExecutor();
         level = gameLevel;
         objects = new Vector<AnimatedSprite>();             // Initialising the vector of level objects.
+
+        // Load in options here...
+        // Accessing saved options.
+        SharedPreferences gameSettings = resources.getActivity().getSharedPreferences(PREFS_NAME, resources.getActivity().MODE_PRIVATE);
+        optionOneChecked = gameSettings.getBoolean("moptionOneCheckedStatus", false);
+        optionTwoChecked = gameSettings.getBoolean("moptionTwoCheckedStatus", false);
     }
 
     public void buildLevel()
@@ -58,22 +69,18 @@ public class LevelGenerator
 
         // This schedules respawning an obstacle once it has gone off screen.
         // Running on a new thread.
-        scheduler.scheduleAtFixedRate(new Runnable()
-        {
+        scheduler.scheduleAtFixedRate(new Runnable() {
             @Override
-            public void run()
-            {
+            public void run() {
                 // Loop through all of the level objects.
-                for(AnimatedSprite object : objects)
-                {
+                for (AnimatedSprite object : objects) {
                     // If the object is an obstacle.
-                    if(object.getID() == ObjectID.OBSTACLE)
-                    {
+                    if (object.getID() == ObjectID.OBSTACLE) {
                         object.translateFramework(object.getSpawnLocation());
                     }
                 }
             }
-        // First taking place at 5 seconds, then executing at a regular interval of 6 seconds afterwards.
+            // First taking place at 5 seconds, then executing at a regular interval of 6 seconds afterwards.
         }, interval - 1, interval, TimeUnit.SECONDS);
     }
 
@@ -142,12 +149,33 @@ public class LevelGenerator
         }
     }
 
+    private void setImage(AnimatedSprite object)
+    {
+        // Getting access to the camera properties.
+        CameraHandler cameraHandler = new CameraHandler();
+
+        // Storing the last taken image in the gallery into a bitmap.
+        cameraImage = cameraHandler.getLastPicture();
+
+        // Setting the camera image for the bitmap used on the sprite.
+        object.setCameraImage(cameraImage);
+    }
+
     private void createPlayer(Vector2 position, int image)
     {
         DynamicBody player = new DynamicBody(resources, ObjectID.PLAYER);
         player.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
         player.setAnimationFrames(6);
-        setSprite(image, player);
+
+        if(optionOneChecked)
+        {
+            setImage(player);
+        }
+        else
+        {
+            setSprite(image, player);
+        }
+
         objects.add(player);
     }
 

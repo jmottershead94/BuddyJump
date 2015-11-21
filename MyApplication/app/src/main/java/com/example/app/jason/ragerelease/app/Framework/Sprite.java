@@ -90,6 +90,20 @@ public class Sprite extends View
 //        invalidate();
     }
 
+    public void setCameraImage(final Bitmap cameraImage)
+    {
+        image = cameraImage;
+        sprite = Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight());
+
+        // Use uv coordinates here...
+        // Using the full camera image for testing.
+        textureCoordinates = new Vector2(0.0f, 0.0f);
+
+        // Setting the width and height of each sprite.
+        // Using the full camera image for testing.
+        textureDimensions = new Vector2(1.0f, 1.0f);
+    }
+
     public void setTexture(final int resourceDrawableID, Vector2 textureCoords, Vector2 textureDimen)
     {
         image = BitmapFactory.decodeResource(getResources(), resourceDrawableID);
