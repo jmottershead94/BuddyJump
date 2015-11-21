@@ -18,6 +18,7 @@ public class Sprite extends View
 {
     // Attributes.
     // Protected.
+    protected boolean usingCameraImage = false;
     protected boolean remove = false;
     protected float angle = 0.0f;
     protected Bitmap sprite, image;
@@ -92,8 +93,11 @@ public class Sprite extends View
 
     public void setCameraImage(final Bitmap cameraImage)
     {
+        usingCameraImage = true;
         image = cameraImage;
         sprite = Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight());
+        float imageUConversion = image.getWidth();
+        float imageVConversion = image.getHeight();
 
         // Use uv coordinates here...
         // Using the full camera image for testing.
@@ -101,11 +105,12 @@ public class Sprite extends View
 
         // Setting the width and height of each sprite.
         // Using the full camera image for testing.
-        textureDimensions = new Vector2(1.0f, 1.0f);
+        textureDimensions = new Vector2(1.0f * imageUConversion, 1.0f * imageVConversion);
     }
 
     public void setTexture(final int resourceDrawableID, Vector2 textureCoords, Vector2 textureDimen)
     {
+        usingCameraImage = false;
         image = BitmapFactory.decodeResource(getResources(), resourceDrawableID);
         sprite = Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight());
         float imageUConversion = image.getWidth();
@@ -183,6 +188,7 @@ public class Sprite extends View
     public float getSpriteRotationRadians() { return (angle * ((float) Math.PI / 180.0f)); }
     public Vector2 getTextureCoordinates()  { return textureCoordinates; }
     public Vector2 getTextureDimensions()   { return textureDimensions; }
+    public boolean isUsingCameraImage()     { return usingCameraImage; }
 }
 
 //// OpenGL extensions.

@@ -47,12 +47,12 @@ public class CameraHandler extends Activity
     {
         // Find the last picture
         String[] projection = new String[]
-            {
-                MediaStore.Images.ImageColumns._ID,
-                MediaStore.Images.ImageColumns.DATA,
-                MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
-                MediaStore.Images.ImageColumns.DATE_TAKEN,
-                MediaStore.Images.ImageColumns.MIME_TYPE
+        {
+            MediaStore.Images.ImageColumns._ID,
+            MediaStore.Images.ImageColumns.DATA,
+            MediaStore.Images.ImageColumns.BUCKET_DISPLAY_NAME,
+            MediaStore.Images.ImageColumns.DATE_TAKEN,
+            MediaStore.Images.ImageColumns.MIME_TYPE
         };
 
         final Cursor cursor = resources.getContext().getContentResolver().query(
@@ -77,7 +77,11 @@ public class CameraHandler extends Activity
                     return bm;
                 }
             }
+
+            cursor.close();
         }
+
+
 
         return null;
     }

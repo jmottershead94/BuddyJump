@@ -165,7 +165,6 @@ public class LevelGenerator
     {
         DynamicBody player = new DynamicBody(resources, ObjectID.PLAYER);
         player.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
-        player.setAnimationFrames(6);
 
         if(optionOneChecked)
         {
@@ -174,6 +173,7 @@ public class LevelGenerator
         else
         {
             setSprite(image, player);
+            player.setAnimationFrames(6);
         }
 
         objects.add(player);

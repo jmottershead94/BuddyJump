@@ -89,10 +89,12 @@ public class Level implements View.OnTouchListener
                             {
                                 player.tap = true;
 
-                                // Change to a jumping animation.
-                                object.changeTexture(new Vector2((5.0f / 7.0f), (1.0f / 3.0f)));
-                                object.setAnimationFrames(2);
-
+                                if(!object.isUsingCameraImage())
+                                {
+                                    // Change to a jumping animation.
+                                    object.changeTexture(new Vector2((5.0f / 7.0f), (1.0f / 3.0f)));
+                                    object.setAnimationFrames(2);
+                                }
                                 // Make the object jump.
                                 object.body.applyLinearImpulse(new Vec2(0.0f, 4.0f), object.body.getWorldCenter());
                             }
@@ -123,8 +125,11 @@ public class Level implements View.OnTouchListener
                         {
                             if ((object.getID() == ObjectID.PLAYER) || (object.getID() == ObjectID.ENEMY))
                             {
-                                object.changeTexture(new Vector2(0.0f, 0.0f));
-                                object.setAnimationFrames(6);
+                                if(!object.isUsingCameraImage())
+                                {
+                                    object.changeTexture(new Vector2(0.0f, 0.0f));
+                                    object.setAnimationFrames(6);
+                                }
                             }
                         }
 
@@ -163,7 +168,11 @@ public class Level implements View.OnTouchListener
                 {
                     DynamicBody playerSprite = (DynamicBody) object.body.getUserData();
                     playerSprite.updateBody();
-                    playerSprite.animateSprite(0.01f * dt);
+
+                    if(!playerSprite.isUsingCameraImage())
+                    {
+                        playerSprite.animateSprite(0.01f * dt);
+                    }
 
                     // If a player square needs to respawn.
                     if(playerSprite.respawn)
@@ -220,8 +229,12 @@ public class Level implements View.OnTouchListener
                 {
                     // Do collision response here...
                     // Change back to the hurt animation.
-                    gameObjectA.changeTexture(new Vector2((6.0f / 7.0f), 0.0f));
-                    gameObjectA.setAnimationFrames(0);
+                    if(!gameObjectA.isUsingCameraImage())
+                    {
+                        gameObjectA.changeTexture(new Vector2((6.0f / 7.0f), 0.0f));
+                        gameObjectA.setAnimationFrames(0);
+                    }
+
                     player.setGameOver(true);
                 }
 

@@ -40,19 +40,9 @@ public class DynamicBody extends AnimatedSprite
         body = resources.getWorld().createBody(bodyDef);
         body.setFixedRotation(true);
         body.setTransform(new Vec2(getBox2DXPosition(getSpriteLeft()), getBox2DYPosition(getSpriteTop())), bodyDef.angle);
-        //body.setXForm(new Vec2(getBox2DXPosition(getSpriteLeft()), getBox2DYPosition(getSpriteTop())), bodyDef.angle);
 
         PolygonShape box = new PolygonShape();
         box.setAsBox(getBox2DSize(dimensions.getX()) * box2DDynamicBodyXOffset, getBox2DSize(dimensions.getY()) * box2DDynamicBodyYOffset);
-
-//        PolygonDef box = new PolygonDef();
-//        box.setAsBox(getBox2DSize(dimensions.getX()) * box2DDynamicBodyXOffset, getBox2DSize(dimensions.getY()) * box2DDynamicBodyYOffset);
-//        box.density = 1.0f;
-//        box.friction = 0.5f;
-//        box.restitution = 0.65f;
-//
-//        body.createShape(box);
-//        body.setMassFromShapes();
 
         FixtureDef fixtureDef = new FixtureDef();
         fixtureDef.shape = box;
