@@ -73,7 +73,7 @@ public class LevelGenerator
         // If there should be more than one player character.
         if(numberOfCharacters > 1)
         {
-            createPlayer(new Vector2(resources.getScreenWidth() * 0.35f, resources.getScreenHeight() * 0.25f), enemyImage, ObjectID.CHARACTERTWO);
+            createPlayer(new Vector2(resources.getScreenWidth() * 0.15f, resources.getScreenHeight() * 0.25f), enemyImage, ObjectID.CHARACTERTWO);
         }
 
         // Calculating a random interval for the obstacles to spawn in with.
@@ -200,7 +200,7 @@ public class LevelGenerator
         object.setCameraImage(cameraImage);
     }
 
-    private void createPlayer(Vector2 position, int image, int id)
+    private void createPlayer(Vector2 position, int image, final int id)
     {
         DynamicBody player = new DynamicBody(resources, id);
 

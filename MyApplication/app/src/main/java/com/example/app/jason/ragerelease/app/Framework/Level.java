@@ -162,7 +162,7 @@ public class Level implements View.OnTouchListener
                     {
                         for (AnimatedSprite object : getLevelObjects())
                         {
-                            if ((object.getID() == ObjectID.CHARACTERONE) || (object.getID() == ObjectID.CHARACTERONE))
+                            if ((object.getID() == ObjectID.CHARACTERONE) || (object.getID() == ObjectID.CHARACTERTWO))
                             {
                                 if(!object.isUsingCameraImage())
                                 {
@@ -264,8 +264,8 @@ public class Level implements View.OnTouchListener
 
                 // Collision test.
                 // If the player is in contact with the ground.
-                if((gameObjectA.getID() == ObjectID.CHARACTERONE && gameObjectB.getID() == ObjectID.OBSTACLE)
-                    || (gameObjectA.getID() == ObjectID.CHARACTERTWO) && gameObjectB.getID() == ObjectID.OBSTACLE)
+                if(((gameObjectA.getID() == ObjectID.CHARACTERONE) && (gameObjectB.getID() == ObjectID.OBSTACLE))
+                    || ((gameObjectB.getID() == ObjectID.CHARACTERTWO) && (gameObjectA.getID() == ObjectID.OBSTACLE)))
                 {
                     // Do collision response here...
                     // Change back to the hurt animation.
