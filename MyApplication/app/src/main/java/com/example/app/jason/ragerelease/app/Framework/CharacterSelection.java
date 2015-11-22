@@ -9,6 +9,8 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.Camera;
 import android.graphics.Color;
+import android.hardware.Sensor;
+import android.hardware.SensorManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -45,7 +47,7 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
     protected NavigationButton button;
 
     private static final String TAG = "TKT";                                    // Used for debugging.
-    private boolean optionOneChecked;     // Used for gaining access to the options from the options activity.
+    private boolean optionOneChecked;                                           // Used for gaining access to the options from the options activity.
     private boolean playerSelect = false;
     private RelativeLayout background = null;
     private GridView imageSelectionView = null;
@@ -55,7 +57,6 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
     private String gameSettingsName = null;
     private String imageSettingsName = null;
     private CameraHandler cameraHandler = null;
-    private Bitmap playerPicture = null;
 
     // Methods.
     // An initialisation function for setting up the game.
@@ -108,15 +109,6 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
                 // Let the player take a picture with the camera (user permissions required).
                 cameraHandler = new CameraHandler(this);
             }
-//            else
-//            {
-//                // Fill the sprites array with the images provided.
-//                sprites = images;
-//
-//                // Let the player select a sprite for the player character.
-//                imageSelection.setImages(images);
-//                imageSelectionView.setAdapter(imageSelection);
-//            }
         }
         // If the first option is OFF.
         else
@@ -199,10 +191,7 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
 
         if(!optionOneChecked)
         {
-            //if(playerSelect)
-            //{
-                editor.putInt(imageSettingsName, sprites[currentImageIndex]);
-            //}
+            editor.putInt(imageSettingsName, sprites[currentImageIndex]);
         }
 
         // Applying the changes.
