@@ -38,13 +38,13 @@ public class Level implements View.OnTouchListener
     private ScheduledExecutorService scheduler = null;
     private ScheduledFuture<?> future = null;
 
-    public void init(final Resources gameResources, final Game gameView, final int gamePlayerImage, final int gameEnemyImage)
+    public void init(final Resources gameResources, final Game gameView, final int gamePlayerImage, final int gameCompanionImage)
     {
         // Initialising local variables.
         resources = gameResources;
         game = gameView;
         player = new Player(resources, this);
-        levelGenerator = new LevelGenerator(resources, this, gamePlayerImage, gameEnemyImage);
+        levelGenerator = new LevelGenerator(resources, this, gamePlayerImage, gameCompanionImage);
         levelGenerator.buildLevel(1, 1);    // Builds the first level.
         levelGenerator.addToView();
         player.distanceText.bringToFront();
@@ -199,7 +199,7 @@ public class Level implements View.OnTouchListener
             {
                 if(object.getID() == ObjectID.ANIMATEDSPRITE)
                 {
-                    object.animateSprite(0.01f * dt);
+                    object.animateSprite(0.002f * dt);
                 }
 
                 // Animates and moves all of the player characters.
@@ -229,7 +229,7 @@ public class Level implements View.OnTouchListener
 
                     if(enemySprite.getSpriteRight() > 0.0f)
                     {
-                        enemySprite.updateBody(new Vector2(-0.05f, 0.0f));
+                        enemySprite.updateBody(new Vector2(-0.02f, 0.0f));
                     }
                 }
             }
@@ -263,7 +263,7 @@ public class Level implements View.OnTouchListener
                 AnimatedSprite gameObjectB = (AnimatedSprite) bodyB.getUserData();
 
                 // Collision test.
-                // If the player is in contact with the ground.
+                // If the player is in contact with an obstacle.
                 if(((gameObjectA.getID() == ObjectID.CHARACTERONE) && (gameObjectB.getID() == ObjectID.OBSTACLE))
                     || ((gameObjectB.getID() == ObjectID.CHARACTERTWO) && (gameObjectA.getID() == ObjectID.OBSTACLE)))
                 {
@@ -346,14 +346,14 @@ public class Level implements View.OnTouchListener
     {
         if(levelNumber == 1)
         {
-            if (player.distance == 10)
+            if (player.distance == 30)
             {
                 newLevel();
             }
         }
         else if(levelNumber >= 2)
         {
-            if(player.distance == 15)
+            if(player.distance == 45)
             {
                 newLevel();
             }

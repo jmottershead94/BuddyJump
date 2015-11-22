@@ -17,7 +17,7 @@ public class AnimatedSprite extends Sprite
     protected static float box2DFrameworkScale = 100.0f;
     protected static float box2DFrameworkOffsetX = 0.0f;
     protected static float box2DFrameworkOffsetY = 0.0f;
-    protected static float box2DStaticXOffset = 0.75f;
+    protected static float box2DStaticXOffset = 0.5f;
     protected static float box2DStaticYOffset = 0.25f;
     protected static float box2DDynamicBodyXOffset = 0.25f;
     protected static float box2DDynamicBodyYOffset = 0.75f;

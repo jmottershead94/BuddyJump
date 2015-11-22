@@ -138,10 +138,10 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
             // Fill the sprites array with the images provided.
             sprites = images;
 
-            // If it is an enemy selection.
+            // If it is a companion selection.
             if(!playerSelection)
             {
-                // Let the player select a sprite for the enemy character.
+                // Let the player select a sprite for the companion character.
                 imageSelection.setImages(images);
                 imageSelectionView.setAdapter(imageSelection);
             }

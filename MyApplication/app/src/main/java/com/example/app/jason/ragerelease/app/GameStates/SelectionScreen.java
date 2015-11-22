@@ -45,20 +45,20 @@ public class SelectionScreen extends Activity
 
         // Initialising variables.
         final Button playerSelectionButton = (Button) findViewById(R.id.playerSelectionButton);
-        final Button enemySelectionButton = (Button) findViewById(R.id.enemySelectionButton);
+        final Button companionSelectionButton = (Button) findViewById(R.id.companionSelectionButton);
         final Button mainMenuButton = (Button) findViewById(R.id.mainMenuButton);
         final Button playGameButton = (Button) findViewById(R.id.playGameButton);
         final NavigationButton button = new NavigationButton();
 
         // Getting the stored image arrays from player and enemy sprite selection.
-        final int playerImage = getIntent().getIntExtra("playerImage", 0);
-        final int enemyImage = getIntent().getIntExtra("enemyImage", 0);
-        final int[] images = {0, playerImage, enemyImage};
+        final int playerImage = getIntent().getIntExtra("mplayerImage", 0);
+        final int companionImage = getIntent().getIntExtra("mcompanionImage", 0);
+        final int[] images = {0, playerImage, companionImage};
 
         // If the main menu button has been pressed.
         // Navigate the user back to the main menu.
         button.isPressed(playerSelectionButton, this, PlayerSelection.class);
-        button.isPressed(enemySelectionButton, this, EnemySelection.class);
+        button.isPressed(companionSelectionButton, this, CompanionSelection.class);
         button.isPressed(mainMenuButton, this, MainMenu.class);
         button.isPressed(playGameButton, this, Game.class);
         //button.isPressedAndSendDataArray(playGameButton, this, Game.class, "characterImages", images);

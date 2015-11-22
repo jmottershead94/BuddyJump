@@ -33,8 +33,8 @@ public class LevelGenerator
     private static final String TAG = "TKT";
     private static float groundY = 0.0f;
     private int playerImage = 0;
-    private int enemyImage = 0;
-    private int interval = 6;                           // 3 seconds.
+    private int companionImage = 0;
+    private int interval = 10;                           // 3 seconds.
     private Timer timer = null;
     private ScheduledExecutorService scheduler = null;
     private Bitmap cameraImage = null;
@@ -44,12 +44,12 @@ public class LevelGenerator
     private boolean optionOneChecked = false, optionTwoChecked = false;
     private ScheduledFuture<?> future = null;
 
-    public LevelGenerator(final Resources gameResources, Level gameLevel, final int gamePlayerImage, final int gameEnemyImage)
+    public LevelGenerator(final Resources gameResources, Level gameLevel, final int gamePlayerImage, final int gameCompanionImage)
     {
         // Setting the local level parameters.
         resources = gameResources;
         playerImage = gamePlayerImage;
-        enemyImage = gameEnemyImage;
+        companionImage = gameCompanionImage;
         scheduler = Executors.newSingleThreadScheduledExecutor();
         level = gameLevel;
         objects = new Vector<AnimatedSprite>();             // Initialising the vector of level objects.
@@ -67,13 +67,13 @@ public class LevelGenerator
         createGround();
         createStaticBackground();
         createAnimatedBackground();
-        createPlayer(new Vector2(resources.getScreenWidth() * 0.25f, resources.getScreenHeight() * 0.25f), playerImage, ObjectID.CHARACTERONE);
+        createPlayer(new Vector2(resources.getScreenWidth() * 0.45f, resources.getScreenHeight() * 0.25f), playerImage, ObjectID.CHARACTERONE);
         createObstacle(new Vector2(resources.getScreenWidth() * 0.95f, resources.getScreenHeight() * 0.45f));
 
         // If there should be more than one player character.
         if(numberOfCharacters > 1)
         {
-            createPlayer(new Vector2(resources.getScreenWidth() * 0.15f, resources.getScreenHeight() * 0.25f), enemyImage, ObjectID.CHARACTERTWO);
+            createPlayer(new Vector2(resources.getScreenWidth() * 0.15f, resources.getScreenHeight() * 0.25f), companionImage, ObjectID.CHARACTERTWO);
         }
 
         // Calculating a random interval for the obstacles to spawn in with.

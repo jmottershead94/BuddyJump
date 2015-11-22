@@ -42,9 +42,9 @@ public class Game extends Activity
     private static final long desiredFPS = 60;                                  // The desired frame rate for the game.
     private static final String PREFS_NAME = "MyPrefsFile";                     // Where the options will be saved to, whether they are true or false.
     private static int playerImageIndex = 0;                                    // What image the player currently wants to use for their character in the game.
-    private static int enemyImageIndex = 0;                                     // What image the player current wants to use for their enemy in the game.
+    private static int companionImageIndex = 0;                                     // What image the player current wants to use for their enemy in the game.
     private int playerImage = 0;
-    private int enemyImage = 0;
+    private int companionImage = 0;
 
     // Android attributes.
     private RelativeLayout background = null;                                   // Gives access to the relative layout background for the game.
@@ -101,9 +101,9 @@ public class Game extends Activity
         // Load in options here...
         SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         playerImageIndex = gameSettings.getInt("mplayerImageIndex", 0);
-        enemyImageIndex = gameSettings.getInt("menemyImageIndex", 0);
+        companionImageIndex = gameSettings.getInt("mcompanionImageIndex", 0);
         playerImage = gameSettings.getInt("mplayerImage", 0);
-        enemyImage = gameSettings.getInt("menemyImage", 0);
+        companionImage = gameSettings.getInt("mcompanionImage", 0);
 
         // Setting up the screen dimensions.
         DisplayMetrics displayMetrics = new DisplayMetrics();
@@ -122,7 +122,7 @@ public class Game extends Activity
 
         // Initialising the level.
         //level.init(resources, this, playerImages[playerImageIndex], enemyImages[enemyImageIndex]);
-        level.init(resources, this, playerImage, enemyImage);
+        level.init(resources, this, playerImage, companionImage);
     }
 
     //////////////////////////////////////////////////////////

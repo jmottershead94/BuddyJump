@@ -54,8 +54,10 @@
         </activity>
 
         <!-- Setting the Enemy Selection activity. -->
+
+        <!-- Setting the Companion Selection activity. -->
         <activity
-            android:name=".app.GameStates.EnemySelection"
+            android:name=".app.GameStates.CompanionSelection"
             android:label="Rage Release">
         </activity>
 
