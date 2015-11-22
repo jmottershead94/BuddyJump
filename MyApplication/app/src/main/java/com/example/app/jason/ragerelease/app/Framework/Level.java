@@ -114,16 +114,16 @@ public class Level implements View.OnTouchListener
 
     public boolean onTouch(View v, MotionEvent event)
     {
-        // Touch response here.
-        player.touchPosition.set(event.getX(), event.getY());
-        int eventAction = event.getAction();
-
-        switch (eventAction)
+        if(!player.isPaused())
         {
-            // If the player touches the screen.
-            case MotionEvent.ACTION_DOWN:
+            // Touch response here.
+            player.touchPosition.set(event.getX(), event.getY());
+            int eventAction = event.getAction();
+
+            switch (eventAction)
             {
-                if(!player.isPaused())
+                // If the player touches the screen.
+                case MotionEvent.ACTION_DOWN:
                 {
                     for (AnimatedSprite object : getLevelObjects())
                     {
@@ -133,43 +133,41 @@ public class Level implements View.OnTouchListener
                             {
                                 player.tap = true;
 
-                                if(!object.isUsingCameraImage())
+                                if (!object.isUsingCameraImage())
                                 {
                                     // Change to a jumping animation.
                                     object.changeTexture(new Vector2((5.0f / 7.0f), (1.0f / 3.0f)));
                                     object.setAnimationFrames(2);
                                 }
+
                                 // Make the object jump.
                                 object.body.applyLinearImpulse(new Vec2(0.0f, 4.0f), object.body.getWorldCenter());
                             }
                         }
                     }
+
+                    break;
                 }
 
-                break;
-            }
-
-            // If the player keeps holding the touch on the screen.
-            case MotionEvent.ACTION_MOVE:
-            {
-                //beingTouched = true;
-                break;
-            }
-
-            // If the player releases their touch on the screen.
-            case MotionEvent.ACTION_UP:
-            {
-                player.beingTouched = false;
-
-                if(!player.isPaused())
+                // If the player keeps holding the touch on the screen.
+                case MotionEvent.ACTION_MOVE:
                 {
+                    //beingTouched = true;
+                    break;
+                }
+
+                // If the player releases their touch on the screen.
+                case MotionEvent.ACTION_UP:
+                {
+                    player.beingTouched = false;
+
                     if (player.tap)
                     {
                         for (AnimatedSprite object : getLevelObjects())
                         {
                             if ((object.getID() == ObjectID.CHARACTERONE) || (object.getID() == ObjectID.CHARACTERTWO))
                             {
-                                if(!object.isUsingCameraImage())
+                                if (!object.isUsingCameraImage())
                                 {
                                     object.changeTexture(new Vector2(0.0f, 0.0f));
                                     object.setAnimationFrames(6);
@@ -179,18 +177,20 @@ public class Level implements View.OnTouchListener
 
                         player.tap = false;
                     }
+
+                    break;
                 }
 
-                break;
+                // If none of the above cases are met, then just default to not being touched.
+                default:
+                {
+                    player.beingTouched = false;
+                    player.tap = false;
+                    break;
+                }
             }
 
-            // If none of the above cases are met, then just default to not being touched.
-            default:
-            {
-                player.beingTouched = false;
-                player.tap = false;
-                break;
-            }
+            return true;
         }
 
         return true;

@@ -42,6 +42,7 @@ public class LevelGenerator
     private Resources resources = null;
     private Level level = null;
     private boolean optionOneChecked = false;
+    private boolean morningSky = false, afternoonSky = false, nightSky = false;
     private ScheduledFuture<?> future = null;
 
     public LevelGenerator(final Resources gameResources, Level gameLevel, final int gamePlayerImage, final int gameCompanionImage)
@@ -58,6 +59,9 @@ public class LevelGenerator
         // Accessing saved options.
         SharedPreferences gameSettings = resources.getActivity().getSharedPreferences(PREFS_NAME, resources.getActivity().MODE_PRIVATE);
         optionOneChecked = gameSettings.getBoolean("moptionOneCheckedStatus", false);
+        morningSky = gameSettings.getBoolean("mmorningSky", false);
+        afternoonSky = gameSettings.getBoolean("mafternoonSky", false);
+        nightSky = gameSettings.getBoolean("mnightSky", false);
     }
 
     public void buildLevel(int numberOfCharacters, int numberOfObstacles)
@@ -75,12 +79,6 @@ public class LevelGenerator
             createPlayer(new Vector2(resources.getScreenWidth() * 0.15f, resources.getScreenHeight() * 0.25f), companionImage, ObjectID.CHARACTERTWO);
         }
 
-        // Calculating a random interval for the obstacles to spawn in with.
-//        int minimumSeconds = 5;
-//        int maximumSeconds = 9;
-//        Random intervalRandom = new Random();
-//        interval = intervalRandom.nextInt() * (maximumSeconds - minimumSeconds) + minimumSeconds;
-
         // If there should be more than one obstacle.
         if(numberOfObstacles > 1)
         {
@@ -89,19 +87,14 @@ public class LevelGenerator
 
         // This schedules respawning an obstacle once it has gone off screen.
         // Running on a new thread.
-        future = scheduler.scheduleAtFixedRate(new Runnable()
-        {
+        future = scheduler.scheduleAtFixedRate(new Runnable() {
             @Override
-            public void run()
-            {
-                if(!level.player.isPaused())
-                {
+            public void run() {
+                if (!level.player.isPaused()) {
                     // Loop through all of the level objects.
-                    for (AnimatedSprite object : objects)
-                    {
+                    for (AnimatedSprite object : objects) {
                         // If the object is an obstacle.
-                        if (object.getID() == ObjectID.OBSTACLE)
-                        {
+                        if (object.getID() == ObjectID.OBSTACLE) {
                             object.translateFramework(object.getSpawnLocation());
                         }
                     }
@@ -118,15 +111,37 @@ public class LevelGenerator
         StaticBody groundFloor = new StaticBody(resources, ObjectID.GROUND);
         groundY = resources.getScreenHeight() - 190.0f;
         groundFloor.bodyInit(new Vector2(0.0f, groundY), new Vector2(resources.getScreenWidth(), 80.0f), 0.0f);
-        groundFloor.setTexture(R.drawable.sprite_sheet, new Vector2(0.0f, 0.0f), new Vector2(0.125f, 0.0625f));
+        groundFloor.loadTexture(R.drawable.sprite_sheet);
+        groundFloor.setTexture(new Vector2(0.0f, 0.0f), new Vector2(0.125f, 0.0625f));
         objects.add(groundFloor);
+    }
+
+    private void loadBackgroundTexture(AnimatedSprite background)
+    {
+        if(morningSky)
+        {
+            background.loadTexture(R.drawable.morning_sky);
+        }
+        else if(afternoonSky)
+        {
+            background.loadTexture(R.drawable.afternoon_sky);
+        }
+        else if(nightSky)
+        {
+            background.loadTexture(R.drawable.night_sky);
+        }
+        else
+        {
+            background.loadTexture(R.drawable.morning_sky);
+        }
     }
 
     private void createStaticBackground()
     {
         AnimatedSprite background = new AnimatedSprite(resources, ObjectID.SPRITE);
         background.init(new Vector2(0.0f, 0.0f), new Vector2(resources.getScreenWidth(), groundY), 0.0f);
-        background.setTexture(R.drawable.night_sky, new Vector2(0.0f, 0.0f), new Vector2(1.0f, 1.0f));
+        loadBackgroundTexture(background);
+        background.setTexture(new Vector2(0.0f, 0.0f), new Vector2(1.0f, 1.0f));
         objects.add(background);
     }
 
@@ -134,7 +149,8 @@ public class LevelGenerator
     {
         AnimatedSprite animatedBackground = new AnimatedSprite(resources, ObjectID.ANIMATEDSPRITE);
         animatedBackground.init(new Vector2(0.0f, resources.getScreenHeight() - 230.0f), new Vector2(resources.getScreenWidth(), 80.0f), 0.0f);
-        animatedBackground.setTexture(R.drawable.sprite_sheet, new Vector2(0.0f, 0.0625f), new Vector2(0.125f, 0.0625f));
+        animatedBackground.loadTexture(R.drawable.sprite_sheet);
+        animatedBackground.setTexture(new Vector2(0.0f, 0.0625f), new Vector2(0.125f, 0.0625f));
         animatedBackground.setAnimationFrames(8);
         objects.add(animatedBackground);
     }
@@ -146,35 +162,43 @@ public class LevelGenerator
 
         if(image == R.drawable.p1_front)
         {
-            sprite.setTexture(R.drawable.p1_spritesheet, new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
+            sprite.loadTexture(R.drawable.p1_spritesheet);
+            sprite.setTexture(new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
         }
         else if(image == R.drawable.p2_front)
         {
-            sprite.setTexture(R.drawable.p2_spritesheet, new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
+            sprite.loadTexture(R.drawable.p2_spritesheet);
+            sprite.setTexture(new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
         }
         else if(image == R.drawable.p3_front)
         {
-            sprite.setTexture(R.drawable.p3_spritesheet, new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
+            sprite.loadTexture(R.drawable.p3_spritesheet);
+            sprite.setTexture(new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
         }
         else if(image == R.drawable.p4_front)
         {
-            sprite.setTexture(R.drawable.p4_spritesheet, new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
+            sprite.loadTexture(R.drawable.p4_spritesheet);
+            sprite.setTexture(new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
         }
         else if(image == R.drawable.p5_front)
         {
-            sprite.setTexture(R.drawable.p5_spritesheet, new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
+            sprite.loadTexture(R.drawable.p5_spritesheet);
+            sprite.setTexture(new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
         }
         else if(image == R.drawable.p6_front)
         {
-            sprite.setTexture(R.drawable.p6_spritesheet, new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
+            sprite.loadTexture(R.drawable.p6_spritesheet);
+            sprite.setTexture(new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
         }
         else if(image == R.drawable.p7_front)
         {
-            sprite.setTexture(R.drawable.p7_spritesheet, new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
+            sprite.loadTexture(R.drawable.p7_spritesheet);
+            sprite.setTexture(new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
         }
         else if(image == R.drawable.p8_front)
         {
-            sprite.setTexture(R.drawable.p8_spritesheet, new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
+            sprite.loadTexture(R.drawable.p8_spritesheet);
+            sprite.setTexture(new Vector2(0.0f, 0.0f), new Vector2(textureWidth, textureHeight));
         }
     }
 
@@ -186,8 +210,11 @@ public class LevelGenerator
         // Storing the last taken image in the gallery into a bitmap.
         cameraImage = cameraHandler.getLastPicture();
 
+        // Loading the bitmap camera image to use on the sprite.
+        object.loadCameraImage(cameraImage);
+
         // Setting the camera image for the bitmap used on the sprite.
-        object.setCameraImage(cameraImage);
+        object.setCameraImage();
     }
 
     private void createPlayer(Vector2 position, int image, final int id)
@@ -219,7 +246,8 @@ public class LevelGenerator
     {
         final StaticBody obstacle = new StaticBody(resources, ObjectID.OBSTACLE);
         obstacle.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.1f, resources.getScreenWidth() * 0.1f), 0.0f);
-        obstacle.setTexture(R.drawable.box_explosive, new Vector2(0.0f, 0.0f), new Vector2(1.0f, 1.0f));
+        obstacle.loadTexture(R.drawable.box_explosive);
+        obstacle.setTexture(new Vector2(0.0f, 0.0f), new Vector2(1.0f, 1.0f));
         objects.add(obstacle);
     }
 
