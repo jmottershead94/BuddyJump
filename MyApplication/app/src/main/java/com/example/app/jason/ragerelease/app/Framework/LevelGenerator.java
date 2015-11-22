@@ -41,7 +41,7 @@ public class LevelGenerator
     private Vector<AnimatedSprite> objects = null;
     private Resources resources = null;
     private Level level = null;
-    private boolean optionOneChecked = false, optionTwoChecked = false;
+    private boolean optionOneChecked = false;
     private ScheduledFuture<?> future = null;
 
     public LevelGenerator(final Resources gameResources, Level gameLevel, final int gamePlayerImage, final int gameCompanionImage)
@@ -58,7 +58,6 @@ public class LevelGenerator
         // Accessing saved options.
         SharedPreferences gameSettings = resources.getActivity().getSharedPreferences(PREFS_NAME, resources.getActivity().MODE_PRIVATE);
         optionOneChecked = gameSettings.getBoolean("moptionOneCheckedStatus", false);
-        optionTwoChecked = gameSettings.getBoolean("moptionTwoCheckedStatus", false);
     }
 
     public void buildLevel(int numberOfCharacters, int numberOfObstacles)
@@ -68,7 +67,7 @@ public class LevelGenerator
         createStaticBackground();
         createAnimatedBackground();
         createPlayer(new Vector2(resources.getScreenWidth() * 0.45f, resources.getScreenHeight() * 0.25f), playerImage, ObjectID.CHARACTERONE);
-        createObstacle(new Vector2(resources.getScreenWidth() * 0.95f, resources.getScreenHeight() * 0.45f));
+        createObstacle(new Vector2(resources.getScreenWidth() * 0.95f, resources.getScreenHeight() * 0.5f));
 
         // If there should be more than one player character.
         if(numberOfCharacters > 1)
@@ -85,16 +84,7 @@ public class LevelGenerator
         // If there should be more than one obstacle.
         if(numberOfObstacles > 1)
         {
-            Vector2 minimumAndMaximumXPosition = new Vector2(resources.getScreenWidth() * 0.75f, resources.getScreenWidth() * 0.95f); // 0.001 is the minimum animation ticks, 0.005 is the maximum animation ticks.
-            Vector2 minimumAndMaximumYPosition = new Vector2(resources.getScreenHeight() * 0.125f, resources.getScreenWidth() * 0.45f);
-
-            Random positionRandom = new Random();
-            float xPosition = positionRandom.nextFloat() * (minimumAndMaximumXPosition.getY() - minimumAndMaximumXPosition.getX()) + minimumAndMaximumXPosition.getX();
-
-            positionRandom = new Random();
-            float yPosition = positionRandom.nextFloat() * (minimumAndMaximumYPosition.getY() - minimumAndMaximumYPosition.getX()) + minimumAndMaximumYPosition.getX();
-
-            createObstacle(new Vector2(xPosition, yPosition));
+            createObstacle(new Vector2(resources.getScreenWidth() * 0.95f, resources.getScreenHeight() * 0.35f));
         }
 
         // This schedules respawning an obstacle once it has gone off screen.
@@ -204,23 +194,23 @@ public class LevelGenerator
     {
         DynamicBody player = new DynamicBody(resources, id);
 
-        player.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
-        setSprite(image, player);
-        player.setAnimationFrames(6);
+//        player.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
+//        setSprite(image, player);
+//        player.setAnimationFrames(6);
 
         // Used with camera code.
-//        if(optionOneChecked)
-//        {
-//            // Rotate the image so that it is the right way round.
-//            player.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 270.0f);
-//            setImage(player);
-//        }
-//        else
-//        {
-//            player.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
-//            setSprite(image, player);
-//            player.setAnimationFrames(6);
-//        }
+        if(optionOneChecked)
+        {
+            // Rotate the image so that it is the right way round.
+            player.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 270.0f);
+            setImage(player);
+        }
+        else
+        {
+            player.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
+            setSprite(image, player);
+            player.setAnimationFrames(6);
+        }
 
         objects.add(player);
     }
@@ -228,7 +218,7 @@ public class LevelGenerator
     private void createObstacle(Vector2 position)
     {
         final StaticBody obstacle = new StaticBody(resources, ObjectID.OBSTACLE);
-        obstacle.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
+        obstacle.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.1f, resources.getScreenWidth() * 0.1f), 0.0f);
         obstacle.setTexture(R.drawable.box_explosive, new Vector2(0.0f, 0.0f), new Vector2(1.0f, 1.0f));
         objects.add(obstacle);
     }

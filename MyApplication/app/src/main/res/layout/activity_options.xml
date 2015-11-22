@@ -30,23 +30,34 @@
         android:layout_below="@+id/optionsTextView"
         android:layout_centerHorizontal="true" />
 
-    <Switch
+    <RadioGroup
+        android:id="@+id/skyOptions"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Use Camera for Enemy Sprites"
-        android:id="@+id/optionTwo"
-        android:layout_marginTop="46dp"
+        android:orientation="vertical"
         android:layout_below="@+id/optionOne"
-        android:layout_centerHorizontal="true" />
+        android:layout_alignStart="@+id/optionOne"
+        android:layout_marginTop="49dp">
 
-    <Switch
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Option Three"
-        android:id="@+id/optionThree"
-        android:layout_marginTop="46dp"
-        android:layout_below="@+id/optionTwo"
-        android:layout_alignStart="@+id/optionTwo"
-        android:layout_alignEnd="@+id/optionOne" />
+        <RadioButton
+            android:id="@+id/morning"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Morning" />
+
+        <RadioButton
+            android:id="@+id/afternoon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Afternoon" />
+
+        <RadioButton
+            android:id="@+id/night"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Night" />
+
+    </RadioGroup>
+
 
 </RelativeLayout>

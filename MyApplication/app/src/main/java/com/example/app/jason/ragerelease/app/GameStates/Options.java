@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.KeyEvent;
 import android.widget.Button;
 import android.widget.CompoundButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 import android.widget.Switch;
 import android.widget.Toast;
@@ -30,8 +31,9 @@ public class Options extends Activity
     private static final String PREFS_NAME = "MyPrefsFile";
     private final int duration = Toast.LENGTH_SHORT;
     private RelativeLayout background;
-    private Boolean playerCameraCheckedStatus = false, enemyCameraCheckedStatus = false, optionThreeCheckedStatus = false;
-    private Switch optionOne, optionTwo, optionThree;
+    private Boolean playerCameraCheckedStatus = false;
+    private Switch optionOne = null;
+    private RadioGroup optionTwo = null;
 
     // Methods.
     @Override
@@ -45,8 +47,7 @@ public class Options extends Activity
         final NavigationButton button = new NavigationButton();
         background = (RelativeLayout) findViewById(R.id.optionsBackground);
         optionOne = (Switch) findViewById(R.id.optionOne);
-        optionTwo = (Switch) findViewById(R.id.optionTwo);
-        optionThree = (Switch) findViewById(R.id.optionThree);
+        optionTwo = (RadioGroup) findViewById(R.id.skyOptions);
 
         // If there is no saved instance state.
         // There is no current state for the options menu.
@@ -54,20 +55,14 @@ public class Options extends Activity
         {
             // Get the previously assigned options values.
             playerCameraCheckedStatus = savedInstanceState.getBoolean("moptionOneCheckedStatus");
-            enemyCameraCheckedStatus = savedInstanceState.getBoolean("moptionTwoCheckedStatus");
-            optionThreeCheckedStatus = savedInstanceState.getBoolean("moptionThreeCheckedStatus");
         }
 
         // Saving options for repeated use.
         SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         playerCameraCheckedStatus = gameSettings.getBoolean("moptionOneCheckedStatus", optionOne.isChecked());
-        enemyCameraCheckedStatus = gameSettings.getBoolean("moptionTwoCheckedStatus", optionTwo.isChecked());
-        optionThreeCheckedStatus = gameSettings.getBoolean("moptionThreeCheckedStatus", optionThree.isChecked());
 
         // Setting each option to its' corresponding checked status.
         optionOne.setChecked(playerCameraCheckedStatus);
-        optionTwo.setChecked(enemyCameraCheckedStatus);
-        optionThree.setChecked(optionThreeCheckedStatus);
 
         // Handling all of the option responses.
         OptionResponses();
@@ -83,8 +78,8 @@ public class Options extends Activity
         final Context context = getApplicationContext();
         final CharSequence optionOneOnText = "Players will take camera images for sprites.";
         final CharSequence optionOneOffText = "Players will use sprite images.";
-        final CharSequence optionTwoOnText = "Enemies will use camera images for sprites.";
-        final CharSequence optionTwoOffText = "Enemies will use sprite images";
+        final CharSequence optionTwoOnText = "Companions will use camera images for sprites.";
+        final CharSequence optionTwoOffText = "Companions will use sprite images";
         final CharSequence optionThreeOnText = "Option 3 is now on.";
         final CharSequence optionThreeOffText = "Option 3 is now off.";
 
@@ -111,44 +106,6 @@ public class Options extends Activity
             }
         });
 
-        // What happens when option two has been checked.
-        optionTwo.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // If the switch is on.
-                if (isChecked)
-                {
-                    // Checked response code here...
-                    // Set the options invisible.
-                    enemyCameraCheckedStatus = true;
-                    Toast.makeText(context, optionTwoOnText, duration).show();
-                }
-                // Otherwise, the switch is off.
-                else
-                {
-                    enemyCameraCheckedStatus = false;
-                    Toast.makeText(context, optionTwoOffText, duration).show();
-                }
-            }
-        });
-
-        // What happens when option three has been checked.
-        optionThree.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                // If the switch is on.
-                if (isChecked) {
-                    // Checked response code here...
-                    optionThreeCheckedStatus = true;
-                    Toast.makeText(context, optionThreeOnText, duration).show();
-                }
-                // Otherwise, the switch is off.
-                else {
-                    optionThreeCheckedStatus = false;
-                    Toast.makeText(context, optionThreeOffText, duration).show();
-                }
-            }
-        });
     }
 
     @Override
@@ -159,8 +116,6 @@ public class Options extends Activity
         // Save UI changes to the savedInstanceState.
         // This bundle will be passed to onCreate if the process is killed or restarted.
         savedInstanceState.putBoolean("moptionOneCheckedStatus", playerCameraCheckedStatus);
-        savedInstanceState.putBoolean("moptionTwoCheckedStatus", enemyCameraCheckedStatus);
-        savedInstanceState.putBoolean("moptionThreeCheckedStatus", optionThreeCheckedStatus);
 
         super.onSaveInstanceState(savedInstanceState);
 
@@ -174,8 +129,6 @@ public class Options extends Activity
         super.onRestoreInstanceState(savedInstanceState);
 
         playerCameraCheckedStatus = savedInstanceState.getBoolean("moptionOneCheckedStatus");
-        enemyCameraCheckedStatus = savedInstanceState.getBoolean("moptionTwoCheckedStatus");
-        optionThreeCheckedStatus = savedInstanceState.getBoolean("moptionThreeCheckedStatus");
     }
 
     @Override
@@ -200,8 +153,6 @@ public class Options extends Activity
         SharedPreferences.Editor editor = gameSettings.edit();
 
         editor.putBoolean("moptionOneCheckedStatus", optionOne.isChecked());
-        editor.putBoolean("moptionTwoCheckedStatus", optionTwo.isChecked());
-        editor.putBoolean("moptionThreeCheckedStatus", optionThree.isChecked());
 
         editor.apply();
     }

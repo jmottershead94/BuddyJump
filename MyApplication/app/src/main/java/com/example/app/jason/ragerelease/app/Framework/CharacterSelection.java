@@ -45,7 +45,8 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
     protected NavigationButton button;
 
     private static final String TAG = "TKT";                                    // Used for debugging.
-    private boolean optionOneChecked, optionTwoChecked, optionThreeChecked;     // Used for gaining access to the options from the options activity.
+    private boolean optionOneChecked;     // Used for gaining access to the options from the options activity.
+    private boolean playerSelect = false;
     private RelativeLayout background = null;
     private GridView imageSelectionView = null;
     private ImageAdapter imageSelection = null;
@@ -73,8 +74,6 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
         // Accessing saved options.
         SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         optionOneChecked = gameSettings.getBoolean("moptionOneCheckedStatus", false);
-        optionTwoChecked = gameSettings.getBoolean("moptionTwoCheckedStatus", false);
-        optionThreeChecked = gameSettings.getBoolean("moptionThreeCheckedStatus", false);
         currentImageIndex = gameSettings.getInt(gameSettingsName, 0);
 
         // Setting the text view for the activity.
@@ -98,6 +97,8 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
     //////////////////////////////////////////////////////////
     protected void applyOptions(final Context context, int[] images, boolean playerSelection)
     {
+        playerSelect = playerSelection;
+
         // Create different option responses here.
         // If the first option is ON.
         if(optionOneChecked)
@@ -107,6 +108,15 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
                 // Let the player take a picture with the camera (user permissions required).
                 cameraHandler = new CameraHandler(this);
             }
+//            else
+//            {
+//                // Fill the sprites array with the images provided.
+//                sprites = images;
+//
+//                // Let the player select a sprite for the player character.
+//                imageSelection.setImages(images);
+//                imageSelectionView.setAdapter(imageSelection);
+//            }
         }
         // If the first option is OFF.
         else
@@ -114,44 +124,9 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
             // Fill the sprites array with the images provided.
             sprites = images;
 
-            // If it is a player selection.
-            if(playerSelection)
-            {
-                // Let the player select a sprite for the player character.
-                imageSelection.setImages(images);
-                imageSelectionView.setAdapter(imageSelection);
-            }
-        }
-
-        // If the second option is ON.
-        if(optionTwoChecked)
-        {
-            // Create some text.
-            TextView optionTwoText = new TextView(this);
-            optionTwoText.setText("Option Two Enabled BIATCH.");
-
-            // Add the text to the screen.
-            background.addView(optionTwoText);
-        }
-        else
-        {
-            // Fill the sprites array with the images provided.
-            sprites = images;
-
-            // If it is a companion selection.
-            if(!playerSelection)
-            {
-                // Let the player select a sprite for the companion character.
-                imageSelection.setImages(images);
-                imageSelectionView.setAdapter(imageSelection);
-            }
-        }
-
-        // If the third option is ON.
-        if(optionThreeChecked)
-        {
-            // Rotate the background.
-            background.setRotation(90.0f);
+            // Let the player select a sprite for the player character.
+            imageSelection.setImages(images);
+            imageSelectionView.setAdapter(imageSelection);
         }
     }
 
@@ -169,7 +144,11 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
         // Save UI changes to the savedInstanceState.
         // This bundle will be passed to onCreate if the process is killed or restarted.
         savedInstanceState.putInt(gameSettingsName, currentImageIndex);
-        savedInstanceState.putInt(imageSettingsName, sprites[currentImageIndex]);
+
+        if(!optionOneChecked)
+        {
+            savedInstanceState.putInt(imageSettingsName, sprites[currentImageIndex]);
+        }
 
         // Save the current state.
         super.onSaveInstanceState(savedInstanceState);
@@ -187,7 +166,11 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
         // Once the activity has been restored, place the previous image index into the current one.
         // So that we have not lost the number for it.
         currentImageIndex = savedInstanceState.getInt(gameSettingsName);
-        sprites[currentImageIndex] = savedInstanceState.getInt(imageSettingsName);
+
+        if(!optionOneChecked)
+        {
+            sprites[currentImageIndex] = savedInstanceState.getInt(imageSettingsName);
+        }
     }
 
     @Override
@@ -213,7 +196,14 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
 
         // Placing the int into saved files to be used later.
         editor.putInt(gameSettingsName, currentImageIndex);
-        editor.putInt(imageSettingsName, sprites[currentImageIndex]);
+
+        if(!optionOneChecked)
+        {
+            //if(playerSelect)
+            //{
+                editor.putInt(imageSettingsName, sprites[currentImageIndex]);
+            //}
+        }
 
         // Applying the changes.
         editor.apply();
