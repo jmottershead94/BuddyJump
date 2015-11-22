@@ -91,6 +91,8 @@ public class Sprite extends View
 //        invalidate();
     }
 
+    // It is not possible to set an image to the drawables folder during runtime. :(
+    // May have to leave out camera images.
     public void setCameraImage(final Bitmap cameraImage)
     {
         usingCameraImage = true;

@@ -13,7 +13,13 @@ import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 import org.jbox2d.dynamics.contacts.Contact;
 
+import java.util.Timer;
 import java.util.Vector;
+import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Created by Win8 on 17/07/2015.
@@ -27,6 +33,10 @@ public class Level implements View.OnTouchListener
     public LevelGenerator levelGenerator = null;
     public Player player = null;
     private Resources resources = null;
+    private int interval = 1;                           // 3 seconds.
+    private Timer timer = null;
+    private ScheduledExecutorService scheduler = null;
+    private ScheduledFuture<?> future = null;
 
     public void init(final Resources gameResources, final Game gameView, final int gamePlayerImage, final int gameEnemyImage)
     {
@@ -38,6 +48,22 @@ public class Level implements View.OnTouchListener
         levelGenerator.buildLevel();    // Builds the first level.
         levelGenerator.addToView();
         player.distanceText.bringToFront();
+        scheduler = Executors.newSingleThreadScheduledExecutor();
+
+        // This schedules respawning an obstacle once it has gone off screen.
+        // Running on a new thread.
+        future = scheduler.scheduleAtFixedRate(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                if(!player.isPaused())
+                {
+                    player.distance++;
+                }
+            }
+            // Executing at a regular interval of 1 second.
+        }, interval, interval, TimeUnit.SECONDS);
 
         // Listen out for touches in the level.
         resources.getBackground().setOnTouchListener(this);
@@ -244,10 +270,10 @@ public class Level implements View.OnTouchListener
         }
     }
 
-    public void update(float dt)
+    public void update(final float dt)
     {
         // Incrementing player distance.
-        updatePlayerScore();
+        updatePlayerDistance();
 
         // Local function calls.
         handleLevelObjects(dt);
@@ -256,7 +282,7 @@ public class Level implements View.OnTouchListener
         checkCollisions();
     }
 
-    private void updatePlayerScore()
+    private void updatePlayerDistance()
     {
         // Creating a new thread.
         new Thread()
@@ -269,17 +295,25 @@ public class Level implements View.OnTouchListener
                 try
                 {
                     // Make sure that the new level objects are added to the background on the correct thread.
-                    resources.getActivity().runOnUiThread(new Runnable() {
+                    resources.getActivity().runOnUiThread(new Runnable()
+                    {
                         @Override
-                        public void run() {
-                            // Update the player score.
-                            player.distance++;
-                            player.distanceText.setText("Distance: " + player.distance);
+                        public void run()
+                        {
+                            if(!player.isGameOver())
+                            {
+                                // Update the player score.
+                                player.distanceText.setText("Distance: " + player.distance);
+                            }
+                            else
+                            {
+                                future.cancel(true);
+                            }
                         }
                     });
 
                     // Slight loading time, without this, below catch gives an error.
-                    Thread.sleep(500);
+                    Thread.sleep(300);
                 }
                 // Catch any expections with this thread.
                 catch (InterruptedException e)

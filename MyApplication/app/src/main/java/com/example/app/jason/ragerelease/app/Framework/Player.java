@@ -1,6 +1,7 @@
 package com.example.app.jason.ragerelease.app.Framework;
 
 import android.app.Activity;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.view.MotionEvent;
 import android.view.View;

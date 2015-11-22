@@ -57,7 +57,6 @@ public class Game extends Activity
     // My framework attributes.
     private MainThread gameThread = null;                                       // The main game thread that the game will be running mostly on.
     private Level level = null;                                                 // Provides levels for the player to play in.
-
     private Resources resources = null;                                         // Gives access to certain repeated resources (context, the game background, screen width , screen height, and the world), and narrows down parameters passed down.
 
     // Methods.
@@ -66,6 +65,12 @@ public class Game extends Activity
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
+    }
+
+    @Override
+    public void onResume()
+    {
+        super.onResume();
 
         // Initialise the game.
         init();
@@ -156,18 +161,10 @@ public class Game extends Activity
     {
         if(level.player.isGameOver())
         {
-            SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-            SharedPreferences.Editor editor = gameSettings.edit();
-
-            // Placing the int into saved files to be used later.
-            editor.putInt("mplayerDistance", level.player.distance);
-
-            // Applying the changes.
-            editor.apply();
-
             // Clear the current level.
             level.levelGenerator.clearLevel();
             level.player.setGameOver(false);
+            level.player.setPaused(false);
 
             // Return to the main menu.
             Intent intent = new Intent(this, GameOver.class);
@@ -221,5 +218,32 @@ public class Game extends Activity
                 }
             }
         }.start();
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle savedInstanceState)
+    {
+        final CharSequence saveMessage = "Distance score saved.";
+
+        // Save UI changes to the savedInstanceState.
+        // This bundle will be passed to onCreate if the process is killed or restarted.
+        savedInstanceState.putInt("mplayerDistance", level.player.distance);
+
+        super.onSaveInstanceState(savedInstanceState);
+
+        Toast.makeText(this, saveMessage, Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+
+        SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
+        SharedPreferences.Editor editor = gameSettings.edit();
+
+        editor.putInt("mplayerDistance", level.player.distance);
+
+        editor.apply();
     }
 }

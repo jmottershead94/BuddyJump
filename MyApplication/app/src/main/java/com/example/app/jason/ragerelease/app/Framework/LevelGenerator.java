@@ -1,5 +1,6 @@
 package com.example.app.jason.ragerelease.app.Framework;
 
+import android.app.Service;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Handler;
@@ -18,7 +19,9 @@ import java.util.Timer;
 import java.util.TimerTask;
 import java.util.Vector;
 import java.util.concurrent.Executors;
+import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -39,6 +42,7 @@ public class LevelGenerator
     private Resources resources = null;
     private Level level = null;
     private boolean optionOneChecked = false, optionTwoChecked = false;
+    private ScheduledFuture<?> future = null;
 
     public LevelGenerator(final Resources gameResources, Level gameLevel, final int gamePlayerImage, final int gameEnemyImage)
     {
@@ -69,19 +73,28 @@ public class LevelGenerator
 
         // This schedules respawning an obstacle once it has gone off screen.
         // Running on a new thread.
-        scheduler.scheduleAtFixedRate(new Runnable() {
+        future = scheduler.scheduleAtFixedRate(new Runnable()
+        {
             @Override
-            public void run() {
-                // Loop through all of the level objects.
-                for (AnimatedSprite object : objects) {
-                    // If the object is an obstacle.
-                    if (object.getID() == ObjectID.OBSTACLE) {
-                        object.translateFramework(object.getSpawnLocation());
+            public void run()
+            {
+                if(!level.player.isPaused())
+                {
+                    // Loop through all of the level objects.
+                    for (AnimatedSprite object : objects)
+                    {
+                        // If the object is an obstacle.
+                        if (object.getID() == ObjectID.OBSTACLE)
+                        {
+                            object.translateFramework(object.getSpawnLocation());
+                        }
                     }
                 }
             }
             // First taking place at 5 seconds, then executing at a regular interval of 6 seconds afterwards.
         }, interval - 1, interval, TimeUnit.SECONDS);
+
+        //future.cancel(false);
     }
 
     private void createGround()
@@ -164,17 +177,24 @@ public class LevelGenerator
     private void createPlayer(Vector2 position, int image)
     {
         DynamicBody player = new DynamicBody(resources, ObjectID.PLAYER);
-        player.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
 
-        if(optionOneChecked)
-        {
-            setImage(player);
-        }
-        else
-        {
-            setSprite(image, player);
-            player.setAnimationFrames(6);
-        }
+        player.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
+        setSprite(image, player);
+        player.setAnimationFrames(6);
+
+        // Used with camera code.
+//        if(optionOneChecked)
+//        {
+//            // Rotate the image so that it is the right way round.
+//            player.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 270.0f);
+//            setImage(player);
+//        }
+//        else
+//        {
+//            player.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
+//            setSprite(image, player);
+//            player.setAnimationFrames(6);
+//        }
 
         objects.add(player);
     }
@@ -203,6 +223,8 @@ public class LevelGenerator
 
     public void clearLevel()
     {
+        future.cancel(true);
+
         // If there are objects in the vector.
         if(!objects.isEmpty())
         {
