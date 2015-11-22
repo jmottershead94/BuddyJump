@@ -61,15 +61,41 @@ public class LevelGenerator
         optionTwoChecked = gameSettings.getBoolean("moptionTwoCheckedStatus", false);
     }
 
-    public void buildLevel()
+    public void buildLevel(int numberOfCharacters, int numberOfObstacles)
     {
         // Creating all of the level objects.
         createGround();
         createStaticBackground();
         createAnimatedBackground();
-        createPlayer(new Vector2(resources.getScreenWidth() * 0.25f, resources.getScreenHeight() * 0.25f), playerImage);
-        //createPlayer(new Vector2(resources.getScreenWidth() * 0.5f, resources.getScreenHeight() * 0.25f), enemyImage);
+        createPlayer(new Vector2(resources.getScreenWidth() * 0.25f, resources.getScreenHeight() * 0.25f), playerImage, ObjectID.CHARACTERONE);
         createObstacle(new Vector2(resources.getScreenWidth() * 0.95f, resources.getScreenHeight() * 0.45f));
+
+        // If there should be more than one player character.
+        if(numberOfCharacters > 1)
+        {
+            createPlayer(new Vector2(resources.getScreenWidth() * 0.4f, resources.getScreenHeight() * 0.25f), enemyImage, ObjectID.CHARACTERTWO);
+        }
+
+        // Calculating a random interval for the obstacles to spawn in with.
+//        int minimumSeconds = 5;
+//        int maximumSeconds = 9;
+//        Random intervalRandom = new Random();
+//        interval = intervalRandom.nextInt() * (maximumSeconds - minimumSeconds) + minimumSeconds;
+
+        // If there should be more than one obstacle.
+        if(numberOfObstacles > 1)
+        {
+            Vector2 minimumAndMaximumXPosition = new Vector2(resources.getScreenWidth() * 0.75f, resources.getScreenWidth() * 0.95f); // 0.001 is the minimum animation ticks, 0.005 is the maximum animation ticks.
+            Vector2 minimumAndMaximumYPosition = new Vector2(resources.getScreenHeight() * 0.125f, resources.getScreenWidth() * 0.45f);
+
+            Random positionRandom = new Random();
+            float xPosition = positionRandom.nextFloat() * (minimumAndMaximumXPosition.getY() - minimumAndMaximumXPosition.getX()) + minimumAndMaximumXPosition.getX();
+
+            positionRandom = new Random();
+            float yPosition = positionRandom.nextFloat() * (minimumAndMaximumYPosition.getY() - minimumAndMaximumYPosition.getX()) + minimumAndMaximumYPosition.getX();
+
+            createObstacle(new Vector2(xPosition, yPosition));
+        }
 
         // This schedules respawning an obstacle once it has gone off screen.
         // Running on a new thread.
@@ -94,7 +120,7 @@ public class LevelGenerator
             // First taking place at 5 seconds, then executing at a regular interval of 6 seconds afterwards.
         }, interval - 1, interval, TimeUnit.SECONDS);
 
-        //future.cancel(false);
+        //level.player.distanceText.bringToFront();
     }
 
     private void createGround()
@@ -174,9 +200,9 @@ public class LevelGenerator
         object.setCameraImage(cameraImage);
     }
 
-    private void createPlayer(Vector2 position, int image)
+    private void createPlayer(Vector2 position, int image, int id)
     {
-        DynamicBody player = new DynamicBody(resources, ObjectID.PLAYER);
+        DynamicBody player = new DynamicBody(resources, id);
 
         player.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
         setSprite(image, player);

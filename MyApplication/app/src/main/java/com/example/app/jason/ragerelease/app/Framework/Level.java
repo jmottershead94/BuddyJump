@@ -45,7 +45,7 @@ public class Level implements View.OnTouchListener
         game = gameView;
         player = new Player(resources, this);
         levelGenerator = new LevelGenerator(resources, this, gamePlayerImage, gameEnemyImage);
-        levelGenerator.buildLevel();    // Builds the first level.
+        levelGenerator.buildLevel(1, 1);    // Builds the first level.
         levelGenerator.addToView();
         player.distanceText.bringToFront();
         scheduler = Executors.newSingleThreadScheduledExecutor();
@@ -71,12 +71,25 @@ public class Level implements View.OnTouchListener
 
     public void newLevel()
     {
+        // Resetting the player's distance score.
+        player.distance = 0;
+
         // Clear the current level.
         levelGenerator.clearLevel();
-        //levelNumber++;
 
-        // Builds the new level.
-        levelGenerator.buildLevel();
+        // Increment the current level number.
+        levelNumber++;
+
+        if(levelNumber == 2)
+        {
+            // Builds the new level.
+            levelGenerator.buildLevel(2, 1);
+        }
+        else if(levelNumber == 3)
+        {
+            // Builds the new level.
+            levelGenerator.buildLevel(2, 2);
+        }
 
         // Updates the UI thread to add all of the new level objects to the screen.
         game.render();
@@ -109,7 +122,7 @@ public class Level implements View.OnTouchListener
                 {
                     for (AnimatedSprite object : getLevelObjects())
                     {
-                        if ((object.getID() == ObjectID.PLAYER) || (object.getID() == ObjectID.ENEMY))
+                        if ((object.getID() == ObjectID.CHARACTERONE) || (object.getID() == ObjectID.CHARACTERTWO))
                         {
                             if (touchCollisionTest(object))
                             {
@@ -149,7 +162,7 @@ public class Level implements View.OnTouchListener
                     {
                         for (AnimatedSprite object : getLevelObjects())
                         {
-                            if ((object.getID() == ObjectID.PLAYER) || (object.getID() == ObjectID.ENEMY))
+                            if ((object.getID() == ObjectID.CHARACTERONE) || (object.getID() == ObjectID.CHARACTERONE))
                             {
                                 if(!object.isUsingCameraImage())
                                 {
@@ -190,7 +203,7 @@ public class Level implements View.OnTouchListener
                 }
 
                 // Animates and moves all of the player characters.
-                if (object.getID() == ObjectID.PLAYER)
+                if (object.getID() == ObjectID.CHARACTERONE || object.getID() == ObjectID.CHARACTERTWO)
                 {
                     DynamicBody playerSprite = (DynamicBody) object.body.getUserData();
                     playerSprite.updateBody();
@@ -251,7 +264,8 @@ public class Level implements View.OnTouchListener
 
                 // Collision test.
                 // If the player is in contact with the ground.
-                if((gameObjectA.getID() == ObjectID.PLAYER && gameObjectB.getID() == ObjectID.OBSTACLE))
+                if((gameObjectA.getID() == ObjectID.CHARACTERONE && gameObjectB.getID() == ObjectID.OBSTACLE)
+                    || (gameObjectA.getID() == ObjectID.CHARACTERTWO) && gameObjectB.getID() == ObjectID.OBSTACLE)
                 {
                     // Do collision response here...
                     // Change back to the hurt animation.
@@ -272,6 +286,9 @@ public class Level implements View.OnTouchListener
 
     public void update(final float dt)
     {
+        // If the level has been completed.
+        finishedLevel();
+
         // Incrementing player distance.
         updatePlayerDistance();
 
@@ -323,6 +340,24 @@ public class Level implements View.OnTouchListener
                 }
             }
         }.start();
+    }
+
+    private void finishedLevel()
+    {
+        if(levelNumber == 1)
+        {
+            if (player.distance == 10)
+            {
+                newLevel();
+            }
+        }
+        else if(levelNumber >= 2)
+        {
+            if(player.distance == 15)
+            {
+                newLevel();
+            }
+        }
     }
 
     // Getters.

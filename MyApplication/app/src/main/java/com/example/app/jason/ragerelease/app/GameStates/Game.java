@@ -204,6 +204,7 @@ public class Game extends Activity
                         {
                             // Add all of the randomly generated objects whenever I want to the level.
                             level.addToView();
+                            level.player.distanceText.bringToFront();
                         }
                     });
 
