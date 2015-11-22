@@ -48,6 +48,8 @@ public class Level implements View.OnTouchListener
         levelGenerator.buildLevel(1, 1);    // Builds the first level.
         levelGenerator.addToView();
         player.distanceText.bringToFront();
+        player.setGameOver(false);
+        player.setPaused(false);
         scheduler = Executors.newSingleThreadScheduledExecutor();
 
         // This schedules respawning an obstacle once it has gone off screen.
@@ -57,7 +59,7 @@ public class Level implements View.OnTouchListener
             @Override
             public void run()
             {
-                if(!player.isPaused())
+                if(!player.isPaused() && !player.isGameOver())
                 {
                     player.distance++;
                 }
