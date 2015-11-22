@@ -8,6 +8,7 @@ import android.widget.Button;
 
 import com.example.app.jason.ragerelease.R;
 import com.example.app.jason.ragerelease.app.Framework.NavigationButton;
+import com.example.app.jason.ragerelease.app.Framework.SensorHandler;
 
 /**
  * Created by Jason Mottershead on 17/10/2015.
@@ -18,7 +19,7 @@ import com.example.app.jason.ragerelease.app.Framework.NavigationButton;
 public class MainMenu extends Activity
 {
     // Attributes.
-
+    SensorHandler sensorHandler = null;
 
     // Methods.
     @Override
@@ -33,10 +34,27 @@ public class MainMenu extends Activity
         final Button creditsButton = (Button) findViewById(R.id.creditsButton);
         final NavigationButton button = new NavigationButton();
 
+        // Setting up the sensor.
+        sensorHandler = new SensorHandler(this, SENSOR_SERVICE);
+
         // If any of the buttons are pressed on the main menu.
         // Take the user to the correct activity depending on the button pressed.
         button.isPressed(playButton, this, SelectionScreen.class);
         button.isPressed(optionsButton, this, Options.class);
         button.isPressed(creditsButton, this, Credits.class);
+    }
+
+    @Override
+    protected void onResume()
+    {
+        super.onResume();
+        sensorHandler.registerListener();
+    }
+
+    @Override
+    protected void onPause()
+    {
+        super.onPause();
+        sensorHandler.unregisterListener();
     }
 }
