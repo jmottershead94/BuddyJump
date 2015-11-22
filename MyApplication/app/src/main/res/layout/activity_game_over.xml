@@ -28,11 +28,21 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceMedium"
-        android:text="Medium Text"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Distance"
         android:id="@+id/gameOverDistanceText"
-        android:layout_alignStart="@+id/gameOverText"
-        android:layout_marginTop="75dp"/>
+        android:layout_above="@+id/gameOverMainMenuButton"
+        android:layout_toStartOf="@+id/gameOverMainMenuButton"
+        android:layout_marginBottom="29dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceSmall"
+        android:text="Level Number"
+        android:id="@+id/gameOverLevelNumberText"
+        android:layout_alignTop="@+id/gameOverDistanceText"
+        android:layout_toEndOf="@+id/gameOverMainMenuButton" />
 
     <Button
         android:layout_width="wrap_content"

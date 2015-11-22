@@ -32,14 +32,17 @@ public class GameOver extends Activity
         // Load in options here...
         SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
         final int distance = gameSettings.getInt("mplayerDistance", 0);
+        final int levelNumber = gameSettings.getInt("mlevelNumber", 0);
 
         // Setting up the button to go back to the main menu.
         final Button mainMenuButton = (Button) findViewById(R.id.gameOverMainMenuButton);
         final NavigationButton button = new NavigationButton();
         final TextView distanceText = (TextView) findViewById(R.id.gameOverDistanceText);
+        final TextView levelNumberText = (TextView) findViewById(R.id.gameOverLevelNumberText);
 
         // Getting the final distance score for the player.
         distanceText.setText("Final Distance: " + distance);
+        levelNumberText.setText("Level Number: " + levelNumber);
 
         // If the main menu button has been pressed.
         // Navigate the user back to the main menu.

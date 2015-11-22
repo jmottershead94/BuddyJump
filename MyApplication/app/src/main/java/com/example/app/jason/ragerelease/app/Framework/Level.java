@@ -28,7 +28,7 @@ public class Level implements View.OnTouchListener
 {
     // Attributes.
     private static final String TAG = "TKT";
-    private int levelNumber = 1;
+    public int levelNumber = 1;
     public Game game = null;
     public LevelGenerator levelGenerator = null;
     public Player player = null;
@@ -86,6 +86,11 @@ public class Level implements View.OnTouchListener
             levelGenerator.buildLevel(2, 1);
         }
         else if(levelNumber == 3)
+        {
+            // Builds the new level.
+            levelGenerator.buildLevel(1, 2);
+        }
+        else if(levelNumber >= 4)
         {
             // Builds the new level.
             levelGenerator.buildLevel(2, 2);
@@ -346,14 +351,14 @@ public class Level implements View.OnTouchListener
     {
         if(levelNumber == 1)
         {
-            if (player.distance == 30)
+            if (player.distance == 10)
             {
                 newLevel();
             }
         }
         else if(levelNumber >= 2)
         {
-            if(player.distance == 45)
+            if(player.distance == 15)
             {
                 newLevel();
             }

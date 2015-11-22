@@ -161,13 +161,15 @@ public class Game extends Activity
     {
         if(level.player.isGameOver())
         {
+            // Return to the main menu.
+            Intent intent = new Intent(this, GameOver.class);
+
             // Clear the current level.
             level.levelGenerator.clearLevel();
             level.player.setGameOver(false);
             level.player.setPaused(false);
 
-            // Return to the main menu.
-            Intent intent = new Intent(this, GameOver.class);
+            // Go back to the main menu.
             startActivity(intent);
         }
     }
@@ -224,15 +226,12 @@ public class Game extends Activity
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState)
     {
-        final CharSequence saveMessage = "Distance score saved.";
-
         // Save UI changes to the savedInstanceState.
         // This bundle will be passed to onCreate if the process is killed or restarted.
         savedInstanceState.putInt("mplayerDistance", level.player.distance);
+        savedInstanceState.putInt("mlevelNumber", level.levelNumber);
 
         super.onSaveInstanceState(savedInstanceState);
-
-        Toast.makeText(this, saveMessage, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -244,6 +243,7 @@ public class Game extends Activity
         SharedPreferences.Editor editor = gameSettings.edit();
 
         editor.putInt("mplayerDistance", level.player.distance);
+        editor.putInt("mlevelNumber", level.levelNumber);
 
         editor.apply();
     }
