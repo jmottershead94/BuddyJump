@@ -91,13 +91,18 @@ public class Sprite extends View
 //        invalidate();
     }
 
-    // It is not possible to set an image to the drawables folder during runtime. :(
-    // May have to leave out camera images.
-    public void setCameraImage(final Bitmap cameraImage)
+    public void loadCameraImage(final Bitmap cameraImage)
     {
         usingCameraImage = true;
         image = cameraImage;
         sprite = Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight());
+    }
+
+    // It is not possible to set an image to the drawables folder during runtime. :(
+    // Using a camera image makes the game lag a lot.
+    // May have to leave out camera images.
+    public void setCameraImage()
+    {
         float imageUConversion = image.getWidth();
         float imageVConversion = image.getHeight();
 
@@ -110,11 +115,15 @@ public class Sprite extends View
         textureDimensions = new Vector2(1.0f * imageUConversion, 1.0f * imageVConversion);
     }
 
-    public void setTexture(final int resourceDrawableID, Vector2 textureCoords, Vector2 textureDimen)
+    public void loadTexture(final int resourceDrawableID)
     {
         usingCameraImage = false;
         image = BitmapFactory.decodeResource(getResources(), resourceDrawableID);
         sprite = Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight());
+    }
+
+    public void setTexture(Vector2 textureCoords, Vector2 textureDimen)
+    {
         float imageUConversion = image.getWidth();
         float imageVConversion = image.getHeight();
 
