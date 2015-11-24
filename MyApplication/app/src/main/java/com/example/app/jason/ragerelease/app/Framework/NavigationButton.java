@@ -27,7 +27,6 @@ public class NavigationButton
                 // Creating a new intent/activity.
                 Intent intent = new Intent(currentActivity, nextActivityClass);
 
-
                 // Starting the new activity.
                 currentActivity.startActivity(intent);
             }

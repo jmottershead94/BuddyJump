@@ -81,8 +81,6 @@ public class CameraHandler extends Activity
             cursor.close();
         }
 
-
-
         return null;
     }
 
