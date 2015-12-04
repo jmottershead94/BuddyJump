@@ -41,10 +41,8 @@ public class Game extends Activity
     // Standard library attributes.
     private static final long desiredFPS = 60;                                  // The desired frame rate for the game.
     private static final String PREFS_NAME = "MyPrefsFile";                     // Where the options will be saved to, whether they are true or false.
-    private static int playerImageIndex = 0;                                    // What image the player currently wants to use for their character in the game.
-    private static int companionImageIndex = 0;                                     // What image the player current wants to use for their enemy in the game.
-    private int playerImage = 0;
-    private int companionImage = 0;
+    private int playerImage = 0;                                                // The current player image.
+    private int companionImage = 0;                                             // The current companion image.
 
     // Android attributes.
     private RelativeLayout background = null;                                   // Gives access to the relative layout background for the game.
@@ -60,17 +58,18 @@ public class Game extends Activity
     private Resources resources = null;                                         // Gives access to certain repeated resources (context, the game background, screen width , screen height, and the world), and narrows down parameters passed down.
 
     // Methods.
+    //////////////////////////////////////////////////
+    //                  On Create                   //
+    //==============================================//
+    //  This will set the layout and create the     //
+    //  activity on the first step into the Android //
+    //  lifecycle.                                  //
+    //////////////////////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_game);
-    }
-
-    @Override
-    public void onResume()
-    {
-        super.onResume();
 
         // Initialise the game.
         init();
@@ -95,13 +94,17 @@ public class Game extends Activity
         world = new World(gravity, false);
     }
 
-    // An initialisation function for setting up the game.
+    //////////////////////////////////////////////////
+    //                   Init                       //
+    //==============================================//
+    //  This will initialise the game, load in      //
+    //  options, set up Box2D, and set up the game  //
+    //  thread.                                     //
+    //////////////////////////////////////////////////
     private void init()
     {
         // Load in options here...
         SharedPreferences gameSettings = getSharedPreferences(PREFS_NAME, MODE_PRIVATE);
-        playerImageIndex = gameSettings.getInt("mplayerImageIndex", 0);
-        companionImageIndex = gameSettings.getInt("mcompanionImageIndex", 0);
         playerImage = gameSettings.getInt("mplayerImage", 0);
         companionImage = gameSettings.getInt("mcompanionImage", 0);
 
@@ -125,13 +128,12 @@ public class Game extends Activity
         level.init(resources, this, playerImage, companionImage);
     }
 
-    //////////////////////////////////////////////////////////
-    //======================================================//
-    //				        update   						//
-    //======================================================//
-    // This function will be called every frame.            //
-    // All update calls will be processed here.             //
-    //////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////
+    //				        Update   				//
+    //==============================================//
+    // This function will be called every frame.    //
+    // All update calls will be processed here.     //
+    //////////////////////////////////////////////////
     public void update(float dt)
     {
         // Setting up the time step and iterations for jbox2D.
@@ -141,7 +143,7 @@ public class Game extends Activity
 
         checkGameOver();
 
-        // If the player has not paused the game.
+        // If the player has not paused the game and the game is not yet over.
         if(!level.player.isPaused() && !level.player.isGameOver())
         {
             // Update the physics engine.
@@ -157,6 +159,14 @@ public class Game extends Activity
         level.player.uiControls(pauseButton);
     }
 
+    //////////////////////////////////////////////////
+    //                 Check Game Over              //
+    //==============================================//
+    //  This will check to see if the player in the //
+    //  level is in a game over state.              //
+    //  If so, we should change over to the game    //
+    //  over activity.                              //
+    //////////////////////////////////////////////////
     private void checkGameOver()
     {
         if(level.player.isGameOver())
@@ -223,6 +233,16 @@ public class Game extends Activity
         }.start();
     }
 
+    //////////////////////////////////////////////////
+    //              On Save Instance State          //
+    //==============================================//
+    //  This will save the current player distance. //
+    //  This is called if the phone orientation     //
+    //  changes, or if for any reason the phone     //
+    //  is forced out of this activity and into     //
+    //  another application (i.e. like a phone      //
+    //  call).                                      //
+    //////////////////////////////////////////////////
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState)
     {
@@ -234,6 +254,16 @@ public class Game extends Activity
         super.onSaveInstanceState(savedInstanceState);
     }
 
+    //////////////////////////////////////////////////
+    //                  On Pause                    //
+    //==============================================//
+    //  This will save the current player distance, //
+    //  and save it to the device for future        //
+    //  reference.                                  //
+    //  This will be called when we are leaving     //
+    //  this activity.                              //
+    //  When another activity is in the foreground. //
+    //////////////////////////////////////////////////
     @Override
     protected void onPause()
     {

@@ -17,10 +17,14 @@ import com.example.app.jason.ragerelease.app.Framework.NavigationButton;
 // This class will create a title screen, and will provide access to the main menu.
 public class TitleScreen extends Activity
 {
-    // Attributes.
-
-
-    // Methods.
+     // Methods.
+     //////////////////////////////////////////////////
+     //                  On Create                   //
+     //==============================================//
+     //  This will set the layout and create the     //
+     //  activity on the first step into the Android //
+     //  lifecycle.                                  //
+     //////////////////////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

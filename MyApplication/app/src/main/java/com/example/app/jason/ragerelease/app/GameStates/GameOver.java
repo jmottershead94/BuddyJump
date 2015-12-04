@@ -16,13 +16,21 @@ import com.example.app.jason.ragerelease.app.Framework.NavigationButton;
  */
 
 // GameOver IS AN Activity, therefore inherits from it.
-// This class will provide credit where it is due.
+// This class will provide a game over screen.
 public class GameOver extends Activity
 {
     // Attributes.
-    private static final String PREFS_NAME = "MyPrefsFile";                     // Getting access to the player distance.
+    // Private.
+    private static final String PREFS_NAME = "MyPrefsFile";
 
     // Methods.
+    //////////////////////////////////////////////////
+    //                  On Create                   //
+    //==============================================//
+    //  This will set the layout and create the     //
+    //  activity on the first step into the Android //
+    //  lifecycle.                                  //
+    //////////////////////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

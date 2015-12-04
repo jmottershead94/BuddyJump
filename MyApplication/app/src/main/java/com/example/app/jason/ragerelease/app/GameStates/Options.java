@@ -30,6 +30,7 @@ import com.example.app.jason.ragerelease.app.Framework.NavigationButton;
 public class Options extends Activity
 {
     // Attributes.
+    // Private.
     private static final String PREFS_NAME = "MyPrefsFile";
     private final int duration = Toast.LENGTH_SHORT;
     private boolean playerCameraCheckedStatus = false;
@@ -37,11 +38,19 @@ public class Options extends Activity
     private RelativeLayout background;
     private Switch optionOne = null;
     private RadioGroup radioGroup = null;
-    RadioButton morningButton = null;
-    RadioButton afternoonButton = null;
-    RadioButton nightButton = null;
+    private RadioButton morningButton = null;
+    private RadioButton afternoonButton = null;
+    private RadioButton nightButton = null;
 
     // Methods.
+    //////////////////////////////////////////////////
+    //                  On Create                   //
+    //==============================================//
+    //  This will set the layout and create the     //
+    //  activity on the first step into the Android //
+    //  lifecycle, and we shall also load in any    //
+    //  previously saved options.                   //
+    //////////////////////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -90,6 +99,15 @@ public class Options extends Activity
         button.isPressed(mainMenuButton, this, MainMenu.class);
     }
 
+    //////////////////////////////////////////////////
+    //               Option Responses               //
+    //==============================================//
+    //  With our access to the current option       //
+    //  states, we will provide a response so that  //
+    //  the user is given some feedback, and so     //
+    //  that we can register the result of the      //
+    //  option.                                     //
+    //////////////////////////////////////////////////
     private void OptionResponses()
     {
         // Local attributes.
@@ -167,6 +185,17 @@ public class Options extends Activity
         });
     }
 
+    //////////////////////////////////////////////////
+    //              On Save Instance State          //
+    //==============================================//
+    //  This will save the currently selected       //
+    //  options.                                    //
+    //  This is called if the phone orientation     //
+    //  changes, or if for any reason the phone     //
+    //  is forced out of this activity and into     //
+    //  another application (i.e. like a phone      //
+    //  call).                                      //
+    //////////////////////////////////////////////////
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState)
     {
@@ -186,6 +215,16 @@ public class Options extends Activity
         Toast.makeText(this, saveMessage, duration).show();
     }
 
+    //////////////////////////////////////////////////
+    //            On Restore Instance State         //
+    //==============================================//
+    //  This will place the current selected option //
+    //  back into the local boolean attribute.      //
+    //  This will be called once the application    //
+    //  returns to this activity when being         //
+    //  previously forced out of it. From a phone   //
+    //  call or a screen rotation.                  //
+    //////////////////////////////////////////////////
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState)
     {
@@ -198,6 +237,14 @@ public class Options extends Activity
         nightSky = savedInstanceState.getBoolean("mnightSky");
     }
 
+    //////////////////////////////////////////////////
+    //                  On Key Down                 //
+    //==============================================//
+    //  In case the user presses the back key       //
+    //  instead of using the save button, this will //
+    //  let the user know that their option         //
+    //  selection has already been saved.           //
+    //////////////////////////////////////////////////
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
@@ -211,6 +258,16 @@ public class Options extends Activity
         return super.onKeyDown(keyCode, event);
     }
 
+    //////////////////////////////////////////////////
+    //                  On Pause                    //
+    //==============================================//
+    //  This will save the currently selected       //
+    //  option states, and save it to the device    //
+    //  for future reference.                       //
+    //  This will be called when we are leaving     //
+    //  this activity.                              //
+    //  When another activity is in the foreground. //
+    //////////////////////////////////////////////////
     @Override
     protected void onPause()
     {

@@ -10,22 +10,17 @@ public class MainThread extends Thread
 {
     // Attributes.
     // Private attributes.
-    // Standard library attributes.
-    private static long FPS = 0;                // Used to keep track of the FPS from the game activity.
-    private static final String TAG = "TKT";    // Used for debugging.
-    private boolean isRunning = false;          // To check to see if the thread is currently running or not.
-
-    // My framework attributes.
-    private Game gameView = null;               // Gives access to the game activity.
+    private static long FPS = 0;
+    private boolean isRunning = false;
+    private Game gameView = null;
 
     // Methods.
-    //////////////////////////////////////////////////////////
-    //======================================================//
-    //					    Constructor						//
-    //======================================================//
-    // This will set up the main thread attributes, some    //
-    // passed down from the game activity.                  //
-    //////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////
+    //					Constructor				    //
+    //==============================================//
+    // This will set up the main thread attributes, //
+    // some passed down from the game activity.     //
+    //////////////////////////////////////////////////
     public MainThread(final Game game, final long desiredFPS)
     {
         // Setting up the main thread constructor.
@@ -36,14 +31,13 @@ public class MainThread extends Thread
         FPS = desiredFPS;
     }
 
-    //////////////////////////////////////////////////////////
-    //======================================================//
-    //					        run					        //
-    //======================================================//
-    // This will update the game every frame and be used to //
-    // keep a steady frame rate. Hopefully keep around      //
-    // 60FPS.                                               //
-    //////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////
+    //					   Run					    //
+    //==============================================//
+    // This will update the game every frame and be //
+    // used to keep a steady frame rate. Hopefully  //
+    // keep around 60FPS.                           //
+    //////////////////////////////////////////////////
     @Override
     public void run()
     {
@@ -78,13 +72,8 @@ public class MainThread extends Thread
         }
     }
 
-    //////////////////////////////////////////////////////////
-    //======================================================//
-    //					    setRunning  			        //
-    //======================================================//
-    // This function will set the private running attribute //
-    // of this thread.                                      //
-    //////////////////////////////////////////////////////////
+    // Setters.
+    // This function will set the private running attribute of this thread.
     public void setRunning(final boolean running) {
         isRunning = running;
     }

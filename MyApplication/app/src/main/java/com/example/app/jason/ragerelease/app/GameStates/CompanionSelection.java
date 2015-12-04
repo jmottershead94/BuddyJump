@@ -13,12 +13,14 @@ import com.example.app.jason.ragerelease.app.Framework.CharacterSelection;
  * Created by Jason Mottershead on 17/10/2015.
  */
 
-// Enemy Selection IS A Character Selection, therefore inherits from it.
+// Companion Selection IS A Character Selection, therefore inherits from it.
+// This will allow us to place in any images we want the companion to use.
 public class CompanionSelection extends CharacterSelection
 {
     // Attributes.
+    // Private.
     private int currentCompanionImageIndex = 0;
-    private int[] companionImages =                      // Getting access to the images from the drawable folder.
+    private int[] companionImages =
     {
             R.drawable.p1_front, R.drawable.p2_front,
             R.drawable.p3_front, R.drawable.p4_front,
@@ -27,6 +29,13 @@ public class CompanionSelection extends CharacterSelection
     };
 
     // Methods.
+    //////////////////////////////////////////////////
+    //                  On Create                   //
+    //==============================================//
+    //  This will set the layout and create the     //
+    //  activity on the first step into the Android //
+    //  lifecycle.                                  //
+    //////////////////////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

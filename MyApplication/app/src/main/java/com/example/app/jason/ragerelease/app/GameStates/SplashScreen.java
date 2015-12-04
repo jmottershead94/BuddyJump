@@ -17,10 +17,14 @@ import com.example.app.jason.ragerelease.R;
 // This class will provide a graphic-based splash screen.
 public class SplashScreen extends Activity
 {
-    // Attributes.
-    
-
     // Methods.
+    //////////////////////////////////////////////////
+    //                  On Create                   //
+    //==============================================//
+    //  This will set the layout and create the     //
+    //  activity on the first step into the Android //
+    //  lifecycle.                                  //
+    //////////////////////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

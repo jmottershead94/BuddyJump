@@ -17,10 +17,14 @@ import com.example.app.jason.ragerelease.app.Framework.NavigationButton;
 // This class will provide credit where it is due.
 public class Credits extends Activity
 {
-    // Attributes.
-
-
     // Methods.
+    //////////////////////////////////////////////////
+    //                  On Create                   //
+    //==============================================//
+    //  This will set the layout and create the     //
+    //  activity on the first step into the Android //
+    //  lifecycle.                                  //
+    //////////////////////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {

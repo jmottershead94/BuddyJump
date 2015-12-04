@@ -230,7 +230,7 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
     //  This will save the currently selected       //
     //  sprite image index, and save it to the      //
     //  device for future reference.                //
-    //  This will be called right after we leave    //
+    //  This will be called when we are leaving     //
     //  this activity.                              //
     //  When another activity is in the foreground. //
     //////////////////////////////////////////////////

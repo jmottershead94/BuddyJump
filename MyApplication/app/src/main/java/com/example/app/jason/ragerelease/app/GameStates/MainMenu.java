@@ -19,9 +19,17 @@ import com.example.app.jason.ragerelease.app.Framework.SensorHandler;
 public class MainMenu extends Activity
 {
     // Attributes.
-    SensorHandler sensorHandler = null;
+    // Private.
+    private SensorHandler sensorHandler = null;
 
     // Methods.
+    //////////////////////////////////////////////////
+    //                  On Create                   //
+    //==============================================//
+    //  This will set the layout and create the     //
+    //  activity on the first step into the Android //
+    //  lifecycle.                                  //
+    //////////////////////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
@@ -44,6 +52,14 @@ public class MainMenu extends Activity
         button.isPressed(creditsButton, this, Credits.class);
     }
 
+    //////////////////////////////////////////////////
+    //                  On Resume                   //
+    //==============================================//
+    //  When we have come back to the activity, we  //
+    //  should register our listener for the sensor //
+    //  data, because we want to listen out for any //
+    //  sensor data when we are in this activity.   //
+    //////////////////////////////////////////////////
     @Override
     protected void onResume()
     {
@@ -51,6 +67,13 @@ public class MainMenu extends Activity
         sensorHandler.registerListener();
     }
 
+    //////////////////////////////////////////////////
+    //                  On Pause                    //
+    //==============================================//
+    //  When we are leaving the activity, we no     //
+    //  longer want to listen out for sensor data,  //
+    //  so unregister the sensor handler.           //
+    //////////////////////////////////////////////////
     @Override
     protected void onPause()
     {

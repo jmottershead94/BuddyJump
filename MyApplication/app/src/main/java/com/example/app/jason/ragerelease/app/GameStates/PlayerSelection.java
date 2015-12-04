@@ -2,11 +2,8 @@
 package com.example.app.jason.ragerelease.app.GameStates;
 
 // All of the extra includes here.
-import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
-import android.view.KeyEvent;
-import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.app.jason.ragerelease.R;
@@ -17,11 +14,13 @@ import com.example.app.jason.ragerelease.app.Framework.CharacterSelection;
  */
 
 // Player Selection IS A Character Selection, therefore inherits from it.
+// This will allow us to place in any images we want the player to be able to chose from.
 public class PlayerSelection extends CharacterSelection
 {
     // Attributes.
+    // Private.
     private int currentPlayerImageIndex = 0;
-    private int[] playerImages =                      // Getting access to the images from the drawable folder.
+    private int[] playerImages =
     {
             R.drawable.p1_front, R.drawable.p2_front,
             R.drawable.p3_front, R.drawable.p4_front,
@@ -30,6 +29,13 @@ public class PlayerSelection extends CharacterSelection
     };
 
     // Methods.
+    //////////////////////////////////////////////////
+    //                  On Create                   //
+    //==============================================//
+    //  This will set the layout and create the     //
+    //  activity on the first step into the Android //
+    //  lifecycle.                                  //
+    //////////////////////////////////////////////////
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
