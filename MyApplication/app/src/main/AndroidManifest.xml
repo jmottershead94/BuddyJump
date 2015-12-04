@@ -32,47 +32,45 @@
         <!-- Setting the Title Screen activity. -->
         <activity
             android:name=".app.GameStates.TitleScreen"
-            android:label="Rage Release">
+            android:label="@string/app_name">
         </activity>
 
         <!-- Setting the Main Menu activity. -->
         <activity
             android:name=".app.GameStates.MainMenu"
-            android:label="Rage Release">
+            android:label="@string/app_name">
         </activity>
 
         <!-- Setting the Player Selection activity. -->
         <activity
             android:name=".app.GameStates.SelectionScreen"
-            android:label="Rage Release">
+            android:label="@string/app_name">
         </activity>
 
         <!-- Setting the Player Selection activity. -->
         <activity
             android:name=".app.GameStates.PlayerSelection"
-            android:label="Rage Release">
+            android:label="@string/app_name">
         </activity>
-
-        <!-- Setting the Enemy Selection activity. -->
 
         <!-- Setting the Companion Selection activity. -->
         <activity
             android:name=".app.GameStates.CompanionSelection"
-            android:label="Rage Release">
+            android:label="@string/app_name">
         </activity>
 
         <!-- Setting the Game activity. -->
         <activity
             android:name=".app.GameStates.Game"
-            android:label="Rage Release"
+            android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:configChanges="orientation|keyboardHidden">
         </activity>
 
-        <!-- Setting the Game activity. -->
+        <!-- Setting the Game Over activity. -->
         <activity
             android:name=".app.GameStates.GameOver"
-            android:label="Rage Release"
+            android:label="@string/app_name"
             android:screenOrientation="landscape"
             android:configChanges="orientation|keyboardHidden">
         </activity>
@@ -80,13 +78,13 @@
         <!-- Setting the Options activity. -->
         <activity
             android:name=".app.GameStates.Options"
-            android:label="Rage Release">
+            android:label="@string/app_name">
         </activity>
 
         <!-- Setting the Credits activity. -->
         <activity
             android:name=".app.GameStates.Credits"
-            android:label="Rage Release">
+            android:label="@string/app_name">
         </activity>
 
     </application>

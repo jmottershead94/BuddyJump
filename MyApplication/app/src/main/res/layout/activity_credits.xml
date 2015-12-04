@@ -2,38 +2,43 @@
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/lightBlue">
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="CREDITS STATE"
+        android:textAppearance="?android:attr/textAppearanceLarge"
+        android:textStyle="bold"
+        android:text="CREDITS"
         android:id="@+id/creditsTextView"
         android:layout_alignParentTop="true"
-        android:layout_alignParentStart="true" />
-
-    <ImageView
-        android:layout_width="256dp"
-        android:layout_height="256dp"
-        android:id="@+id/imageView"
-        android:src="@drawable/splash_screen"
-        android:layout_below="@+id/creditsTextView"
-        android:layout_alignParentStart="true" />
+        android:layout_centerHorizontal="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="@string/box2D_credit"
         android:id="@+id/box2DCredit"
-        android:layout_below="@+id/imageView"
-        android:layout_alignParentStart="true" />
+        android:layout_below="@+id/creditsTextView"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="60dp" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/sprite_credit"
+        android:id="@+id/spriteCreditTextView"
+        android:layout_below="@+id/box2DCredit"
+        android:layout_alignParentStart="true"
+        android:layout_marginTop="47dp" />
 
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Main Menu"
         android:id="@+id/mainMenuButton"
+        android:background="@color/reallyLightBlue"
         android:layout_alignParentBottom="true"
         android:layout_alignParentStart="true" />
 
