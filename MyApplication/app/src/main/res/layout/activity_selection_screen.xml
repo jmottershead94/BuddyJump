@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Setting up the selection screen activity. -->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/selectionScreenBackground"
@@ -6,6 +8,7 @@
     android:layout_height="match_parent"
     android:background="@color/lightBlue">
 
+    <!-- This is the text to tell the player that they are on the selection screen activity for selecting characters. -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -15,6 +18,7 @@
         android:id="@+id/gameTextView"
         android:layout_centerHorizontal="true" />
 
+    <!-- This button will go to the player character selection screen. -->
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -25,6 +29,7 @@
         android:layout_marginTop="68dp"
         android:background="@color/reallyLightBlue"/>
 
+    <!-- This button will go to the companion character selection screen. -->
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -36,6 +41,7 @@
         android:layout_alignEnd="@+id/playerSelectionButton"
         android:background="@color/reallyLightBlue"/>
 
+    <!-- This button will go to the main menu. -->
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -45,6 +51,7 @@
         android:layout_alignParentStart="true"
         android:background="@color/reallyLightBlue"/>
 
+    <!-- This button will play the game with the currently saved sprites. -->
     <Button
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"

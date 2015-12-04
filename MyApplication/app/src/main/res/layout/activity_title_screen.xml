@@ -1,4 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
+
+<!-- Setting up the title screen activity. -->
 <RelativeLayout
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/titleScreenBackground"
@@ -7,6 +9,7 @@
     android:layout_height="match_parent"
     android:background="@color/lightBlue">
 
+    <!-- This is the title screen text - it displays the name of the game. -->
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -17,6 +20,7 @@
         android:layout_centerVertical="true"
         android:layout_centerHorizontal="true" />
 
+    <!-- This is the button to go to the main menu. -->
     <Button
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
