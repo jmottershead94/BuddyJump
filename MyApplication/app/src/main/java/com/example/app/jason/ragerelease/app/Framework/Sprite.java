@@ -4,6 +4,7 @@ import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
+import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.Rect;
 import android.view.View;
@@ -65,13 +66,15 @@ public class Sprite extends View
     //==============================================//
     //  Sets the vector 2 for the position.
     //////////////////////////////////////////////////
-    public void setPosition(float x, float y) {
+    public void setPosition(float x, float y)
+    {
         position.set(x, y);
         postInvalidate();
 //        invalidate();
     }
 
-    public void setDimensions(float width, float height) {
+    public void setDimensions(float width, float height)
+    {
         dimension.set(width, height);
         postInvalidate();
 //        invalidate();
@@ -95,7 +98,7 @@ public class Sprite extends View
     {
         usingCameraImage = true;
         image = cameraImage;
-        sprite = Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight());
+        sprite = getResizedBitmap(cameraImage, (image.getWidth() / 8), (image.getHeight() / 8)); //Bitmap.createBitmap(image, 0, 0, (image.getWidth() / 4), (image.getHeight() / 4));
     }
 
     // It is not possible to set an image to the drawables folder during runtime. :(
@@ -113,6 +116,25 @@ public class Sprite extends View
         // Setting the width and height of each sprite.
         // Using the full camera image for testing.
         textureDimensions = new Vector2(1.0f * imageUConversion, 1.0f * imageVConversion);
+    }
+
+    public Bitmap getResizedBitmap(Bitmap bitmapImage, int newWidth, int newHeight)
+    {
+        int width = bitmapImage.getWidth();
+        int height = bitmapImage.getHeight();
+        float scaleWidth = (float)newWidth / (float)width;
+        float scaleHeight = (float)newHeight / (float)height;
+
+        // Creating a matrix for image manipulation.
+        Matrix matrix = new Matrix();
+
+        // Scaling the bitmap.
+        matrix.postScale(scaleWidth, scaleHeight);
+
+        // Recreating the new scaled down bitmap image.
+        Bitmap resizedBitmapImage = Bitmap.createBitmap(bitmapImage, 0, 0, width, height, matrix, false);
+
+        return resizedBitmapImage;
     }
 
     public void loadTexture(final int resourceDrawableID)

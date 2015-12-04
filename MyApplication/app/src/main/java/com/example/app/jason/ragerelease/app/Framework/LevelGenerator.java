@@ -202,13 +202,20 @@ public class LevelGenerator
         }
     }
 
-    private void setImage(AnimatedSprite object)
+    private void setImage(final AnimatedSprite object)
     {
-        // Getting access to the camera properties.
-        CameraHandler cameraHandler = new CameraHandler(resources);
+        resources.getActivity().runOnUiThread(new Runnable()
+        {
+            @Override
+            public void run()
+            {
+                // Getting access to the camera properties.
+                CameraHandler cameraHandler = new CameraHandler(resources);
 
-        // Storing the last taken image in the gallery into a bitmap.
-        cameraImage = cameraHandler.getLastPicture();
+                // Storing the last taken image in the gallery into a bitmap.
+                cameraImage = cameraHandler.getLastPicture();
+            }
+        });
 
         // Loading the bitmap camera image to use on the sprite.
         object.loadCameraImage(cameraImage);
@@ -288,8 +295,11 @@ public class LevelGenerator
                     // Otherwise, the object has a texture.
                     else if(object.image != null)
                     {
-                        // Set the texture to be transparent.
-                        object.removeTexture();
+                        //if(!object.isUsingCameraImage())
+                        //{
+                            // Set the texture to be transparent.
+                            object.removeTexture();
+                        //}
                     }
 
                     if(object.body != null)
