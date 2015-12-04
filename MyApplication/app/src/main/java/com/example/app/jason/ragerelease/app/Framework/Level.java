@@ -353,14 +353,14 @@ public class Level implements View.OnTouchListener
     {
         if(levelNumber == 1)
         {
-            if (player.distance == 10)
+            if (player.distance == 18)
             {
                 newLevel();
             }
         }
         else if(levelNumber >= 2)
         {
-            if(player.distance == 15)
+            if(player.distance == 28)
             {
                 newLevel();
             }
