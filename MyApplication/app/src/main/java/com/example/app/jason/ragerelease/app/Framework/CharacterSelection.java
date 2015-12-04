@@ -42,12 +42,13 @@ import org.w3c.dom.Text;
 public class CharacterSelection extends Activity implements AdapterView.OnItemClickListener
 {
     // Attributes.
-    protected static final String PREFS_NAME = "MyPrefsFile";                   // Where the options will be saved to, whether they are true or false.
+    // Protected.
+    protected static final String PREFS_NAME = "MyPrefsFile";
     protected Button saveButton;
     protected NavigationButton button;
 
-    private static final String TAG = "TKT";                                    // Used for debugging.
-    private boolean optionOneChecked;                                           // Used for gaining access to the options from the options activity.
+    // Private.
+    private boolean optionOneChecked;
     private boolean playerSelect = false;
     private RelativeLayout background = null;
     private GridView imageSelectionView = null;
@@ -59,10 +60,19 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
     private CameraHandler cameraHandler = null;
 
     // Methods.
-    // An initialisation function for setting up the game.
+    //////////////////////////////////////////////////
+    //                      Init                    //
+    //==============================================//
+    //  This will set up the attributes and images  //
+    //  used for either the player, or the          //
+    //  companion.                                  //
+    //  As well as deciding whether or not the      //
+    //  player wants to take a camera image for the //
+    //  sprite or not.                              //
+    //////////////////////////////////////////////////
     protected void init(String selectionMessage, String settingsName, String imageSettings)
     {
-        // Initialising variables.
+        // Initialising attributes.
         final TextView textView = (TextView) findViewById(R.id.characterSelectionTextView);
         saveButton = (Button) findViewById(R.id.saveButton);
         button = new NavigationButton();
@@ -89,13 +99,14 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
         button.isPressed(saveButton, this, SelectionScreen.class);
     }
 
-    //////////////////////////////////////////////////////////
-    //======================================================//
-    //				    applyOptions   						//
-    //======================================================//
-    // This function will check to see the current state of //
-    // the options, and provide an appropriate response.    //
-    //////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////
+    //==============================================//
+    //				    applyOptions   				//
+    //==============================================//
+    // This function will check to see the current  //
+    // state of the options, and provide an         //
+    // appropriate response.                        //
+    //////////////////////////////////////////////////
     protected void applyOptions(final Context context, int[] images, boolean playerSelection)
     {
         playerSelect = playerSelection;
@@ -122,12 +133,29 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
         }
     }
 
+    //////////////////////////////////////////////////
+    //                  On Item Click               //
+    //==============================================//
+    //  This will let us know when a grid view      //
+    //  item has been clicked on.                   //
+    //////////////////////////////////////////////////
     public void onItemClick(AdapterView<?> parent, View gridElement, int position, long id)
     {
         currentImageIndex = position;
         Toast.makeText(this, "" + position, Toast.LENGTH_SHORT).show();
     }
 
+    //////////////////////////////////////////////////
+    //              On Save Instance State          //
+    //==============================================//
+    //  This will save the currently selected       //
+    //  sprite image index.                         //
+    //  This is called if the phone orientation     //
+    //  changes, or if for any reason the phone     //
+    //  is forced out of this activity and into     //
+    //  another application (i.e. like a phone      //
+    //  call).                                      //
+    //////////////////////////////////////////////////
     @Override
     protected void onSaveInstanceState(Bundle savedInstanceState)
     {
@@ -149,6 +177,16 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
         Toast.makeText(this, saveMessage, Toast.LENGTH_SHORT).show();
     }
 
+    //////////////////////////////////////////////////
+    //            On Restore Instance State         //
+    //==============================================//
+    //  This will place the current selected image  //
+    //  index back into the local int attribute.    //
+    //  This will be called once the application    //
+    //  returns to this activity when being         //
+    //  previously forced out of it. From a phone   //
+    //  call or a screen rotation.                  //
+    //////////////////////////////////////////////////
     @Override
     protected void onRestoreInstanceState(Bundle savedInstanceState)
     {
@@ -165,6 +203,14 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
         }
     }
 
+    //////////////////////////////////////////////////
+    //                  On Key Down                 //
+    //==============================================//
+    //  In case the user presses the back key       //
+    //  instead of using the save button, this will //
+    //  let the user know that their sprite         //
+    //  selection has already been saved.           //
+    //////////////////////////////////////////////////
     @Override
     public boolean onKeyDown(int keyCode, KeyEvent event)
     {
@@ -178,6 +224,16 @@ public class CharacterSelection extends Activity implements AdapterView.OnItemCl
         return super.onKeyDown(keyCode, event);
     }
 
+    //////////////////////////////////////////////////
+    //                  On Pause                    //
+    //==============================================//
+    //  This will save the currently selected       //
+    //  sprite image index, and save it to the      //
+    //  device for future reference.                //
+    //  This will be called right after we leave    //
+    //  this activity.                              //
+    //  When another activity is in the foreground. //
+    //////////////////////////////////////////////////
     @Override
     protected void onPause()
     {

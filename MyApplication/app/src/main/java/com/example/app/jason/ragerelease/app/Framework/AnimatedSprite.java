@@ -1,19 +1,22 @@
+// The package location for this class.
 package com.example.app.jason.ragerelease.app.Framework;
 
+// All of the extra includes here.
 import com.example.app.jason.ragerelease.app.Framework.Maths.Vector2;
 
 import org.jbox2d.common.Vec2;
 import org.jbox2d.dynamics.Body;
 
-import java.util.Random;
-
 /**
- * Created by Win8 on 30/06/2015.
+ * Created by Jason Mottershead on 30/06/2015.
  */
 
+// Animated Sprite IS A Sprite, therefore inherits from it.
 public class AnimatedSprite extends Sprite
 {
-    // Box2D conversion attributes.
+    // Attributes.
+    // Protected.
+    // Box2D conversion.
     protected static float box2DFrameworkScale = 100.0f;
     protected static float box2DFrameworkOffsetX = 0.0f;
     protected static float box2DFrameworkOffsetY = 0.0f;
@@ -22,17 +25,25 @@ public class AnimatedSprite extends Sprite
     protected static float box2DDynamicBodyXOffset = 0.25f;
     protected static float box2DDynamicBodyYOffset = 0.75f;
 
-    // Animated sprite attributes.
+    // Animated sprite.
     protected Body body = null;
     protected int id = 0;
-    protected boolean shouldMove = false;
     protected boolean respawn = false;
     protected Vector2 spawnLocation = null;
+    protected Resources resources = null;
+
+    // Private.
     private float animationFrameDuration = 0.1f;
     private float animationTime = 0.0f;
     private int numberOfFrames = 0;
-    protected Resources resources = null;
 
+    // Methods.
+    //////////////////////////////////////////////////
+    //                  Constructor                 //
+    //==============================================//
+    //  This will initialise the sprite object, and //
+    //  set up access to common game properties.    //
+    //////////////////////////////////////////////////
     public AnimatedSprite(final Resources gameResources, int objectID)
     {
         super(gameResources.getContext());
@@ -40,11 +51,12 @@ public class AnimatedSprite extends Sprite
         id = objectID;
     }
 
-    public void setAnimationFrames(int animationFrames)
-    {
-        numberOfFrames = animationFrames;
-    }
-
+    //////////////////////////////////////////////////
+    //               Animate Sprite                 //
+    //==============================================//
+    //  This will animate the sprite with the       //
+    //  desired speed.                              //
+    //////////////////////////////////////////////////
     public void animateSprite(float ticks)
     {
         // Add the time passed since the last update to the animation timer.
@@ -72,22 +84,41 @@ public class AnimatedSprite extends Sprite
         }
     }
 
-    // This will reset the body and the sprite to the correct position.
-    // Using Box2D coordinates.
+    //////////////////////////////////////////////////
+    //                Translate Box2D               //
+    //==============================================//
+    //  This will translate both the animated       //
+    //  sprite and the box2D body to a position,    //
+    //  using the passed in Box2D position(meters). //
+    //////////////////////////////////////////////////
     protected void translateBox2D(Vector2 box2DPosition)
     {
         setPosition(getFrameworkXPosition(box2DPosition.getX()), getFrameworkYPosition(box2DPosition.getY()));
         body.setTransform(new Vec2(box2DPosition.getX(), box2DPosition.getY()), 0.0f);
     }
 
-    // Using framework coordinates.
+    //////////////////////////////////////////////////
+    //               Translate Framework            //
+    //==============================================//
+    //  This will translate both the animated       //
+    //  sprite and the box2D body to a position,    //
+    //  using the passed in framework position      //
+    //  (pixel).                                    //
+    //////////////////////////////////////////////////
     protected void translateFramework(Vector2 frameworkPosition)
     {
         setPosition(frameworkPosition.getX(), frameworkPosition.getY());
         body.setTransform(new Vec2(getBox2DXPosition(frameworkPosition.getX()), getBox2DYPosition(frameworkPosition.getY())), 0.0f);
     }
 
-    // GETTERS.
+    // Setters.
+    // This will set the current number of animation frames for the animated sprite.
+    public void setAnimationFrames(int animationFrames)
+    {
+        numberOfFrames = animationFrames;
+    }
+
+    // Getters.
     // Getting FRAMEWORK COORDINATES.
     // Convert Box2D coordinates into local framework coordinates.
     public float getFrameworkXPosition(float box2DX)   { return ((box2DX * box2DFrameworkScale) + box2DFrameworkOffsetX); }
@@ -100,7 +131,9 @@ public class AnimatedSprite extends Sprite
     public float getBox2DYPosition(float frameworkY)   { return ((frameworkY - resources.getScreenHeight() + box2DFrameworkOffsetY) / -box2DFrameworkScale); }
     public float getBox2DSize(float dimension)         { return (dimension / box2DFrameworkScale); }
 
-    // Normal getters.
+    // This will return the current ID number of the animated sprite.
     public int getID()                  { return id; }
+
+    // This will return the current respawn location of the animated sprite.
     public Vector2 getSpawnLocation()   { return spawnLocation; }
 }

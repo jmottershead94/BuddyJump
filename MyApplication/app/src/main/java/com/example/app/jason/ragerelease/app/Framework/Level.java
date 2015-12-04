@@ -1,6 +1,7 @@
+// The package location for this class.
 package com.example.app.jason.ragerelease.app.Framework;
 
-import android.util.Log;
+// All of the extra includes here.
 import android.view.MotionEvent;
 import android.view.View;
 
@@ -16,28 +17,37 @@ import org.jbox2d.dynamics.contacts.Contact;
 import java.util.Timer;
 import java.util.Vector;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Win8 on 17/07/2015.
+ * Created by Jason Mottershead on 17/07/2015.
  */
+
+// Level USES Touch Listener, therefore implements it.
 public class Level implements View.OnTouchListener
 {
     // Attributes.
-    private static final String TAG = "TKT";
+    // Public.
     public int levelNumber = 1;
     public Game game = null;
     public LevelGenerator levelGenerator = null;
     public Player player = null;
-    private Resources resources = null;
-    private int interval = 1;                           // 3 seconds.
-    private Timer timer = null;
-    private ScheduledExecutorService scheduler = null;
-    private ScheduledFuture<?> future = null;
 
+    // Private.
+    private Resources resources = null;
+    private int interval = 1;
+    private ScheduledExecutorService scheduler = null;
+    private ScheduledFuture<?> distanceIncrementer = null;
+
+    // Methods.
+    //////////////////////////////////////////////////
+    //                  Constructor                 //
+    //==============================================//
+    //  This will set up access to common game      //
+    //  properties, and set up the touch listener.  //
+    //////////////////////////////////////////////////
     public void init(final Resources gameResources, final Game gameView, final int gamePlayerImage, final int gameCompanionImage)
     {
         // Initialising local variables.
@@ -52,9 +62,9 @@ public class Level implements View.OnTouchListener
         player.setPaused(false);
         scheduler = Executors.newSingleThreadScheduledExecutor();
 
-        // This schedules respawning an obstacle once it has gone off screen.
+        // This schedules incrementing player distance every second.
         // Running on a new thread.
-        future = scheduler.scheduleAtFixedRate(new Runnable()
+        distanceIncrementer = scheduler.scheduleAtFixedRate(new Runnable()
         {
             @Override
             public void run()
@@ -71,6 +81,14 @@ public class Level implements View.OnTouchListener
         resources.getBackground().setOnTouchListener(this);
     }
 
+    //////////////////////////////////////////////////
+    //                  New Level                   //
+    //==============================================//
+    //  This will determine what happens when we go //
+    //  to a new level.                             //
+    //  In this case, we will clear the current     //
+    //  level, and then build another level.        //
+    //////////////////////////////////////////////////
     public void newLevel()
     {
         // Resetting the player's distance score.
@@ -84,17 +102,17 @@ public class Level implements View.OnTouchListener
 
         if(levelNumber == 2)
         {
-            // Builds the new level.
+            // Builds the new level, with two characters and one obstacle.
             levelGenerator.buildLevel(2, 1);
         }
         else if(levelNumber == 3)
         {
-            // Builds the new level.
+            // Builds the new level, with one character and two obstacles.
             levelGenerator.buildLevel(1, 2);
         }
         else if(levelNumber >= 4)
         {
-            // Builds the new level.
+            // Builds the new level, with two characters and two obstacles.
             levelGenerator.buildLevel(2, 2);
         }
 
@@ -102,7 +120,12 @@ public class Level implements View.OnTouchListener
         game.render();
     }
 
-    // Checking to see if a touch is within certain bounds.
+    //////////////////////////////////////////////////
+    //              Touch Collision Test            //
+    //==============================================//
+    //  This will allow us to check whether or not  //
+    //  we have tapped on an animated sprite.       //
+    //////////////////////////////////////////////////
     private boolean touchCollisionTest(AnimatedSprite object)
     {
         if(((player.touchPosition.getX() > object.getSpriteLeft()) && (player.touchPosition.getX() < object.getSpriteRight()))
@@ -114,6 +137,12 @@ public class Level implements View.OnTouchListener
         return false;
     }
 
+    //////////////////////////////////////////////////
+    //                  On Touch                    //
+    //==============================================//
+    //  This will provide the input for the level.  //
+    //  Tap onto a character to make them jump up!  //
+    //////////////////////////////////////////////////
     public boolean onTouch(View v, MotionEvent event)
     {
         if(!player.isPaused())
@@ -154,15 +183,12 @@ public class Level implements View.OnTouchListener
                 // If the player keeps holding the touch on the screen.
                 case MotionEvent.ACTION_MOVE:
                 {
-                    //beingTouched = true;
                     break;
                 }
 
                 // If the player releases their touch on the screen.
                 case MotionEvent.ACTION_UP:
                 {
-                    player.beingTouched = false;
-
                     if (player.tap)
                     {
                         for (AnimatedSprite object : getLevelObjects())
@@ -186,7 +212,6 @@ public class Level implements View.OnTouchListener
                 // If none of the above cases are met, then just default to not being touched.
                 default:
                 {
-                    player.beingTouched = false;
                     player.tap = false;
                     break;
                 }
@@ -198,6 +223,13 @@ public class Level implements View.OnTouchListener
         return true;
     }
 
+    //////////////////////////////////////////////////
+    //              Handle Level Objects            //
+    //==============================================//
+    //  This will process all of the data that we   //
+    //  can gather in the level, and provide        //
+    //  appropriate responses to the condition.     //
+    //////////////////////////////////////////////////
     private void handleLevelObjects(float dt)
     {
         for (AnimatedSprite object : getLevelObjects())
@@ -243,11 +275,25 @@ public class Level implements View.OnTouchListener
         }
     }
 
+    //////////////////////////////////////////////////
+    //                  Add To View                 //
+    //==============================================//
+    //  This add all of the level objects to the    //
+    //  screen.                                     //
+    //////////////////////////////////////////////////
     public void addToView()
     {
         levelGenerator.addToView();
     }
 
+    //////////////////////////////////////////////////
+    //                Check Collisions              //
+    //==============================================//
+    //  This will cycle through and check he Box2D  //
+    //  world to see if any collisions have         //
+    //  occured.                                    //
+    //  We also provide collision response in here. //
+    //////////////////////////////////////////////////
     private void checkCollisions()
     {
         // Get the head of the contact list.
@@ -291,6 +337,11 @@ public class Level implements View.OnTouchListener
         }
     }
 
+    //////////////////////////////////////////////////
+    //                   Update.                    //
+    //==============================================//
+    //  This will update the level every frame.     //
+    //////////////////////////////////////////////////
     public void update(final float dt)
     {
         // If the level has been completed.
@@ -306,6 +357,16 @@ public class Level implements View.OnTouchListener
         checkCollisions();
     }
 
+    //////////////////////////////////////////////////
+    //            Update Player Distance            //
+    //==============================================//
+    //  In order to output an updated text view     //
+    //  onto the screen from our main thread, we    //
+    //  have to go back to the UI thread and make   //
+    //  any text updates there. This is because we  //
+    //  originally created the text on the UI       //
+    //  thread.                                     //
+    //////////////////////////////////////////////////
     private void updatePlayerDistance()
     {
         // Creating a new thread.
@@ -331,7 +392,7 @@ public class Level implements View.OnTouchListener
                             }
                             else
                             {
-                                future.cancel(true);
+                                distanceIncrementer.cancel(true);
                             }
                         }
                     });
@@ -349,6 +410,13 @@ public class Level implements View.OnTouchListener
         }.start();
     }
 
+    //////////////////////////////////////////////////
+    //               Finished Level                 //
+    //==============================================//
+    //  This will check to see if the player has    //
+    //  reached a certain distance.                 //
+    //  If we have, we should go to a new level.    //
+    //////////////////////////////////////////////////
     private void finishedLevel()
     {
         if(levelNumber == 1)
@@ -368,5 +436,6 @@ public class Level implements View.OnTouchListener
     }
 
     // Getters.
+    // This will return the current set of game objects in the level.
     public Vector<AnimatedSprite> getLevelObjects() { return levelGenerator.getObjects(); }
 }

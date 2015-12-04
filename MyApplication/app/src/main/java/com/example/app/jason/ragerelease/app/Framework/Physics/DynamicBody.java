@@ -1,5 +1,7 @@
+// The package location for this class.
 package com.example.app.jason.ragerelease.app.Framework.Physics;
 
+// All of the extra includes here.
 import com.example.app.jason.ragerelease.app.Framework.AnimatedSprite;
 import com.example.app.jason.ragerelease.app.Framework.Maths.Vector2;
 import com.example.app.jason.ragerelease.app.Framework.Resources;
@@ -12,19 +14,30 @@ import org.jbox2d.dynamics.BodyType;
 import org.jbox2d.dynamics.FixtureDef;
 
 /**
- * Created by Win8 on 06/07/2015.
+ * Created by Jason Mottershead on 06/07/2015.
  */
+
+// Dynamic Body IS AN Animated Sprite, therefore inherits from it.
 public class DynamicBody extends AnimatedSprite
 {
-    protected boolean grow = false;
-    private BodyDef bodyDef = null;
-    private static final String TAG = "TKT";
-
+    // Methods.
+    //////////////////////////////////////////////////
+    //                  Constructor                 //
+    //==============================================//
+    //  This will initialise the animated sprite    //
+    //  object.                                     //
+    //////////////////////////////////////////////////
     public DynamicBody(final Resources gameResources, int objectID)
     {
         super(gameResources, objectID);
     }
 
+    //////////////////////////////////////////////////
+    //                  Body Init                   //
+    //==============================================//
+    //  This will initialise the Box2D dynamic      //
+    //  body.                                       //
+    //////////////////////////////////////////////////
     public void bodyInit(Vector2 positions, Vector2 dimensions, float angle)
     {
         // Initialising the sprite.
@@ -32,7 +45,7 @@ public class DynamicBody extends AnimatedSprite
         spawnLocation = new Vector2(positions.getX(), positions.getY());
 
         // Setting up the body definition.
-        bodyDef = new BodyDef();
+        BodyDef bodyDef = new BodyDef();
         bodyDef.type = BodyType.DYNAMIC;
         bodyDef.position.set(new Vec2(getBox2DXPosition(getSpriteLeft()), getBox2DYPosition(getSpriteTop())));
         bodyDef.angle = (angle * ((float) Math.PI / 180.0f));
@@ -55,14 +68,18 @@ public class DynamicBody extends AnimatedSprite
         body.setUserData(this);
     }
 
+    //////////////////////////////////////////////////
+    //                  Update Body                 //
+    //==============================================//
+    //  This will update the position of the body   //
+    //  and sprite based on gravity and any forces  //
+    //  applied to it.                              //
+    //////////////////////////////////////////////////
     public void updateBody()
     {
         float newX = body.getPosition().x;
         float newY = body.getPosition().y;
 
         setPosition(getFrameworkXPosition(newX), getFrameworkYPosition(newY));
-
-        //setAngle(angle);
-        //setAngle(rotationTest++);
     }
 }

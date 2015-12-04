@@ -1,5 +1,7 @@
+// The package location for this class.
 package com.example.app.jason.ragerelease.app.Framework;
 
+// All of the extra includes here.
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -13,8 +15,11 @@ import com.example.app.jason.ragerelease.app.Framework.Maths.Vector2;
 import com.example.app.jason.ragerelease.R;
 
 /**
- * Created by Win8 on 14/06/2015.
+ * Created by Jason Mottershead on 14/06/2015.
  */
+
+// Sprite IS A View, therefore inherits from it.
+// This class will provide a custom view for all types of game objects in our game.
 public class Sprite extends View
 {
     // Attributes.
@@ -33,6 +38,7 @@ public class Sprite extends View
     private Rect test, destRect;
     private final String TAG = "TKT";
 
+    // Methods.
     //////////////////////////////////////////////////
     //                  Constructor                 //
     //==============================================//
@@ -47,7 +53,7 @@ public class Sprite extends View
     }
 
     //////////////////////////////////////////////////
-    //                  Initialise                  //
+    //                      Init                    //
     //==============================================//
     //  Sets up the position (x and y) of the       //
     //  sprite and the dimensions                   //
@@ -62,62 +68,98 @@ public class Sprite extends View
     }
 
     //////////////////////////////////////////////////
-    //              Setting Position                //
+    //                  Set Position                //
     //==============================================//
-    //  Sets the vector 2 for the position.
+    //  Sets the vector 2 for the position.         //
     //////////////////////////////////////////////////
     public void setPosition(float x, float y)
     {
         position.set(x, y);
         postInvalidate();
-//        invalidate();
     }
 
+    //////////////////////////////////////////////////
+    //               Set Dimension                  //
+    //==============================================//
+    //  Sets the vector 2 for the dimension.        //
+    //////////////////////////////////////////////////
     public void setDimensions(float width, float height)
     {
         dimension.set(width, height);
         postInvalidate();
-//        invalidate();
     }
 
+    //////////////////////////////////////////////////
+    //                  Set Angle                   //
+    //==============================================//
+    //  Sets the float value for the sprite         //
+    //  rotation.                                    //
+    //////////////////////////////////////////////////
     public void setAngle(float rotation)
     {
         angle = rotation;
+        postInvalidate();
     }
 
+    //////////////////////////////////////////////////
+    //                  Set Colour                  //
+    //==============================================//
+    //  Sets the int value for the colour of the    //
+    //  sprite.                                     //
+    //////////////////////////////////////////////////
     public void setColour(int alpha, int red, int green, int blue)
     {
         colour = new Paint();
         colour.setARGB(alpha, red, green, blue);
         colour.setStyle(Paint.Style.FILL);
         postInvalidate();
-//        invalidate();
     }
 
+    //////////////////////////////////////////////////
+    //              Load Camera Image               //
+    //==============================================//
+    //  This will load in the currently selected    //
+    //  camera image, and resize the image from the //
+    //  gallery so we are not trying to fit a       //
+    //  480 x 720 image into a sprite.              //
+    //////////////////////////////////////////////////
     public void loadCameraImage(final Bitmap cameraImage)
     {
         usingCameraImage = true;
         image = cameraImage;
-        sprite = getResizedBitmap(cameraImage, (image.getWidth() / 8), (image.getHeight() / 8)); //Bitmap.createBitmap(image, 0, 0, (image.getWidth() / 4), (image.getHeight() / 4));
+        sprite = getResizedBitmap(cameraImage, (image.getWidth() / 8), (image.getHeight() / 8));
     }
 
-    // It is not possible to set an image to the drawables folder during runtime. :(
-    // Using a camera image makes the game lag a lot.
-    // May have to leave out camera images.
+    //////////////////////////////////////////////////
+    //              Set Camera Image                //
+    //==============================================//
+    //  This will actually set the camera image     //
+    //  that we want into the sprite for us.        //
+    //  Use this function whenever we are using     //
+    //  camera gallery images!                      //
+    //////////////////////////////////////////////////
     public void setCameraImage()
     {
         float imageUConversion = image.getWidth();
         float imageVConversion = image.getHeight();
 
-        // Use uv coordinates here...
-        // Using the full camera image for testing.
+        // The current texture coordinates of the camera image (top left in this case).
         textureCoordinates = new Vector2(0.0f, 0.0f);
 
-        // Setting the width and height of each sprite.
-        // Using the full camera image for testing.
-        textureDimensions = new Vector2(1.0f * imageUConversion, 1.0f * imageVConversion);
+        // Setting the width and height of the camera image sprite.
+        textureDimensions = new Vector2((1.0f * imageUConversion), (1.0f * imageVConversion));
     }
 
+    //////////////////////////////////////////////////
+    //              Get Resized Bitmap              //
+    //==============================================//
+    //  This will reduce the size of a bitmap image //
+    //  that we pass to it, with a desired width    //
+    //  and height.                                 //
+    //  This is used to make sure that the game     //
+    //  does not lag when using camera image        //
+    //  sprites.                                    //
+    //////////////////////////////////////////////////
     public Bitmap getResizedBitmap(Bitmap bitmapImage, int newWidth, int newHeight)
     {
         int width = bitmapImage.getWidth();
@@ -137,6 +179,13 @@ public class Sprite extends View
         return resizedBitmapImage;
     }
 
+    //////////////////////////////////////////////////
+    //                  Load Texture                //
+    //==============================================//
+    //  This will load the current resource file    //
+    //  that we have passed in, as a texture for    //
+    //  the sprite.                                 //
+    //////////////////////////////////////////////////
     public void loadTexture(final int resourceDrawableID)
     {
         usingCameraImage = false;
@@ -144,12 +193,18 @@ public class Sprite extends View
         sprite = Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight());
     }
 
+    //////////////////////////////////////////////////
+    //                  Set Texture                 //
+    //==============================================//
+    //  This will set the current resource file     //
+    //  that we have passed in, as a texture for    //
+    //  the sprite.                                 //
+    //////////////////////////////////////////////////
     public void setTexture(Vector2 textureCoords, Vector2 textureDimen)
     {
         float imageUConversion = image.getWidth();
         float imageVConversion = image.getHeight();
 
-        // Use uv coordinates here...
         // Where the image will start from on the spritesheet.
         textureCoordinates = new Vector2((textureCoords.getX() * imageUConversion), (textureCoords.getY() * imageVConversion));
 
@@ -159,27 +214,42 @@ public class Sprite extends View
         textureDimensions = new Vector2((textureDimen.getX() * imageUConversion), (textureDimen.getY() * imageVConversion));
     }
 
+    //////////////////////////////////////////////////
+    //                  Remove Texture              //
+    //==============================================//
+    //  This will "remove" the current texture of   //
+    //  the sprite.                                 //
+    //////////////////////////////////////////////////
     public void removeTexture()
     {
+        // Setting the image as a transparent texture for level clearing.
         image = BitmapFactory.decodeResource(getResources(), R.drawable.transparent_sprite);
         sprite = Bitmap.createBitmap(image, 0, 0, image.getWidth(), image.getHeight());
-
         postInvalidate();
-//        invalidate();
     }
 
+    //////////////////////////////////////////////////
+    //                  Change Texture              //
+    //==============================================//
+    //  This will change the current texture        //
+    //  coordinates of the sprite.                  //
+    //  This is used for animation.                 //
+    //////////////////////////////////////////////////
     public void changeTexture(Vector2 textureCoords)
     {
         float imageUConversion = image.getWidth();
         float imageVConversion = image.getHeight();
 
         textureCoordinates.set(textureCoords.getX() * imageUConversion, textureCoords.getY() * imageVConversion);
-
-        // Need to test this...
         postInvalidate();
-//        invalidate();
     }
 
+    //////////////////////////////////////////////////
+    //                  On Draw                     //
+    //==============================================//
+    //  This will draw the sprite onto the screen   //
+    //  for us.                                     //
+    //////////////////////////////////////////////////
     @Override
     protected void onDraw(final Canvas gameCanvas)
     {
@@ -208,41 +278,29 @@ public class Sprite extends View
         }
     }
 
+    // Getters.
+    // This will return the current sprite x coordinate.
     public float getSpriteLeft()            { return position.getX(); }
+
+    // This will return the current sprite y coordinate.
     public float getSpriteTop()             { return position.getY(); }
+
+    // This will return the current right coordinate of the sprite.
     public float getSpriteRight()           { return (position.getX() + dimension.getX()); }
+
+    // This will return the current bottom coordinate of the sprite.
     public float getSpriteBottom()          { return (position.getY() + dimension.getY()); }
+
+    // This will return the center of the sprite.
     public Vector2 getSpriteCenter()        { return (new Vector2(position.getX() + (dimension.getX() * 0.5f), position.getY() + (dimension.getY() * 0.5f))); }
-    public Vector2 getSpritePosition()      { return position; }
-    public Vector2 getSpriteDimensions()    { return dimension; }
+
+    // This will return the current width of the sprite.
     public float getSpriteWidth()           { return dimension.getX(); }
+
+    // This will return the current height of the sprite.
     public float getSpriteHeight()          { return dimension.getY(); }
-    public float getSpriteRotationDegrees() { return angle; }
-    public float getSpriteRotationRadians() { return (angle * ((float) Math.PI / 180.0f)); }
-    public Vector2 getTextureCoordinates()  { return textureCoordinates; }
-    public Vector2 getTextureDimensions()   { return textureDimensions; }
+
+    // This will return whether or not we are using the camera with this sprite.
     public boolean isUsingCameraImage()     { return usingCameraImage; }
 }
-
-//// OpenGL extensions.
-//class MyGLSurfaceView extends GLSurfaceView
-//{
-//    //private final MyGLSurfaceView mRenderer;
-//
-//    public MyGLSurfaceView(Context context, MyGLSurfaceView renderer)
-//    {
-//        super(context);
-//
-//        // Creating OpenGL ES 2.0 context.
-//        setEGLContextClientVersion(2);
-//
-//        renderer = new MyGLRenderer();
-//
-//        // Set the renderer for drawing on the GLSurfaceView.
-//        setRenderer(renderer);
-//
-//        // Render the view when there is a change in the drawing data.
-//        setRenderMode(GLSurfaceView.RENDERMODE_WHEN_DIRTY);
-//    }
-//}
 

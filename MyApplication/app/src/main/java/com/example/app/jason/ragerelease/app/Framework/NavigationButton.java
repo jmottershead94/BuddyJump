@@ -14,7 +14,18 @@ import android.widget.Button;
 // This class will provide easy access to other activites.
 public class NavigationButton
 {
-    // This will provide a result for when a navigation button has been pressed.
+    // Methods.
+    //////////////////////////////////////////////////
+    //                  Is Pressed                  //
+    //==============================================//
+    //  This will keep listening out for a button   //
+    //  being pressed.                              //
+    //  We can specify what button with the button  //
+    //  that we pass in, as well as navigating      //
+    //  from our current activity, to a new desired //
+    //  activity - so long as it exists in the      //
+    //  Android Manifest file.                      //
+    //////////////////////////////////////////////////
     public void isPressed(final Button button, final Activity currentActivity, final Class<?> nextActivityClass)
     {
         // Set an onClickListener for the button.

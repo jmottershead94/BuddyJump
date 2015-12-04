@@ -1,25 +1,22 @@
+// The package location for this class.
 package com.example.app.jason.ragerelease.app.Framework;
 
-import android.app.Activity;
-import android.content.SharedPreferences;
+// All of the extra includes here.
 import android.graphics.Color;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.example.app.jason.ragerelease.app.Framework.Maths.Vector2;
-import com.example.app.jason.ragerelease.app.Framework.Physics.DynamicBody;
-import com.example.app.jason.ragerelease.app.Framework.Physics.StaticBody;
 
 import org.jbox2d.common.Vec2;
 
 /**
- * Created by Win8 on 16/07/2015.
+ * Created by Jason Mottershead on 16/07/2015.
  */
 
+// This class will allow te player to interact with the game.
 public class Player
 {
     // Attributes.
@@ -31,27 +28,23 @@ public class Player
     public Vector2 touchPosition = null;
 
     // Private attributes.
-    private static final String TAG = "TKT";
     private static boolean paused = false;
     private static boolean gameOver = false;
-
-    private int numberOfPunches = 0;
     private Level level = null;
     private Resources resources = null;
 
     // Methods.
-    //////////////////////////////////////////////////////////
-    //======================================================//
-    //					Constructor							//
-    //======================================================//
-    // This will initialise the player object, which will	//
-    // call the dynamic body initialiser, and will then		//
-    // call the sprite initialiser.			                //
-    // Local variables will be initialised here.            //
-    //////////////////////////////////////////////////////////
+    //////////////////////////////////////////////////
+    //					Constructor                 //
+    //==============================================//
+    // This will initialise the player object,      //
+    // which will call the dynamic body             //
+    // initialiser, and will then call the sprite   //
+    // initialiser. Local variables will be         //
+    // initialised here.                            //
+    //////////////////////////////////////////////////
     public Player(final Resources gameResources, final Level gameLevel)
     {
-        // Declaring local variables.
         resources = gameResources;
         touchPosition = new Vector2(0.0f, 0.0f);
         level = gameLevel;
@@ -67,6 +60,12 @@ public class Player
         resources.getBackground().addView(distanceText);
     }
 
+    //////////////////////////////////////////////////
+    //                  UI Controls                 //
+    //==============================================//
+    //  This will allow the player to interact with //
+    //  the pause menu.                             //
+    //////////////////////////////////////////////////
     public void uiControls(final Button buttonPause)
     {
         // Checking any button click events.
@@ -82,6 +81,12 @@ public class Player
         });
     }
 
+    //////////////////////////////////////////////////
+    //                Pause Menu                    //
+    //==============================================//
+    //  This will draw the pause menu for the       //
+    //  player.                                     //
+    //////////////////////////////////////////////////
     private void pauseMenu(final Button buttonPause)
     {
         final Button buttonResume = new Button(resources.getContext());

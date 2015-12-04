@@ -1,13 +1,18 @@
+// The package location for this class.
 package com.example.app.jason.ragerelease.app.Framework;
 
 /**
- * Created by Win8 on 24/07/2015.
+ * Created by Jason Mottershead on 24/07/2015.
  */
+
+// This is a base ID class.
+// This will only be used to differentiate between objects, and help filter out collisions.
 public class ObjectID
 {
-    //public static final int PLAYER = 0;                         // The ID number for the player.
-    public static final int CHARACTERONE = 0;
-    public static final int CHARACTERTWO = CHARACTERONE + 1;
+    // Attributes.
+    // Public.
+    public static final int CHARACTERONE = 0;                   // The ID number for the first character.
+    public static final int CHARACTERTWO = CHARACTERONE + 1;    // The ID number for the second character.
     public static final int ANIMATEDGROUND = CHARACTERTWO + 1;  // The ID number for the animated ground.
     public static final int GROUND = ANIMATEDGROUND + 1;        // The ID number for the static ground.
     public static final int WALL = GROUND + 1;                  // The ID number for the walls.

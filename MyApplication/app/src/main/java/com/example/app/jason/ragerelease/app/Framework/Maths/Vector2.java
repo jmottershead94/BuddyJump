@@ -1,11 +1,16 @@
+// The package location for this class.
 package com.example.app.jason.ragerelease.app.Framework.Maths;
 
 /**
- * Created by Win8 on 14/06/2015.
+ * Created by Jason Mottershead on 14/06/2015.
  */
+
+// This is a vector2 class for handling any of our local maths calculations.
+// This is the same vector2 class adapted from the OpenGL coursework from 2nd year of study.
 public class Vector2
 {
-    // Declaring a float array of 2 elements.
+    // Attributes.
+    // Private.
     private float[] elements = new float[2];
 
     // Constructor.

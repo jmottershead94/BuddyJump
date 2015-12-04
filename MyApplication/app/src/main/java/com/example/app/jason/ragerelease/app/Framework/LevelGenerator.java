@@ -1,41 +1,36 @@
+// The package location for this class.
 package com.example.app.jason.ragerelease.app.Framework;
 
-import android.app.Service;
+// All of the extra includes here.
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
-import android.os.Handler;
-import android.util.Log;
-import android.view.View;
-import android.widget.RelativeLayout;
-import android.widget.Toast;
 
 import com.example.app.jason.ragerelease.app.Framework.Maths.Vector2;
 import com.example.app.jason.ragerelease.R;
 import com.example.app.jason.ragerelease.app.Framework.Physics.DynamicBody;
 import com.example.app.jason.ragerelease.app.Framework.Physics.StaticBody;
 
-import java.util.Random;
 import java.util.Timer;
-import java.util.TimerTask;
 import java.util.Vector;
 import java.util.concurrent.Executors;
-import java.util.concurrent.Future;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Created by Win8 on 02/08/2015.
+ * Created by Jason Mottershead on 02/08/2015.
  */
+
+// This class will provide the objects in the level and render them.
 public class LevelGenerator
 {
-    private static final String PREFS_NAME = "MyPrefsFile";                     // Where the options will be saved to, whether they are true or false.
-    private static final String TAG = "TKT";
+    // Attributes.
+    // Private.
+    private static final String PREFS_NAME = "MyPrefsFile";
     private static float groundY = 0.0f;
     private int playerImage = 0;
     private int companionImage = 0;
-    private int interval = 10;                           // 3 seconds.
-    private Timer timer = null;
+    private int interval = 10;
     private ScheduledExecutorService scheduler = null;
     private Bitmap cameraImage = null;
     private Vector<AnimatedSprite> objects = null;
@@ -43,8 +38,15 @@ public class LevelGenerator
     private Level level = null;
     private boolean optionOneChecked = false;
     private boolean morningSky = false, afternoonSky = false, nightSky = false;
-    private ScheduledFuture<?> future = null;
+    private ScheduledFuture<?> respawner = null;
 
+    // Methods.
+    //////////////////////////////////////////////////
+    //                  Constructor                 //
+    //==============================================//
+    //  This will set up access to common game      //
+    //  properties and access saved options.        //
+    //////////////////////////////////////////////////
     public LevelGenerator(final Resources gameResources, Level gameLevel, final int gamePlayerImage, final int gameCompanionImage)
     {
         // Setting the local level parameters.
@@ -64,6 +66,12 @@ public class LevelGenerator
         nightSky = gameSettings.getBoolean("mnightSky", false);
     }
 
+    //////////////////////////////////////////////////
+    //                  Build Level                 //
+    //==============================================//
+    //  This will place in the objects into our     //
+    //  level.                                      //
+    //////////////////////////////////////////////////
     public void buildLevel(int numberOfCharacters, int numberOfObstacles)
     {
         // Creating all of the level objects.
@@ -76,18 +84,20 @@ public class LevelGenerator
         // If there should be more than one player character.
         if(numberOfCharacters > 1)
         {
+            // Place this character a little bit further back than our first character.
             createPlayer(new Vector2(resources.getScreenWidth() * 0.15f, resources.getScreenHeight() * 0.25f), companionImage, ObjectID.CHARACTERTWO);
         }
 
         // If there should be more than one obstacle.
         if(numberOfObstacles > 1)
         {
+            // Place the next obstacle at the same x position but move it up so they are stacked onto each other.
             createObstacle(new Vector2(resources.getScreenWidth() * 0.95f, resources.getScreenHeight() * 0.35f));
         }
 
         // This schedules respawning an obstacle once it has gone off screen.
         // Running on a new thread.
-        future = scheduler.scheduleAtFixedRate(new Runnable() {
+        respawner = scheduler.scheduleAtFixedRate(new Runnable() {
             @Override
             public void run() {
                 if (!level.player.isPaused()) {
@@ -102,10 +112,13 @@ public class LevelGenerator
             }
             // First taking place at 5 seconds, then executing at a regular interval of 6 seconds afterwards.
         }, interval - 1, interval, TimeUnit.SECONDS);
-
-        //level.player.distanceText.bringToFront();
     }
 
+    //////////////////////////////////////////////////
+    //               Create Ground                  //
+    //==============================================//
+    //  This will create the static body ground.    //
+    //////////////////////////////////////////////////
     private void createGround()
     {
         StaticBody groundFloor = new StaticBody(resources, ObjectID.GROUND);
@@ -116,6 +129,13 @@ public class LevelGenerator
         objects.add(groundFloor);
     }
 
+    //////////////////////////////////////////////////
+    //            Load Background Texture           //
+    //==============================================//
+    //  This will load in the correct sky           //
+    //  background depending on what option the     //
+    //  player chose.                               //
+    //////////////////////////////////////////////////
     private void loadBackgroundTexture(AnimatedSprite background)
     {
         if(morningSky)
@@ -136,6 +156,11 @@ public class LevelGenerator
         }
     }
 
+    //////////////////////////////////////////////////
+    //          Create Static Background            //
+    //==============================================//
+    //  This will create the static background      //
+    //////////////////////////////////////////////////
     private void createStaticBackground()
     {
         AnimatedSprite background = new AnimatedSprite(resources, ObjectID.SPRITE);
@@ -145,6 +170,11 @@ public class LevelGenerator
         objects.add(background);
     }
 
+    //////////////////////////////////////////////////
+    //           Create Animated Background         //
+    //==============================================//
+    //  This will create the animated background.   //
+    //////////////////////////////////////////////////
     private void createAnimatedBackground()
     {
         AnimatedSprite animatedBackground = new AnimatedSprite(resources, ObjectID.ANIMATEDSPRITE);
@@ -155,6 +185,14 @@ public class LevelGenerator
         objects.add(animatedBackground);
     }
 
+    //////////////////////////////////////////////////
+    //                  Set Sprite                  //
+    //==============================================//
+    //  This will determine the character sprite    //
+    //  that the player and companion will use      //
+    //  depending on the image the player has       //
+    //  selected before.                            //
+    //////////////////////////////////////////////////
     private void setSprite(int image, AnimatedSprite sprite)
     {
         float textureWidth = 1.0f / 7.0f;
@@ -202,6 +240,12 @@ public class LevelGenerator
         }
     }
 
+    //////////////////////////////////////////////////
+    //                  Set Image                   //
+    //==============================================//
+    //  This will place in the camera image for the //
+    //  characters.                                 //
+    //////////////////////////////////////////////////
     private void setImage(final AnimatedSprite object)
     {
         resources.getActivity().runOnUiThread(new Runnable()
@@ -224,13 +268,14 @@ public class LevelGenerator
         object.setCameraImage();
     }
 
+    //////////////////////////////////////////////////
+    //               Create Player                  //
+    //==============================================//
+    //  This will create the player character.      //
+    //////////////////////////////////////////////////
     private void createPlayer(Vector2 position, int image, final int id)
     {
         DynamicBody player = new DynamicBody(resources, id);
-
-//        player.bodyInit(position, new Vector2(resources.getScreenWidth() * 0.125f, resources.getScreenWidth() * 0.125f), 0.0f);
-//        setSprite(image, player);
-//        player.setAnimationFrames(6);
 
         // Used with camera code.
         if(optionOneChecked)
@@ -249,6 +294,11 @@ public class LevelGenerator
         objects.add(player);
     }
 
+    //////////////////////////////////////////////////
+    //               Create Obstacle                //
+    //==============================================//
+    //  This will create the obstacle.              //
+    //////////////////////////////////////////////////
     private void createObstacle(Vector2 position)
     {
         final StaticBody obstacle = new StaticBody(resources, ObjectID.OBSTACLE);
@@ -258,6 +308,12 @@ public class LevelGenerator
         objects.add(obstacle);
     }
 
+    //////////////////////////////////////////////////
+    //                  Add To View                 //
+    //==============================================//
+    //  This will be used to render the level       //
+    //  generator objects.                          //
+    //////////////////////////////////////////////////
     public void addToView()
     {
         if (resources.getBackground() != null)
@@ -272,9 +328,15 @@ public class LevelGenerator
         }
     }
 
+    //////////////////////////////////////////////////
+    //                  Clear Level                 //
+    //==============================================//
+    //  This will cancel any of the running current //
+    //  level and start to clear objects out of it. //
+    //////////////////////////////////////////////////
     public void clearLevel()
     {
-        future.cancel(true);
+        respawner.cancel(true);
 
         // If there are objects in the vector.
         if(!objects.isEmpty())
@@ -317,5 +379,6 @@ public class LevelGenerator
     }
 
     // Getters.
+    // This will return our collection of game objects.
     public Vector<AnimatedSprite> getObjects()  { return objects; }
 }

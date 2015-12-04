@@ -17,21 +17,28 @@ import android.widget.ImageView;
 public class ImageAdapter extends BaseAdapter
 {
     // Attributes.
-    private Context context;                        // Getting access to the context for the game.
-    private int[] images;                       // Images that will be displayed with this adapter.
+    // Private.
+    private Context context;
+    private int[] images;
 
     // Methods.
+    //////////////////////////////////////////////////
+    //                  Constructor                 //
+    //==============================================//
+    //  This set up the context for the image       //
+    //  adapter.                                    //
+    //////////////////////////////////////////////////
     public ImageAdapter(Context gameContext)
     {
         context = gameContext;
     }
 
-    // Returns the length of the image array.
-    public int getCount()
-    {
-        return images.length;
-    }
-
+    //////////////////////////////////////////////////
+    //                  Set Images                  //
+    //==============================================//
+    //  This place in a selection of images of our  //
+    //  choice into an image array.                 //
+    //////////////////////////////////////////////////
     public void setImages(int imageSelection[])
     {
         images = new int[imageSelection.length];
@@ -45,7 +52,12 @@ public class ImageAdapter extends BaseAdapter
         }
     }
 
-    // Returns the drawable at the position.
+    //////////////////////////////////////////////////
+    //                  Get Item                    //
+    //==============================================//
+    //  This will return the current drawable       //
+    //  image.                                      //
+    //////////////////////////////////////////////////
     public Object getItem(int position)
     {
         // Error checking.
@@ -60,13 +72,15 @@ public class ImageAdapter extends BaseAdapter
         return null;
     }
 
-    // Returns an ID for the item.
-    public long getItemId(int position)
-    {
-        return 0;
-    }
-
-    // This function creates a new image view, for each item referenced by the Adapter.
+    //////////////////////////////////////////////////
+    //                  Get View                    //
+    //==============================================//
+    //  This will return the view that we want from //
+    //  our image array.                            //
+    //  Each image in the image array will be       //
+    //  processed through this and converted into   //
+    //  an image view.                              //
+    //////////////////////////////////////////////////
     public View getView(int position, View convertView, ViewGroup parent)
     {
         ImageView imageView;
@@ -93,4 +107,11 @@ public class ImageAdapter extends BaseAdapter
         // Return the image view for use in the grid view.
         return imageView;
     }
+
+    // Getters.
+    // Returns the length of the image array.
+    public int getCount() { return images.length; }
+
+    // Returns an ID for the item.
+    public long getItemId(int position) { return 0; }
 }
